@@ -1,0 +1,8 @@
+{
+  "name": "Tippspiel-Dev",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "vue"
+}

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Tippspiel-Dev</string>
+    <string name="title_activity_main">Tippspiel-Dev</string>
+    <string name="package_name">dev.kalmbach.tippspiel.dev</string>
+    <string name="custom_url_scheme">dev.kalmbach.tippspiel.dev</string>
+</resources>

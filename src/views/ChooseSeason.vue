@@ -1,0 +1,152 @@
+<template>
+  <ion-page>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-back-button defaultHref="/competition"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Select a season</ion-title>
+        <ion-buttons slot="end">
+          <ion-button fill="clear" @click="cancel()" class="ion-float-right">
+            Cancel
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content :fullscreen="true">
+      <ion-list>
+        <ion-item
+          v-for="season in seasons"
+          :key="season"
+          @click="selectSeason(season.season_id)"
+        >
+          <ion-label>
+            <h2>{{ season.name }}</h2>
+            <h6>
+              {{ season.year }}
+            </h6>
+            <p>
+              {{ this.moment(season.start_date).format("DD MMM, YYYY") }} -
+              {{ this.moment(season.end_date).format("DD MMM, YYYY") }}
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+      <ion-item lines="none">
+        <ion-text color="danger">
+          <small>{{ errorText }}</small>
+        </ion-text>
+      </ion-item>
+    </ion-content>
+  </ion-page>
+</template>
+
+<script lang="ts">
+import {
+  IonPage,
+  IonContent,
+  loadingController,
+  IonList,
+  IonSelect,
+  IonSelectOption,
+  IonItem,
+  IonLabel,
+  alertController,
+  IonText,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonBackButton,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonListHeader,
+} from "@ionic/vue";
+
+import {
+  arrowBackCircleOutline,
+  arrowForwardCircleOutline,
+  settingsOutline,
+  refresh,
+  chevronDownCircleOutline,
+} from "ionicons/icons";
+
+import * as moment from "moment";
+
+import { defineComponent } from "vue";
+import axios from "axios";
+
+export default defineComponent({
+  name: "Choose Season",
+  props: {
+    competition: {
+      type: String,
+      required: true,
+    },
+  },
+  components: {
+    IonContent,
+    IonPage,
+    IonList,
+    IonItem,
+    IonText,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonBackButton,
+    IonButtons,
+    IonButton,
+    IonLabel,
+  },
+  setup() {
+    return {
+      arrowBackCircleOutline,
+      arrowForwardCircleOutline,
+      settingsOutline,
+      refresh,
+      chevronDownCircleOutline,
+      moment,
+    };
+  },
+  data() {
+    return {
+      errorText: "",
+      seasons: [],
+    };
+  },
+  methods: {
+    cancel() {
+      this.$router.push("/tabs/tab3");
+    },
+    selectSeason(season: string) {
+      console.log(season);
+
+      this.$router.push("/create/" + season);
+    },
+  },
+  async mounted() {
+    const loading = await loadingController.create({
+      message: "Please wait...",
+    });
+    await loading.present();
+    const token = localStorage.getItem("JWT");
+    axios
+      .get(
+        process.env.VUE_APP_HOST + `/competition/seasons/` + this.competition,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((response) => {
+        this.seasons = response.data;
+
+        loading.dismiss();
+      })
+      .catch((e) => {
+        console.log(e);
+
+        loading.dismiss();
+      });
+  },
+});
+</script>
