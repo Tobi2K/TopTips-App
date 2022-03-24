@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div v-if="pointsForGroup">
+    <h2 v-if="groupData" class="text-center">{{ groupData.name }}</h2>
     <ion-row>
       <ion-col size="6">
         <ion-button @click="goLeft()" fill="clear" color="medium">
@@ -20,26 +21,23 @@
     <div class="container" style="overflow-x: scroll">
       <table style="white-space: no-wrap">
         <tr>
-          <th id="players">Spieler</th>
-          <th id="total"><strong>Gesamt</strong></th>
-          <th v-for="index in gamedays" :key="index" :id="'day-' + index">
-            Spieltag {{ index }}
+          <th v-for="(title, index) in pointsForGroup[0]" :key="title" :id="'title-' + index">
+            {{ title }}
           </th>
         </tr>
-        <tr v-for="(list, index) in playerPoints" :key="index">
+        <tr v-for="list in pointsForGroup.slice(1)" :key="list">
           <td v-for="item in list" :key="item">{{ item }}</td>
         </tr>
       </table>
     </div>
   </div>
+  <div class="mt text-center" v-else>Please select a group.</div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import axios from "axios";
 import {
-  loadingController,
   IonButton,
   IonRow,
   IonCol,
@@ -47,6 +45,7 @@ import {
 } from "@ionic/vue";
 
 import { arrowBack, arrowForward } from "ionicons/icons";
+import { mapState } from "vuex";
 
 export default defineComponent({
   name: "ScoreSection",
@@ -73,7 +72,7 @@ export default defineComponent({
   emits: ["done"],
   methods: {
     goLeft() {
-      const element = document.getElementById("players");
+      const element = document.getElementById("title-0");
       if (element != null)
         element.scrollIntoView({
           behavior: "smooth",
@@ -82,7 +81,7 @@ export default defineComponent({
         });
     },
     goRight() {
-      const element = document.getElementById("day-" + this.gamedays);
+      const element = document.getElementById("title-" + (this.pointsForGroup[0].length - 1));
       if (element != null)
         element.scrollIntoView({
           behavior: "smooth",
@@ -91,38 +90,17 @@ export default defineComponent({
         });
     },
   },
-  async mounted() {
-    const token = localStorage.getItem("JWT");
-    const loading = await loadingController.create({
-      message: "Please wait...",
-    });
-
-    const groupID = localStorage.getItem("groupID");
-
-    await loading.present();
-    axios
-      .get(process.env.VUE_APP_HOST + `/points/all/format/` + groupID, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        // JSON responses are automatically parsed.
-        this.playerPoints = response.data;
-        this.gamedays = this.playerPoints[0].length - 2;
-        loading.dismiss();
-        this.$emit("done");
-      })
-      .catch((e) => {
-        loading.dismiss();
-        if (e.response) {
-          if (e.response.status == 401) {
-            this.$router.push("/");
-            localStorage.removeItem("JWT");
-          }
-        }
-        loading.dismiss();
+  mounted() {
+    this.$store.dispatch("refreshScores").then(() => {
+      this.$emit("done");
+    }).catch((e)=> {
         console.log(e);
-      });
+    })
   },
+  computed: mapState([
+    "pointsForGroup",
+    "groupData"
+  ]),
 });
 </script>
 
@@ -136,5 +114,13 @@ td {
   width: auto;
   white-space: nowrap;
   padding: 5px 15px;
+}
+
+.mt {
+  margin-top: 10%;
+}
+
+.text-center {
+  text-align: center;
 }
 </style>

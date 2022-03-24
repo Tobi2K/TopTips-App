@@ -1,7 +1,7 @@
 <template>
   <ion-page>
     <ion-header>
-      <ion-toolbar class="ion-color text-center">
+      <ion-toolbar class="text-center">
         <ion-grid class="ion-no-padding">
           <ion-row>
             <ion-col>

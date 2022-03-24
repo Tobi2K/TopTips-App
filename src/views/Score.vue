@@ -1,6 +1,6 @@
 <template>
   <ion-page>
-    <custom-header title="Punkte" @refresh="refreshAll" />
+    <custom-header title="Group Score" @refresh="refreshAll" />
     <ion-content :fullscreen="true">
       <ion-refresher slot="fixed" @ionRefresh="doRefresh($event)">
         <ion-refresher-content> </ion-refresher-content>
@@ -8,11 +8,10 @@
       <score-section
         @done="endRefresh"
         :key="refreshGame"
-        class="mt"
       ></score-section>
-      <ion-item lines="none" id="imgItem">
+      <!-- <ion-item lines="none" id="imgItem">
         <img src="@/img/ball.jpg" alt="customPic" />
-      </ion-item>
+      </ion-item> -->
     </ion-content>
   </ion-page>
 </template>
@@ -21,7 +20,6 @@
 import {
   IonPage,
   IonContent,
-  IonItem,
   IonRefresher,
   IonRefresherContent,
 } from "@ionic/vue";
@@ -40,7 +38,6 @@ export default defineComponent({
     IonContent,
     IonPage,
     ScoreSection,
-    IonItem,
     IonRefresher,
     IonRefresherContent,
     CustomHeader,
@@ -60,7 +57,11 @@ export default defineComponent({
   },
   methods: {
     async refreshAll() {
-      this.refreshGame = !this.refreshGame;
+      this.$store.dispatch("refreshScores").then(() => {
+        this.refreshGame = !this.refreshGame;        
+      }).catch((e)=> {
+        console.log(e);
+      })
     },
     doRefresh(event: { target: { complete: () => void } }) {
       this.refreshAll();
@@ -93,9 +94,5 @@ h2 {
   --inner-padding-end: 0;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-}
-
-.mt {
-  margin-top: 10%;
 }
 </style>

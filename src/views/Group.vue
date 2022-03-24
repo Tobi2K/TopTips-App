@@ -39,7 +39,7 @@
                 {{ groupData.passphrase }}</ion-col
               >
               <ion-col>
-                <ion-text @click="copyPassphrase()" class="ion-float-right">
+                <ion-text @click="copyPassphrase(groupData.passphrase)" class="ion-float-right">
                   <ion-icon :icon="copyOutline" />
                 </ion-text>
               </ion-col>
@@ -116,27 +116,12 @@ import {
 import moment from "moment";
 
 import { defineComponent } from "vue";
-import axios from "axios";
-import router from "@/router";
 import useClipboard from "vue-clipboard3";
 
 import { useStore } from "@/store/store";
 import { mapState } from "vuex";
-import { JOIN_GROUP, UPDATE_CURRENT_GROUP_ID } from "@/store/mutation-types";
+import { JOIN_GROUP, UPDATE_CURRENT_GROUP_ID, UPDATE_USER_GROUPS } from "@/store/mutation-types";
 
-/*axios.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error) {
-      if (error.response) {
-        if (error.response.status == 401) {
-          router.push("/");
-          localStorage.removeItem("JWT");
-        }
-      }
-    } else throw error;
-  }
-);*/
 
 export default defineComponent({
   name: "Group",
@@ -157,7 +142,6 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
-    console.log(store);
 
     return {
       store,
@@ -181,35 +165,8 @@ export default defineComponent({
   },
   methods: {
     async refreshAll() {
-      this.groupID = localStorage.getItem("groupID");
-      const token = localStorage.getItem("JWT");
-      const loading = await loadingController.create({
-        message: "Please wait...",
-      });
-      //await loading.present();
-      axios
-        .get(process.env.VUE_APP_HOST + `/group/user/` + this.groupID, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((response) => {
-          this.group = response.data;
-        })
-        .catch((e) => {
-          console.log(e);
-          loading.dismiss();
-        });
-      axios
-        .get(process.env.VUE_APP_HOST + `/group/user/all`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((response) => {
-          this.groups = response.data;
-          loading.dismiss();
-        })
-        .catch((e) => {
-          console.log(e);
-          loading.dismiss();
-        });
+      this.$store.dispatch("refreshGroups")
+      this.$store.dispatch(UPDATE_USER_GROUPS)
     },
     selectedGroup(groupID: string) {
       this.$store.dispatch(UPDATE_CURRENT_GROUP_ID, groupID);
@@ -231,9 +188,6 @@ export default defineComponent({
             text: "Cancel",
             role: "cancel",
             cssClass: "secondary",
-            handler: () => {
-              console.log("Confirm Cancel");
-            },
           },
           {
             text: "Join",
@@ -262,11 +216,10 @@ export default defineComponent({
           }, 3000);
         });
     },
-    async copyPassphrase() {
-      if (this.group && this.group.passphrase) {
-        const { toClipboard } = useClipboard();
+    async copyPassphrase(passphrase: string) {
+      if (passphrase != "") {
         try {
-          await toClipboard(this.group.passphrase);
+          navigator.clipboard.writeText(passphrase);
           toastController
             .create({
               message: "Passphrase copied to clipboard.",
@@ -285,6 +238,15 @@ export default defineComponent({
               value.present();
             });
         }
+      } else {
+        toastController
+            .create({
+              message: "Copy failed. Sorry :(",
+              duration: 2000,
+            })
+            .then((value) => {
+              value.present();
+            });
       }
     },
   },

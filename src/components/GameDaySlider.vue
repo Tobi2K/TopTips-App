@@ -40,14 +40,13 @@ import "swiper/swiper-bundle.min.css";
 
 import SwiperCore, { Navigation, Pagination, Virtual } from "swiper";
 
-import axios from "axios";
-
 // install Swiper modules
 SwiperCore.use([Navigation, Virtual, Pagination]);
 
 import PlayGame from "@/components/PlayGame.vue";
 
 import { defineComponent } from "vue";
+import { mapState } from "vuex";
 
 export default defineComponent({
   name: "GameDaySlider",
@@ -70,9 +69,6 @@ export default defineComponent({
       // gameDay is 1-indexed!
       gameDay: 1,
     };
-  },
-  setup(props) {
-    console.log("GAMEDAYSLIDER: ", props.games);
   },
   methods: {
     setSwiperRef(swiper) {
@@ -113,17 +109,7 @@ export default defineComponent({
     },*/
   },
   mounted() {
-    const token = localStorage.getItem("JWT");
-    axios
-      .get(process.env.VUE_APP_HOST + `/section/current`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        this.gameDay = response.data;
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    this.gameDay = this.currentGameday
 
     setTimeout(() => {
       this.slideSegments();
@@ -141,6 +127,9 @@ export default defineComponent({
       this.slideSegments();
     },
   },
+  computed: mapState([
+    "currentGameday",
+  ]),
 });
 </script>
 

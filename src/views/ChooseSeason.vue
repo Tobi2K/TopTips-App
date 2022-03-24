@@ -74,7 +74,7 @@ import {
 import * as moment from "moment";
 
 import { defineComponent } from "vue";
-import axios from "axios";
+import { mapState } from "vuex";
 
 export default defineComponent({
   name: "Choose Season",
@@ -111,7 +111,6 @@ export default defineComponent({
   data() {
     return {
       errorText: "",
-      seasons: [],
     };
   },
   methods: {
@@ -119,34 +118,19 @@ export default defineComponent({
       this.$router.push("/tabs/tab3");
     },
     selectSeason(season: string) {
-      console.log(season);
-
       this.$router.push("/create/" + season);
     },
   },
-  async mounted() {
-    const loading = await loadingController.create({
-      message: "Please wait...",
-    });
-    await loading.present();
-    const token = localStorage.getItem("JWT");
-    axios
-      .get(
-        process.env.VUE_APP_HOST + `/competition/seasons/` + this.competition,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
-      .then((response) => {
-        this.seasons = response.data;
-
-        loading.dismiss();
-      })
-      .catch((e) => {
-        console.log(e);
-
-        loading.dismiss();
-      });
+  mounted() {
+    this.$store.dispatch("refreshSeasons", this.competition).catch((e)=> {
+      this.errorText = e;
+      setTimeout(() => {
+        this.errorText = "";
+      }, 3000);
+    })
   },
+  computed: mapState([
+    "seasons",
+  ]),
 });
 </script>

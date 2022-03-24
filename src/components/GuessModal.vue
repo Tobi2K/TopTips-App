@@ -4,7 +4,7 @@
       <ion-grid>
         <ion-row>
           <ion-col>
-            <ion-title class="align-middle">{{ title }}</ion-title>
+            <ion-title class="align-middle">{{ groupData.name }}</ion-title>
           </ion-col>
           <ion-col>
             <ion-buttons class="ion-float-right">
@@ -36,7 +36,7 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <h4><strong>Dein Tipp:</strong></h4>
+          <h4><strong>Your Guess:</strong></h4>
         </ion-col>
       </ion-row>
       <ion-row class="align-middle">
@@ -49,7 +49,7 @@
         <ion-col>
           <ion-item>
             <ion-label position="floating">
-              Tore von {{ gameInfo.team1_name }}
+              Goals by {{ gameInfo.team1_name }}
             </ion-label>
             <ion-input v-model="pointsTeam1" type="number"></ion-input>
           </ion-item>
@@ -65,7 +65,7 @@
         <ion-col>
           <ion-item>
             <ion-label position="floating">
-              Tore von {{ gameInfo.team2_name }}
+              Goals by {{ gameInfo.team2_name }}
             </ion-label>
             <ion-input v-model="pointsTeam2" type="number"></ion-input>
           </ion-item>
@@ -92,7 +92,7 @@
             color="success"
             class="ion-float-right"
             @click="sendData()"
-            ><p style="margin-right: 5px">Absenden</p>
+            ><p style="margin-right: 5px">Save</p>
             <ion-icon :icon="send"
           /></ion-button>
         </ion-col>
@@ -126,15 +126,11 @@ import { defineComponent } from "vue";
 
 import GameGuesses from "@/components/GameGuesses.vue";
 
-import axios from "axios";
+import { mapState } from "vuex"
 
 export default defineComponent({
   name: "GuessModal",
   props: {
-    title: {
-      type: String,
-      default: "Wrong Text",
-    },
     gameInfo: Object,
   },
   components: {
@@ -171,7 +167,6 @@ export default defineComponent({
     };
 
     useBackButton(10, () => {
-      console.log("Handler was called!");
       modalController.dismiss();
     });
     return {
@@ -200,44 +195,35 @@ export default defineComponent({
           this.errorText = "";
         }, 3000);
       } else {
-        const token = localStorage.getItem("JWT");
-        axios
-          .post(
-            process.env.VUE_APP_HOST + `/guess/add`,
-            {
-              game: this.gameInfo.id,
-              bet: this.bet,
-              team1: this.pointsTeam1,
-              team2: this.pointsTeam2,
-            },
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
-          )
-          .catch((e) => {
-            console.log(e);
-          });
-        modalController.dismiss();
+        this.$store.dispatch("addGuess", 
+          {
+            game: this.gameInfo.id,
+            bet: this.bet,
+            team1: this.pointsTeam1,
+            team2: this.pointsTeam2,
+          }).then(() => {
+            modalController.dismiss();
+          }).catch((e)=> {
+            this.errorText = e;
+            setTimeout(() => {
+              this.errorText = "";
+            }, 3000);
+          })
       }
     },
   },
   mounted() {
-    const gameID = this.gameInfo.id;
-    const myID = localStorage.getItem("myID");
-    const token = localStorage.getItem("JWT");
-    axios
-      .get(process.env.VUE_APP_HOST + `/guess/game/` + gameID + `/` + myID, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        // JSON responses are automatically parsed.
-        this.pointsTeam1 = response.data.score_team1;
-        this.pointsTeam2 = response.data.score_team2;
-        this.bet = response.data.special_bet;
-      })
-      .catch((e) => {
+    this.$store.dispatch("getUserGuess", this.gameInfo.id).then((val) => {
+      
+      this.pointsTeam1 = val.score_team1;
+      this.pointsTeam2 = val.score_team2;
+      this.bet = val.special_bet
+    }).catch((e)=> {
         console.log(e);
-      });
+    })
   },
+  computed: mapState([
+    "groupData"
+  ]),
 });
 </script>

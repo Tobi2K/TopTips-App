@@ -2,11 +2,11 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <h6><strong>Andere Tipps:</strong></h6>
+        <h6><strong>Group guesses:</strong></h6>
       </ion-col>
     </ion-row>
     <ion-row
-      v-for="guess in guesses"
+      v-for="guess in guessesForOpenGame"
       :key="guess"
       style="border-bottom: 1px solid rgba(211, 211, 211, 0.8)"
     >
@@ -24,7 +24,8 @@
 <script>
 import { IonCol, IonRow, IonGrid } from "@ionic/vue";
 import { defineComponent } from "vue";
-import axios from "axios";
+
+import { mapState } from "vuex";
 
 export default defineComponent({
   name: "GameGuesses",
@@ -49,26 +50,8 @@ export default defineComponent({
       guesses,
     };
   },
-  mounted() {
-    const token = localStorage.getItem("JWT");
-    axios
-      .get(
-        process.env.VUE_APP_HOST +
-          `/guess/all/` +
-          this.gameID +
-          "/" +
-          localStorage.getItem("myID"),
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
-      .then((response) => {
-        // JSON responses are automatically parsed.
-        this.guesses = response.data;
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  },
+  computed: mapState([
+    "guessesForOpenGame",
+  ]),
 });
 </script>

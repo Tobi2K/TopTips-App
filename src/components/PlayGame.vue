@@ -50,7 +50,7 @@
             </ion-row>
             <ion-row class="custom-bg-opacity-95">
               <ion-col size="16" class="ion-text-start small-text"
-                >Datum: {{ item.date_string }}</ion-col
+                >Date: {{ item.date_string }}</ion-col
               >
               <ion-col class="small-text ion-text-center" size="8">
                 {{ item.bet_string }}
@@ -103,17 +103,11 @@ export default defineComponent({
       refresh: false,
     };
   },
-  setup(props) {
-    console.log("GAMES: ", props.games);
-    return {};
-  },
   methods: {
     async openModal(item) {
-      console.log("ITEM:", item);
       const guessModal = await modalController.create({
         component: GuessModal,
         componentProps: {
-          title: "Spiel Tippen",
           gameInfo: item,
         },
       });

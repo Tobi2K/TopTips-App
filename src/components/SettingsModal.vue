@@ -40,7 +40,7 @@
         </ion-col>
         <ion-col size="6">
           <ion-button color="danger" class="ion-float-right" @click="logout">
-            <p style="margin-right: 5px">Abmelden</p>
+            <p style="margin-right: 5px">Logout</p>
             <ion-icon :icon="logOutOutline" />
           </ion-button>
         </ion-col>
@@ -73,13 +73,11 @@ import {
   useBackButton,
   IonList,
   IonListHeader,
-  loadingController,
   alertController,
 } from "@ionic/vue";
 import { defineComponent } from "vue";
 import { logOutOutline, close, send, moon, sunny } from "ionicons/icons";
 
-import axios from "axios";
 import { LOGOUT } from "@/store/mutation-types";
 
 export default defineComponent({
@@ -87,7 +85,7 @@ export default defineComponent({
   props: {
     title: {
       type: String,
-      default: "Wrong Text",
+      default: "Settings",
     },
   },
   components: {
@@ -112,7 +110,6 @@ export default defineComponent({
       modalController.dismiss();
     };
     useBackButton(10, () => {
-      console.log("Handler was called!");
       modalController.dismiss();
     });
     return {
@@ -138,36 +135,14 @@ export default defineComponent({
   },
   methods: {
     async sendName() {
-      const token = localStorage.getItem("JWT");
-      const loading = await loadingController.create({
-        message: "Please wait...",
-      });
-
-      await loading.present();
       if (this.username != "")
-        axios
-          .post(
-            process.env.VUE_APP_HOST + `/user/name`,
-            {
-              name: this.username,
-            },
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
-          )
-          .then(() => {
-            loading.dismiss();
-          })
-          .catch((e) => {
-            loading.dismiss();
-            this.errorText = "There was an error setting your username!";
-            setTimeout(() => {
-              this.errorText = "";
-            }, 3000);
-            console.log(e);
-          });
+        this.$store.dispatch("saveName", this.username).catch((e)=> {
+          this.errorText = e;
+          setTimeout(() => {
+            this.errorText = "";
+          }, 3000);
+        })
       else {
-        loading.dismiss();
         this.errorText = "There was an error setting your username!";
         setTimeout(() => {
           this.errorText = "";
@@ -190,9 +165,6 @@ export default defineComponent({
             text: "Cancel",
             role: "cancel",
             cssClass: "secondary",
-            handler: () => {
-              console.log("Confirm Cancel");
-            },
           },
           {
             text: "Save Name",
@@ -223,17 +195,7 @@ export default defineComponent({
     },
   },
   mounted() {
-    const token = localStorage.getItem("JWT");
-    axios
-      .get(process.env.VUE_APP_HOST + `/user/single`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        this.username = response.data.name;
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    this.username = this.$store.state.user.username;
   },
 });
 </script>

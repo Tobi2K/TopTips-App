@@ -87,7 +87,6 @@ import {
 import moment from "moment";
 
 import { defineComponent } from "vue";
-import axios from "axios";
 
 export default defineComponent({
   name: "Create Group",
@@ -174,9 +173,12 @@ export default defineComponent({
                 },
               ],
             });
+
+            this.groupName = "";
             await alert.present();
           })
           .catch((e) => {
+            this.groupName = "";
             this.errorText = "Something went wrong. Please try again later.";
 
             loading.dismiss();
@@ -184,26 +186,15 @@ export default defineComponent({
       }
     },
   },
-  async mounted() {
-    const loading = await loadingController.create({
-      message: "Please wait...",
-    });
-    await loading.present();
-    const token = localStorage.getItem("JWT");
-    axios
-      .get(process.env.VUE_APP_HOST + `/competition/season/` + this.season, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        this.seasonData = response.data;
-
-        loading.dismiss();
-      })
-      .catch((e) => {
-        console.log(e);
-
-        loading.dismiss();
-      });
+  mounted() {
+    this.$store.dispatch("refreshSeasonData", this.season).then((val) => {
+        this.seasonData = val
+    }).catch((e)=> {
+      this.errorText = e;
+      setTimeout(() => {
+        this.errorText = "";
+      }, 3000);
+    })
   },
 });
 </script>

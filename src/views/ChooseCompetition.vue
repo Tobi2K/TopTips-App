@@ -69,7 +69,7 @@ import {
 } from "ionicons/icons";
 
 import { defineComponent } from "vue";
-import axios from "axios";
+import { mapState } from "vuex";
 
 export default defineComponent({
   name: "Choose Competition",
@@ -99,7 +99,6 @@ export default defineComponent({
   data() {
     return {
       errorText: "",
-      competitions: [],
     };
   },
   methods: {
@@ -107,31 +106,19 @@ export default defineComponent({
       this.$router.push("/tabs/tab3");
     },
     selectCompetition(competition: string) {
-      console.log(competition);
-
       this.$router.push("/season/" + competition);
     },
   },
-  async mounted() {
-    const loading = await loadingController.create({
-      message: "Please wait...",
-    });
-    await loading.present();
-    const token = localStorage.getItem("JWT");
-    axios
-      .get(process.env.VUE_APP_HOST + `/competition/all`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        this.competitions = response.data;
-
-        loading.dismiss();
-      })
-      .catch((e) => {
-        console.log(e);
-
-        loading.dismiss();
-      });
+  mounted() {
+    this.$store.dispatch("refreshCompetitions").catch((e)=> {
+      this.errorText = e;
+      setTimeout(() => {
+        this.errorText = "";
+      }, 3000);
+    })
   },
+  computed: mapState([
+    "competitions",
+  ]),
 });
 </script>

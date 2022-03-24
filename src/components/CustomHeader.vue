@@ -103,7 +103,7 @@ export default defineComponent({
       const settingsModal = await modalController.create({
         component: SettingsModal,
         componentProps: {
-          title: "Einstellungen",
+          title: "Settings",
         },
       });
       await settingsModal.present();

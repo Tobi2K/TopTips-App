@@ -1,6 +1,7 @@
 <template>
   <ion-page>
-    <custom-header title="Tipps" @refresh="refreshAll" />
+    <custom-header v-if="groupData" :title="'Guessing in ' + groupData.name" @refresh="refreshAll" />
+    <custom-header v-else title="Tipps" @refresh="refreshAll" />
     <ion-content :fullscreen="true" id="mainSlide">
       <ion-item v-if="showSelectGroup">
         <ion-label>Select Group</ion-label>
@@ -48,7 +49,6 @@ import {
 } from "ionicons/icons";
 
 import { defineComponent } from "vue";
-import axios from "axios";
 import { useStore } from "@/store/store";
 import { mapState } from "vuex";
 import {
@@ -70,7 +70,6 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
-    console.log(store);
 
     return {
       store,
@@ -108,6 +107,7 @@ export default defineComponent({
     "showSelectGroup",
     "userGroups",
     "currentGroupID",
+    "groupData"
   ]),
 });
 </script>
