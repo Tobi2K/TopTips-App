@@ -1,6 +1,5 @@
 import router from "@/router";
 import axios from "axios";
-import { stat } from "fs";
 import { InjectionKey } from "vue";
 import { createStore, Store, useStore as baseUseStore } from "vuex";
 import {
@@ -35,7 +34,7 @@ export interface State {
   pointsForGroup: any[] | null;
   user: {
     username: string;
-    access_token: string;
+    accessToken: string;
   };
   competitions: any[];
   seasons: any[];
@@ -140,20 +139,13 @@ export const store = createStore({
     },
   },
   actions: {
-    checkStatus({ commit }) {
+    checkStatus({ commit, dispatch }) {
       commit(UPDATE_LOADING, true);
       const token = localStorage.getItem("JWT");
-      if (!token) {
+      if (token == "" || token == undefined) {
         commit(UPDATE_LOADING, false);
         return null;
       }
-
-      const groupID = localStorage.getItem("groupID");
-      if (groupID) {
-        commit(UPDATE_CURRENT_GROUP_ID, groupID);
-        commit(UPDATE_SHOW_GROUP, false);
-      }
-
       return new Promise((resolve, reject) => {
         axios
           .get(process.env.VUE_APP_HOST + `/user/single`, {
@@ -170,6 +162,7 @@ export const store = createStore({
             commit(UPDATE_LOADING, false);
             router.push("/tabs");
             resolve(data.name);
+            dispatch("initEverythingForGame");
           })
           .catch((e) => {
             commit(UPDATE_LOADING, false);
@@ -179,13 +172,8 @@ export const store = createStore({
           });
       });
     },
-    login({ commit, dispatch }, user: { email: string; password: string }) {
+    login({ commit, dispatch, state }, user: { email: string; password: string }) {
       commit(UPDATE_LOADING, true);
-      const groupID = localStorage.getItem("groupID");
-      if (groupID) {
-        commit(UPDATE_CURRENT_GROUP_ID, groupID);
-        commit(UPDATE_SHOW_GROUP, false);
-      }
       return new Promise((resolve, reject) => {
         axios
           .post(process.env.VUE_APP_HOST + `/auth/login`, {
@@ -198,6 +186,8 @@ export const store = createStore({
               username: data.name,
               accessToken: data.access_token,
             });
+            console.log(state.user);
+            
             localStorage.setItem("JWT", data.access_token);
             commit(UPDATE_LOADING, false);
             resolve(data.name);
@@ -267,7 +257,6 @@ export const store = createStore({
       });
     },
     initEverythingForGame({ dispatch, commit }) {
-      const groupID = localStorage.getItem("groupID");
       commit(UPDATE_SHOW_GROUP, true);
       dispatch(UPDATE_USER_GROUPS);
     },

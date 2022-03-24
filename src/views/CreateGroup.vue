@@ -74,6 +74,7 @@ import {
   IonButton,
   IonListHeader,
   IonInput,
+  toastController,
 } from "@ionic/vue";
 
 import {
@@ -166,6 +167,13 @@ export default defineComponent({
                 "Others can join using the passphrase. <br><br> The passphrase can also be found in the group tab later.",
               buttons: [
                 {
+                  text: "Copy Passphrase",
+                  handler: () => {
+                    this.copyPassphrase(response)
+                    this.$router.push("/tabs/tab3");
+                  },
+                },
+                {
                   text: "Continue",
                   handler: () => {
                     this.$router.push("/tabs/tab3");
@@ -183,6 +191,39 @@ export default defineComponent({
 
             loading.dismiss();
           });
+      }
+    },
+    async copyPassphrase(passphrase: string) {
+      if (passphrase != "") {
+        try {
+          navigator.clipboard.writeText(passphrase);
+          toastController
+            .create({
+              message: "Passphrase copied to clipboard.",
+              duration: 2000,
+            })
+            .then((value) => {
+              value.present();
+            });
+        } catch (e) {
+          toastController
+            .create({
+              message: "Copy failed. Sorry :(",
+              duration: 2000,
+            })
+            .then((value) => {
+              value.present();
+            });
+        }
+      } else {
+        toastController
+            .create({
+              message: "Copy failed. Sorry :(",
+              duration: 2000,
+            })
+            .then((value) => {
+              value.present();
+            });
       }
     },
   },

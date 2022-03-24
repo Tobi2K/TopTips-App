@@ -95,7 +95,12 @@ export default defineComponent({
       this.refreshAll();
     },
   },
-
+  mounted() {
+    const token = this.$store.state.user.accessToken
+    if (token == "" || token == undefined) {
+      this.$router.push("/")
+    }    
+  },
   watch: {
     groupID(newValue) {
       localStorage.setItem("groupID", newValue);

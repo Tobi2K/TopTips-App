@@ -88,7 +88,6 @@
 import {
   IonPage,
   IonContent,
-  loadingController,
   IonList,
   IonListHeader,
   IonSelect,
@@ -116,7 +115,6 @@ import {
 import moment from "moment";
 
 import { defineComponent } from "vue";
-import useClipboard from "vue-clipboard3";
 
 import { useStore } from "@/store/store";
 import { mapState } from "vuex";
@@ -250,7 +248,11 @@ export default defineComponent({
       }
     },
   },
-  async mounted() {
+  mounted() {
+    const token = this.$store.state.user.accessToken
+    if (token == "" || token == undefined) {
+      this.$router.push("/")
+    }
     this.$store.dispatch("initGroup").catch((error) => {
       this.errorText = error;
       setTimeout(() => {

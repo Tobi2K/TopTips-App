@@ -13,7 +13,7 @@ declare module "@vue/runtime-core" {
     pointsForGroup: any[] | null;
     user: {
       username: string;
-      access_token: string;
+      accessToken: string;
     };
     competitions: any[];
     seasons: any[];

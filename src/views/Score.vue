@@ -55,6 +55,12 @@ export default defineComponent({
       settingsOutline,
     };
   },
+  mounted() {
+    const token = this.$store.state.user.accessToken
+    if (token == "" || token == undefined) {
+      this.$router.push("/")
+    }    
+  },
   methods: {
     async refreshAll() {
       this.$store.dispatch("refreshScores").then(() => {
