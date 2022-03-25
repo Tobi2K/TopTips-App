@@ -28,53 +28,7 @@
         </ion-item>
       </ion-list>
 
-      <ion-list v-if="groupData != null">
-        <ion-list-header>Current Group</ion-list-header>
-        <ion-item>
-          <ion-label>
-            <h2><strong>Name:</strong> {{ groupData.name }}</h2>
-            <ion-row v-if="groupData.passphrase">
-              <ion-col style="padding-left: 0"
-                ><strong>Passphrase:</strong>
-                {{ groupData.passphrase }}</ion-col
-              >
-              <ion-col>
-                <ion-text @click="copyPassphrase(groupData.passphrase)" class="ion-float-right">
-                  <ion-icon :icon="copyOutline" />
-                </ion-text>
-              </ion-col>
-            </ion-row>
-            <p v-else>
-              <strong>Passphrase:</strong> Ask the owner ({{
-                groupData.owner.name
-              }}) for the passphrase
-            </p>
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            <h2><strong>Season:</strong> {{ groupData.season.name }}</h2>
-            <p>
-              <strong>Duration:</strong>
-              {{
-                this.moment(groupData.season.start_date).format("DD MMM, YYYY")
-              }}
-              -
-              {{
-                this.moment(groupData.season.end_date).format("DD MMM, YYYY")
-              }}
-            </p>
-          </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            <h2><strong>Members:</strong></h2>
-            <p v-for="member in groupData.members" :key="member">
-              {{ member }}
-            </p>
-          </ion-label>
-        </ion-item>
-      </ion-list>
+      <current-group v-if="groupData != null" />
       <ion-item lines="none">
         <ion-text color="danger">
           <small>{{ errorText }}</small>
@@ -88,18 +42,13 @@
 import {
   IonPage,
   IonContent,
-  IonList,
-  IonListHeader,
   IonSelect,
   IonSelectOption,
   IonItem,
   IonLabel,
   alertController,
   IonText,
-  IonRow,
-  IonIcon,
-  IonCol,
-  toastController,
+  IonList,
 } from "@ionic/vue";
 
 import CustomHeader from "@/components/CustomHeader.vue";
@@ -112,14 +61,17 @@ import {
   copyOutline,
 } from "ionicons/icons";
 
-import moment from "moment";
-
 import { defineComponent } from "vue";
 
 import { useStore } from "@/store/store";
 import { mapState } from "vuex";
-import { JOIN_GROUP, UPDATE_CURRENT_GROUP_ID, UPDATE_USER_GROUPS } from "@/store/mutation-types";
+import {
+  JOIN_GROUP,
+  UPDATE_CURRENT_GROUP_ID,
+  UPDATE_USER_GROUPS,
+} from "@/store/mutation-types";
 
+import CurrentGroup from "@/components/CurrentGroup.vue";
 
 export default defineComponent({
   name: "Group",
@@ -127,16 +79,13 @@ export default defineComponent({
     IonContent,
     IonPage,
     CustomHeader,
-    IonList,
-    IonListHeader,
     IonSelect,
     IonSelectOption,
     IonItem,
     IonLabel,
     IonText,
-    IonRow,
-    IonIcon,
-    IonCol,
+    IonList,
+    CurrentGroup,
   },
   setup() {
     const store = useStore();
@@ -148,7 +97,6 @@ export default defineComponent({
       settingsOutline,
       refresh,
       copyOutline,
-      moment,
     };
   },
   data() {
@@ -163,8 +111,8 @@ export default defineComponent({
   },
   methods: {
     async refreshAll() {
-      this.$store.dispatch("refreshGroups")
-      this.$store.dispatch(UPDATE_USER_GROUPS)
+      this.$store.dispatch("refreshGroups");
+      this.$store.dispatch(UPDATE_USER_GROUPS);
     },
     selectedGroup(groupID: string) {
       this.$store.dispatch(UPDATE_CURRENT_GROUP_ID, groupID);
@@ -214,44 +162,11 @@ export default defineComponent({
           }, 3000);
         });
     },
-    async copyPassphrase(passphrase: string) {
-      if (passphrase != "") {
-        try {
-          navigator.clipboard.writeText(passphrase);
-          toastController
-            .create({
-              message: "Passphrase copied to clipboard.",
-              duration: 2000,
-            })
-            .then((value) => {
-              value.present();
-            });
-        } catch (e) {
-          toastController
-            .create({
-              message: "Copy failed. Sorry :(",
-              duration: 2000,
-            })
-            .then((value) => {
-              value.present();
-            });
-        }
-      } else {
-        toastController
-            .create({
-              message: "Copy failed. Sorry :(",
-              duration: 2000,
-            })
-            .then((value) => {
-              value.present();
-            });
-      }
-    },
   },
   mounted() {
-    const token = this.$store.state.user.accessToken
+    const token = this.$store.state.user.accessToken;
     if (token == "" || token == undefined) {
-      this.$router.push("/")
+      this.$router.push("/");
     }
     this.$store.dispatch("initGroup").catch((error) => {
       this.errorText = error;

@@ -334,7 +334,10 @@ export const store = createStore({
           .then((response) => {
             localStorage.setItem("groupID", response.data);
             commit(UPDATE_CURRENT_GROUP_ID, response.data);
-
+            dispatch("refreshGroups")
+            dispatch("refreshScores")
+            dispatch(UPDATE_ALL_GAMES);
+            commit(UPDATE_SHOW_GROUP, false);
             commit(UPDATE_LOADING, false);
             dispatch(UPDATE_USER_GROUPS);
             dispatch(UPDATE_ALL_GAMES);
@@ -634,6 +637,7 @@ export const store = createStore({
               // Something happened in setting up the request that triggered an Error
               errorText = error.message;
             }
+            console.log(errorText);
       });
     },
     addGuess({commit,state}, details) {
@@ -654,7 +658,7 @@ export const store = createStore({
               headers: { Authorization: `Bearer ${state.user.accessToken}` },
             }
           )
-          .then((response) => {
+          .then(() => {
             commit(UPDATE_LOADING, false);
             resolve("Success");
           })
@@ -689,7 +693,7 @@ export const store = createStore({
               headers: { Authorization: `Bearer ${state.user.accessToken}` },
             }
           )
-          .then((response) => {
+          .then(() => {
             commit(UPDATE_LOADING, false);
             commit(UPDATE_USER, {
               username: name,
@@ -796,6 +800,91 @@ export const store = createStore({
               errorText = error.message;
             }
             reject(errorText);
+          });
+      });
+    },
+    saveGroupName({commit, state, dispatch}, groupName) {
+      commit(UPDATE_LOADING, true);
+      
+      return new Promise((resolve, reject) => {
+        axios
+          .post(
+            process.env.VUE_APP_HOST + `/group/rename/` + state.currentGroupID,
+            {
+              name: groupName,
+            },
+            {
+              headers: { Authorization: `Bearer ${state.user.accessToken}` },
+            }
+          )
+          .then(() => {
+            commit(UPDATE_LOADING, false);
+            commit(UPDATE_USER, {
+              username: groupName,
+              accessToken: state.user.accessToken,
+            });
+            dispatch("refreshGroups")
+            resolve("Success");
+          })
+          .catch(() => {
+            commit(UPDATE_LOADING, false);
+            reject("There was an error setting the group name, sorry!");
+          });
+      });
+    },
+    leaveGroup({commit, state, dispatch}) {
+      commit(UPDATE_LOADING, true);
+      
+      return new Promise((resolve, reject) => {
+        axios
+          .get(
+            process.env.VUE_APP_HOST + `/group/leave/` + state.currentGroupID,
+            {
+              headers: { Authorization: `Bearer ${state.user.accessToken}` },
+            }
+          )
+          .then(() => {
+            commit(UPDATE_CURRENT_GROUP_ID, -1);
+            commit(UPDATE_POINTS_FOR_GROUP, null);
+            commit(UPDATE_ALL_GAMES, []);
+            commit(UPDATE_GROUP_DATA, null);
+            commit(UPDATE_SHOW_GROUP, true);
+            localStorage.removeItem("groupID");
+            dispatch("refreshGroups")
+            commit(UPDATE_LOADING, false);
+            resolve("Success");
+          })
+          .catch(() => {
+            commit(UPDATE_LOADING, false);
+            reject("There was an error leaving the group, sorry!");
+          });
+      });
+    },
+    deleteGroup({commit, state, dispatch}) {
+      commit(UPDATE_LOADING, true);
+      
+      return new Promise((resolve, reject) => {
+        axios
+          .get(
+            process.env.VUE_APP_HOST + `/group/delete/` + state.currentGroupID,
+            {
+              headers: { Authorization: `Bearer ${state.user.accessToken}` },
+            }
+          )
+          .then(() => {
+            commit(UPDATE_CURRENT_GROUP_ID, -1);
+            commit(UPDATE_POINTS_FOR_GROUP, null);
+            commit(UPDATE_ALL_GAMES, []);
+            commit(UPDATE_GROUP_DATA, null);
+            commit(UPDATE_SHOW_GROUP, true);
+            localStorage.removeItem("groupID");
+            dispatch("refreshGroups")
+            commit(UPDATE_LOADING, false);
+            resolve("Success");
+          })
+          .catch(() => {
+            commit(UPDATE_LOADING, false);
+            reject("There was an error deleting the group, sorry!");
           });
       });
     }
