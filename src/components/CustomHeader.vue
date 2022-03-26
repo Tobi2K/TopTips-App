@@ -23,7 +23,7 @@
                     </ion-button>
                     <ion-button
                       fill="clear"
-                      @click="openModal"
+                      @click="goToSettings"
                       class="ion-float-right"
                     >
                       <ion-icon :icon="settingsOutline" />
@@ -60,10 +60,7 @@ import {
   IonButton,
   IonButtons,
   IonText,
-  modalController,
 } from "@ionic/vue";
-
-import SettingsModal from "@/components/SettingsModal.vue";
 
 import { defineComponent } from "vue";
 import { refresh, settingsOutline } from "ionicons/icons";
@@ -99,14 +96,8 @@ export default defineComponent({
     refreshClicked() {
       this.$emit("refresh");
     },
-    async openModal() {
-      const settingsModal = await modalController.create({
-        component: SettingsModal,
-        componentProps: {
-          title: "Settings",
-        },
-      });
-      await settingsModal.present();
+    goToSettings() {
+      this.$router.push("/settings");
     },
   },
 });

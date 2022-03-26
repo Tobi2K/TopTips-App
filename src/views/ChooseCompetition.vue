@@ -3,7 +3,7 @@
     <ion-header>
       <ion-toolbar>
         <ion-buttons slot="start">
-          <ion-back-button defaultHref="/tabs/tab3"></ion-back-button>
+          <ion-back-button defaultHref="/country"></ion-back-button>
         </ion-buttons>
         <ion-title>Select a competition</ion-title>
         <ion-buttons slot="end">
@@ -73,6 +73,12 @@ import { mapState } from "vuex";
 
 export default defineComponent({
   name: "Choose Competition",
+  props: {
+    country: {
+      type: String,
+      required: true,
+    },
+  },
   components: {
     IonContent,
     IonPage,
@@ -110,15 +116,18 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.$store.dispatch("refreshCompetitions").catch((e)=> {
+    const token = this.$store.state.user.accessToken;
+    if (token == "" || token == undefined) {
+      this.$router.push("/");
+      return;
+    }
+    this.$store.dispatch("refreshCompetitions", this.country).catch((e) => {
       this.errorText = e;
       setTimeout(() => {
         this.errorText = "";
       }, 3000);
-    })
+    });
   },
-  computed: mapState([
-    "competitions",
-  ]),
+  computed: mapState(["competitions"]),
 });
 </script>

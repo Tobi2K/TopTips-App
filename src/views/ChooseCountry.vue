@@ -3,11 +3,9 @@
     <ion-header>
       <ion-toolbar>
         <ion-buttons slot="start">
-          <ion-back-button
-            :defaultHref="'/competition' + this.competition"
-          ></ion-back-button>
+          <ion-back-button defaultHref="/tabs/tab3"></ion-back-button>
         </ion-buttons>
-        <ion-title>Select a season</ion-title>
+        <ion-title>Select a country</ion-title>
         <ion-buttons slot="end">
           <ion-button fill="clear" @click="cancel()" class="ion-float-right">
             Cancel
@@ -18,19 +16,12 @@
     <ion-content :fullscreen="true">
       <ion-list>
         <ion-item
-          v-for="season in seasons"
-          :key="season"
-          @click="selectSeason(season.season_id)"
+          v-for="country in countries"
+          :key="country"
+          @click="selectCountry(country.country)"
         >
           <ion-label>
-            <h2>{{ season.name }}</h2>
-            <h6>
-              {{ season.year }}
-            </h6>
-            <p>
-              {{ this.moment(season.start_date).format("DD MMM, YYYY") }} -
-              {{ this.moment(season.end_date).format("DD MMM, YYYY") }}
-            </p>
+            <h2>{{ country.country }}</h2>
           </ion-label>
         </ion-item>
       </ion-list>
@@ -67,19 +58,11 @@ import {
   chevronDownCircleOutline,
 } from "ionicons/icons";
 
-import * as moment from "moment";
-
 import { defineComponent } from "vue";
 import { mapState } from "vuex";
 
 export default defineComponent({
-  name: "Choose Season",
-  props: {
-    competition: {
-      type: String,
-      required: true,
-    },
-  },
+  name: "Choose Competition",
   components: {
     IonContent,
     IonPage,
@@ -101,7 +84,6 @@ export default defineComponent({
       settingsOutline,
       refresh,
       chevronDownCircleOutline,
-      moment,
     };
   },
   data() {
@@ -113,8 +95,8 @@ export default defineComponent({
     cancel() {
       this.$router.push("/tabs/tab3");
     },
-    selectSeason(season: string) {
-      this.$router.push("/create/" + season);
+    selectCountry(country: string) {
+      this.$router.push("/competition/" + country);
     },
   },
   mounted() {
@@ -123,13 +105,13 @@ export default defineComponent({
       this.$router.push("/");
       return;
     }
-    this.$store.dispatch("refreshSeasons", this.competition).catch((e) => {
+    this.$store.dispatch("refreshCountries").catch((e) => {
       this.errorText = e;
       setTimeout(() => {
         this.errorText = "";
       }, 3000);
     });
   },
-  computed: mapState(["seasons"]),
+  computed: mapState(["countries"]),
 });
 </script>

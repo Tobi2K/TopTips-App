@@ -7,79 +7,94 @@
             <ion-col>
               <ion-title class="align-middle"> Top Tipps - Register </ion-title>
             </ion-col>
+            <ion-col>
+              <ion-button
+                class="ion-float-right"
+                v-if="light"
+                fill="clear"
+                @click="toggleTheme()"
+              >
+                <ion-icon :icon="moon" />
+              </ion-button>
+              <ion-button
+                class="ion-float-right"
+                v-else
+                fill="clear"
+                color="dark"
+                @click="toggleTheme()"
+              >
+                <ion-icon :icon="sunny" />
+              </ion-button>
+            </ion-col>
           </ion-row>
         </ion-grid>
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <ion-item
-        lines="none"
-        style="text-align: center; width: 100%"
-        id="imgItem"
-      >
-        <img src="@/img/register.png" alt="customPic" />
-      </ion-item>
-      <ion-row class="centered-row">
-        <ion-item>
-          <ion-label position="floating">Username</ion-label>
-          <ion-input
-            v-model="username"
-            type="text"
-            name="Username"
-            clear-input
-          ></ion-input>
-        </ion-item>
-      </ion-row>
-      <ion-row class="centered-row">
-        <ion-item>
-          <ion-label position="floating">Email</ion-label>
-          <ion-input
-            v-model="email"
-            type="email"
-            name="Email"
-            clear-input
-          ></ion-input>
-        </ion-item>
-      </ion-row>
-      <ion-row class="centered-row">
-        <ion-item>
-          <ion-label position="floating">Password</ion-label>
-          <ion-input
-            v-model="password"
-            type="password"
-            name="Password"
-            clear-input
-          ></ion-input>
-        </ion-item>
-      </ion-row>
+      <div class="center-vertically">
+        <ion-row class="centered-row">
+          <ion-item>
+            <ion-label position="floating">Username</ion-label>
+            <ion-input
+              v-model="username"
+              type="text"
+              name="Username"
+              clear-input
+            ></ion-input>
+          </ion-item>
+        </ion-row>
+        <ion-row class="centered-row">
+          <ion-item>
+            <ion-label position="floating">Email</ion-label>
+            <ion-input
+              v-model="email"
+              type="email"
+              name="Email"
+              clear-input
+            ></ion-input>
+          </ion-item>
+        </ion-row>
+        <ion-row class="centered-row">
+          <ion-item>
+            <ion-label position="floating">Password</ion-label>
+            <ion-input
+              v-model="password"
+              type="password"
+              name="Password"
+              clear-input
+            ></ion-input>
+          </ion-item>
+        </ion-row>
 
-      <ion-row class="centered-row">
-        <ion-text color="danger" style="width: 100%; min-height: 19px">
-          {{ errorText }}
-        </ion-text>
-      </ion-row>
+        <ion-row class="centered-row">
+          <ion-text color="danger" style="width: 100%; min-height: 19px">
+            {{ errorText }}
+          </ion-text>
+        </ion-row>
 
-      <ion-row class="centered-row bottom-row">
-        <ion-item lines="none" style="width: 100%">
-          <ion-button
-            @click="sendData"
-            expand="block"
-            size="large"
-            style="width: 100%"
-          >
-            Register
-          </ion-button>
-        </ion-item>
-        <ion-item lines="none" style="width: 100%">
-          <ion-button
-            fill="none"
-            size="small"
-            style="width: 100%; --color: var(--ion-color-primary)"
-            @click="this.$router.push('/')"
-            >Login
-          </ion-button>
-        </ion-item>
-      </ion-row>
+        <ion-row class="centered-row bottom-row">
+          <ion-item lines="none" style="width: 100%">
+            <ion-button
+              @click="sendData"
+              expand="block"
+              size="large"
+              class="custom-bg"
+              style="width: 100%"
+            >
+              Register
+            </ion-button>
+          </ion-item>
+          <ion-item lines="none" style="width: 100%">
+            <ion-button
+              fill="none"
+              size="small"
+              style="width: 100%; --color: var(--ion-color-primary)"
+              @click="this.$router.push('/')"
+              >Login
+            </ion-button>
+          </ion-item>
+        </ion-row>
+      </div>
     </ion-content>
   </ion-page>
 </template>
@@ -100,9 +115,11 @@ import {
   IonToolbar,
   IonHeader,
   toastController,
+  IonIcon,
 } from "@ionic/vue";
 
 import { defineComponent } from "vue";
+import { moon, sunny } from "ionicons/icons";
 
 export default defineComponent({
   name: "Tabs",
@@ -120,9 +137,18 @@ export default defineComponent({
     IonGrid,
     IonToolbar,
     IonHeader,
+    IonIcon,
   },
   data() {
+    let light = true;
+    const x = document.getElementsByTagName("body")[0].classList;
+    if (x.contains("dark")) {
+      light = false;
+    }
     return {
+      moon,
+      sunny,
+      light,
       username: "",
       email: "",
       password: "",
@@ -183,6 +209,21 @@ export default defineComponent({
         })
         .then((toast) => toast.present());
     },
+    toggleTheme() {
+      const x = document.getElementsByTagName("body")[0].classList;
+      if (x.contains("dark")) {
+        localStorage.setItem("dark", "f");
+      } else {
+        localStorage.setItem("dark", "t");
+      }
+      this.light = !this.light;
+      x.toggle("dark");
+    },
+  },
+  mounted() {
+    if (localStorage.getItem("dark") == "t") {
+      document.getElementsByTagName("body")[0].classList.add("dark");
+    }
   },
 });
 </script>
@@ -204,5 +245,9 @@ export default defineComponent({
   --padding-end: 0;
   --inner-padding-start: 0;
   --inner-padding-end: 0;
+}
+
+ion-item {
+  --background: rgba(0, 0, 0, 0);
 }
 </style>

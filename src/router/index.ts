@@ -36,9 +36,21 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
-    path: "/competition",
+    path: "/settings/",
+    name: "Settings",
+    component: () => import("@/views/Settings.vue"),
+  },
+  {
+    path: "/country/",
+    name: "Choose Country",
+    component: () => import("@/views/ChooseCountry.vue"),
+    props: true,
+  },
+  {
+    path: "/competition/:country",
     name: "Choose Competition",
     component: () => import("@/views/ChooseCompetition.vue"),
+    props: true,
   },
   {
     path: "/season/:competition",

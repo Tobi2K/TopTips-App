@@ -169,7 +169,7 @@ export default defineComponent({
                 {
                   text: "Copy Passphrase",
                   handler: () => {
-                    this.copyPassphrase(response)
+                    this.copyPassphrase(response);
                     this.$router.push("/tabs/tab3");
                   },
                 },
@@ -217,25 +217,33 @@ export default defineComponent({
         }
       } else {
         toastController
-            .create({
-              message: "Copy failed. Sorry :(",
-              duration: 2000,
-            })
-            .then((value) => {
-              value.present();
-            });
+          .create({
+            message: "Copy failed. Sorry :(",
+            duration: 2000,
+          })
+          .then((value) => {
+            value.present();
+          });
       }
     },
   },
   mounted() {
-    this.$store.dispatch("refreshSeasonData", this.season).then((val) => {
-        this.seasonData = val
-    }).catch((e)=> {
-      this.errorText = e;
-      setTimeout(() => {
-        this.errorText = "";
-      }, 3000);
-    })
+    const token = this.$store.state.user.accessToken;
+    if (token == "" || token == undefined) {
+      this.$router.push("/");
+      return;
+    }
+    this.$store
+      .dispatch("refreshSeasonData", this.season)
+      .then((val) => {
+        this.seasonData = val;
+      })
+      .catch((e) => {
+        this.errorText = e;
+        setTimeout(() => {
+          this.errorText = "";
+        }, 3000);
+      });
   },
 });
 </script>

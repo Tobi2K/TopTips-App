@@ -27,13 +27,13 @@
           <ion-label>Create New Group</ion-label>
         </ion-item>
       </ion-list>
-
-      <current-group v-if="groupData != null" />
-      <ion-item lines="none">
+      <ion-item lines="none" v-if="errorText != ''">
         <ion-text color="danger">
           <small>{{ errorText }}</small>
         </ion-text>
       </ion-item>
+
+      <current-group v-if="groupData != null" />
     </ion-content>
   </ion-page>
 </template>
@@ -146,8 +146,8 @@ export default defineComponent({
       });
       return alert.present();
     },
-    async goToCreateGroup() {
-      this.$router.push("/competition");
+    goToCreateGroup() {
+      this.$router.push("/country");
     },
     async joinGroup(passphrase: string) {
       this.$store
@@ -167,6 +167,7 @@ export default defineComponent({
     const token = this.$store.state.user.accessToken;
     if (token == "" || token == undefined) {
       this.$router.push("/");
+      return;
     }
     this.$store.dispatch("initGroup").catch((error) => {
       this.errorText = error;

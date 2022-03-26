@@ -8,6 +8,7 @@ import {
   UPDATE_USER_GUESS_FOR_OPEN_GAME,
   UPDATE_POINTS_FOR_GROUP,
   UPDATE_USER,
+  UPDATE_COUNTRIES,
   UPDATE_COMPETITIONS,
   UPDATE_SEASONS,
   UPDATE_NEW_GROUP_SEASON,
@@ -20,6 +21,7 @@ import {
   UPDATE_LOADING,
   LOGOUT,
   UPDATE_GAME_DATA,
+  UPDATE_USER_SEASONS
 } from "./mutation-types";
 
 // define your typings for the store state
@@ -36,8 +38,10 @@ export interface State {
     username: string;
     accessToken: string;
   };
+  countries: any[];
   competitions: any[];
   seasons: any[];
+  userSeasons: any[];
   newGroupSeason: {
     name: string;
     year: number;
@@ -79,8 +83,10 @@ export const store = createStore({
       username: "",
       accessToken: "",
     },
+    countries: [],
     competitions: [],
     seasons: [],
+    userSeasons: [],
     newGroupSeason: {},
     newGroupPassphrase: "",
     groupData: null,
@@ -107,11 +113,17 @@ export const store = createStore({
       state.user.accessToken = user.accessToken;
       state.user.username = user.username;
     },
+    [UPDATE_COUNTRIES](state, countries) {
+      state.countries = countries;
+    },
     [UPDATE_COMPETITIONS](state, competitions) {
       state.competitions = competitions;
     },
     [UPDATE_SEASONS](state, seasons) {
       state.seasons = seasons;
+    },
+    [UPDATE_USER_SEASONS](state, userSeasons) {
+      state.userSeasons = userSeasons;
     },
     [UPDATE_NEW_GROUP_SEASON](state, newGroupSeason) {
       state.newGroupSeason = newGroupSeason;
@@ -361,7 +373,6 @@ export const store = createStore({
           });
       });
     },
-
     initGroup({ commit, dispatch, state }) {
       commit(UPDATE_USER, {
         username: state.user.username,
@@ -410,7 +421,6 @@ export const store = createStore({
             });
         });
     },
-
     UPDATE_GAME_DATA({ commit, state }) {
       axios
         .get(process.env.VUE_APP_HOST + `/group/user/` + state.currentGroupID, {
@@ -425,7 +435,6 @@ export const store = createStore({
           console.log(e);
         });
     },
-
     createGroup({ commit, dispatch, state }, group) {
       commit(UPDATE_LOADING, true);
       return new Promise((resolve, reject) => {
@@ -707,12 +716,12 @@ export const store = createStore({
           });
       });
     },
-    refreshCompetitions({commit, state}) {
+    refreshCompetitions({commit, state}, country) {
       commit(UPDATE_LOADING, true);
       return new Promise((resolve, reject) => {
         axios
           .get(
-            process.env.VUE_APP_HOST + `/competition/all/`,
+            process.env.VUE_APP_HOST + `/competition/country/` + country,
             {
               headers: { Authorization: `Bearer ${state.user.accessToken}` },
             }
@@ -751,6 +760,38 @@ export const store = createStore({
           )
           .then((response) => {
             commit(UPDATE_SEASONS, response.data)
+            commit(UPDATE_LOADING, false);
+            resolve("Success");
+          })
+          .catch((error) => {
+            commit(UPDATE_LOADING, false);
+            let errorText = "";
+            if (error.response) {
+              // Request made and server responded
+              errorText = error.response.data.message;
+            } else if (error.request) {
+              // The request was made but no response was received
+              errorText = error.message;
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              errorText = error.message;
+            }
+            reject(errorText);
+          });
+      });
+    },
+    refreshCountries({commit, state}) {
+      commit(UPDATE_LOADING, true);
+      return new Promise((resolve, reject) => {
+        axios
+          .get(
+            process.env.VUE_APP_HOST + `/competition/countries`,
+            {
+              headers: { Authorization: `Bearer ${state.user.accessToken}` },
+            }
+          )
+          .then((response) => {
+            commit(UPDATE_COUNTRIES, response.data)
             commit(UPDATE_LOADING, false);
             resolve("Success");
           })
@@ -844,6 +885,7 @@ export const store = createStore({
             }
           )
           .then(() => {
+            localStorage.removeItem("group" + state.currentGroupID);
             commit(UPDATE_CURRENT_GROUP_ID, -1);
             commit(UPDATE_POINTS_FOR_GROUP, null);
             commit(UPDATE_ALL_GAMES, []);
@@ -885,6 +927,38 @@ export const store = createStore({
           .catch(() => {
             commit(UPDATE_LOADING, false);
             reject("There was an error deleting the group, sorry!");
+          });
+      });
+    },
+    getUserSeasons({commit,state}) {
+      commit(UPDATE_LOADING, true);
+      return new Promise((resolve, reject) => {
+        axios
+          .get(
+            process.env.VUE_APP_HOST + `/competition/user`,
+            {
+              headers: { Authorization: `Bearer ${state.user.accessToken}` },
+            }
+          )
+          .then((response) => {
+            commit(UPDATE_USER_SEASONS, response.data)
+            commit(UPDATE_LOADING, false);
+            resolve("Success");
+          })
+          .catch((error) => {
+            commit(UPDATE_LOADING, false);
+            let errorText = "";
+            if (error.response) {
+              // Request made and server responded
+              errorText = error.response.data.message;
+            } else if (error.request) {
+              // The request was made but no response was received
+              errorText = error.message;
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              errorText = error.message;
+            }
+            reject(errorText);
           });
       });
     }

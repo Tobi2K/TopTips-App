@@ -4,4 +4,8 @@
     <string name="title_activity_main">Tippspiel-Dev</string>
     <string name="package_name">dev.kalmbach.tippspiel.dev</string>
     <string name="custom_url_scheme">dev.kalmbach.tippspiel.dev</string>
+    <string name="channel_name">Games</string>
+    <string name="channel_description">Notifications for games on current date</string>
+    <string name="msg_subscribed">Benachrichtigungen funktionieren</string>
+    <string name="msg_subscribe_failed">Benachrichtigungen kaputt :( Sag Tobi Bescheid</string>
 </resources>

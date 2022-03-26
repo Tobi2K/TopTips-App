@@ -49,13 +49,8 @@ export default {
     return {
       dice,
       trophyOutline,
-      peopleCircleOutline
+      peopleCircleOutline,
     };
-  },
-  mounted() {
-    if (localStorage.getItem("dark") == "t") {
-      document.getElementsByTagName("body")[0].classList.add("dark");
-    }
   },
 };
 </script>
