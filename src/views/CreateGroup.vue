@@ -74,7 +74,6 @@ import {
   IonButton,
   IonListHeader,
   IonInput,
-  toastController,
 } from "@ionic/vue";
 
 import {
@@ -197,42 +196,17 @@ export default defineComponent({
       if (passphrase != "") {
         try {
           navigator.clipboard.writeText(passphrase);
-          toastController
-            .create({
-              message: "Passphrase copied to clipboard.",
-              duration: 2000,
-            })
-            .then((value) => {
-              value.present();
-            });
+          this.$store.dispatch("showToast", "Passphrase copied to clipboard.");
         } catch (e) {
-          toastController
-            .create({
-              message: "Copy failed. Sorry :(",
-              duration: 2000,
-            })
-            .then((value) => {
-              value.present();
-            });
+          this.$store.dispatch("showToast", "Copy failed. Sorry :(");
         }
       } else {
-        toastController
-          .create({
-            message: "Copy failed. Sorry :(",
-            duration: 2000,
-          })
-          .then((value) => {
-            value.present();
-          });
+        this.$store.dispatch("showToast", "Copy failed. Sorry :(");
       }
     },
   },
-  mounted() {
-    const token = this.$store.state.user.accessToken;
-    if (token == "" || token == undefined) {
-      this.$router.push("/");
-      return;
-    }
+  async mounted() {
+    if (!(await this.$store.dispatch("checkJWT"))) return;
     this.$store
       .dispatch("refreshSeasonData", this.season)
       .then((val) => {

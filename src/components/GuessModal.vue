@@ -256,12 +256,18 @@ export default defineComponent({
     this.$store
       .dispatch("getUserGuess", this.gameInfo.id)
       .then((val) => {
-        this.pointsTeam1 = val.score_team1;
-        this.pointsTeam2 = val.score_team2;
-        this.bet = val.special_bet;
+        if (val != "") {
+          this.pointsTeam1 = val.score_team1;
+          this.pointsTeam2 = val.score_team2;
+          this.bet = val.special_bet;
+        } else {
+          this.pointsTeam1 = "-";
+          this.pointsTeam2 = "-";
+          this.bet = "-";
+        }
       })
-      .catch((e) => {
-        console.log(e);
+      .catch(() => {
+        this.$store.dispatch("showErrorToast", "Could not get your guess.");
       });
   },
   computed: mapState(["groupData"]),

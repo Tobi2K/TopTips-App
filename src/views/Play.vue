@@ -1,6 +1,10 @@
 <template>
   <ion-page>
-    <custom-header v-if="groupData" :title="'Guessing in ' + groupData.name" @refresh="refreshAll" />
+    <custom-header
+      v-if="groupData"
+      :title="'Guessing in ' + groupData.name"
+      @refresh="refreshAll"
+    />
     <custom-header v-else title="Tipps" @refresh="refreshAll" />
     <ion-content :fullscreen="true" id="mainSlide">
       <ion-item v-if="showSelectGroup">
@@ -29,7 +33,6 @@
 import {
   IonPage,
   IonContent,
-  loadingController,
   IonLabel,
   IonSelect,
   IonSelectOption,
@@ -96,10 +99,7 @@ export default defineComponent({
     },
   },
   mounted() {
-    const token = this.$store.state.user.accessToken
-    if (token == "" || token == undefined) {
-      this.$router.push("/")
-    }    
+    this.$store.dispatch("checkJWT");
   },
   watch: {
     groupID(newValue) {
@@ -112,7 +112,7 @@ export default defineComponent({
     "showSelectGroup",
     "userGroups",
     "currentGroupID",
-    "groupData"
+    "groupData",
   ]),
 });
 </script>

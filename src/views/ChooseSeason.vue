@@ -117,12 +117,8 @@ export default defineComponent({
       this.$router.push("/create/" + season);
     },
   },
-  mounted() {
-    const token = this.$store.state.user.accessToken;
-    if (token == "" || token == undefined) {
-      this.$router.push("/");
-      return;
-    }
+  async mounted() {
+    if (!(await this.$store.dispatch("checkJWT"))) return;
     this.$store.dispatch("refreshSeasons", this.competition).catch((e) => {
       this.errorText = e;
       setTimeout(() => {

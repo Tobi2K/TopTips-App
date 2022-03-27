@@ -21,7 +21,11 @@
     <div class="container" style="overflow-x: scroll">
       <table style="white-space: no-wrap">
         <tr>
-          <th v-for="(title, index) in pointsForGroup[0]" :key="title" :id="'title-' + index">
+          <th
+            v-for="(title, index) in pointsForGroup[0]"
+            :key="title"
+            :id="'title-' + index"
+          >
             {{ title }}
           </th>
         </tr>
@@ -37,12 +41,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import {
-  IonButton,
-  IonRow,
-  IonCol,
-  IonIcon,
-} from "@ionic/vue";
+import { IonButton, IonRow, IonCol, IonIcon } from "@ionic/vue";
 
 import { arrowBack, arrowForward } from "ionicons/icons";
 import { mapState } from "vuex";
@@ -81,7 +80,9 @@ export default defineComponent({
         });
     },
     goRight() {
-      const element = document.getElementById("title-" + (this.pointsForGroup[0].length - 1));
+      const element = document.getElementById(
+        "title-" + (this.pointsForGroup[0].length - 1)
+      );
       if (element != null)
         element.scrollIntoView({
           behavior: "smooth",
@@ -91,16 +92,14 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.$store.dispatch("refreshScores").then(() => {
-      this.$emit("done");
-    }).catch((e)=> {
-        console.log(e);
-    })
+    this.$store
+      .dispatch("refreshScores")
+      .then(() => {
+        this.$emit("done");
+      })
+      .catch();
   },
-  computed: mapState([
-    "pointsForGroup",
-    "groupData"
-  ]),
+  computed: mapState(["pointsForGroup", "groupData"]),
 });
 </script>
 

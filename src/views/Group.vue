@@ -150,25 +150,16 @@ export default defineComponent({
       this.$router.push("/country");
     },
     async joinGroup(passphrase: string) {
-      this.$store
-        .dispatch(JOIN_GROUP, passphrase)
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          this.errorText = error;
-          setTimeout(() => {
-            this.errorText = "";
-          }, 3000);
-        });
+      this.$store.dispatch(JOIN_GROUP, passphrase).catch((error) => {
+        this.errorText = error;
+        setTimeout(() => {
+          this.errorText = "";
+        }, 3000);
+      });
     },
   },
-  mounted() {
-    const token = this.$store.state.user.accessToken;
-    if (token == "" || token == undefined) {
-      this.$router.push("/");
-      return;
-    }
+  async mounted() {
+    if (!(await this.$store.dispatch("checkJWT"))) return;
     this.$store.dispatch("initGroup").catch((error) => {
       this.errorText = error;
       setTimeout(() => {

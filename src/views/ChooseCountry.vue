@@ -99,12 +99,8 @@ export default defineComponent({
       this.$router.push("/competition/" + country);
     },
   },
-  mounted() {
-    const token = this.$store.state.user.accessToken;
-    if (token == "" || token == undefined) {
-      this.$router.push("/");
-      return;
-    }
+  async mounted() {
+    if (!(await this.$store.dispatch("checkJWT"))) return;
     this.$store.dispatch("refreshCountries").catch((e) => {
       this.errorText = e;
       setTimeout(() => {

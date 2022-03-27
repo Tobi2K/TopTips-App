@@ -177,10 +177,9 @@ export const store = createStore({
             resolve(data.name);
             dispatch("initEverythingForGame");
           })
-          .catch((e) => {
+          .catch(() => {
             commit(UPDATE_LOADING, false);
             localStorage.removeItem("groupID");
-            console.log(e);
             reject();
           });
       });
@@ -202,8 +201,6 @@ export const store = createStore({
               username: data.name,
               accessToken: data.access_token,
             });
-            console.log(state.user);
-
             localStorage.setItem("JWT", data.access_token);
             commit(UPDATE_LOADING, false);
             resolve(data.name);
@@ -213,7 +210,6 @@ export const store = createStore({
           .catch((error) => {
             commit(UPDATE_LOADING, false);
             let errorText = "";
-            console.log(error);
             if (error.response) {
               // Request made and server responded
               errorText = error.response.data.message;
@@ -257,7 +253,6 @@ export const store = createStore({
           .catch((error) => {
             commit(UPDATE_LOADING, false);
             let errorText = "";
-            console.log(error);
             if (error.response) {
               // Request made and server responded
               errorText = error.response.data.message;
@@ -276,7 +271,7 @@ export const store = createStore({
       commit(UPDATE_SHOW_GROUP, true);
       dispatch(UPDATE_USER_GROUPS);
     },
-    UPDATE_USER_GROUPS({ state, commit }) {
+    UPDATE_USER_GROUPS({ state, dispatch, commit }) {
       axios
         .get(process.env.VUE_APP_HOST + `/group/user/all`, {
           headers: { Authorization: `Bearer ${state.user.accessToken}` },
@@ -285,7 +280,10 @@ export const store = createStore({
           commit(UPDATE_USER_GROUPS, response.data);
         })
         .catch((e) => {
-          console.log(e);
+          dispatch("handleError", {
+            error: e,
+            message: "Failed to update groups.",
+          });
         });
     },
     UPDATE_ALL_GAMES({ state, commit }) {
@@ -302,8 +300,6 @@ export const store = createStore({
             }
           )
           .then((response) => {
-            console.log(response.data);
-
             commit(UPDATE_ALL_GAMES, response.data);
           })
           .catch((e) => {
@@ -363,7 +359,6 @@ export const store = createStore({
           .catch((error) => {
             commit(UPDATE_LOADING, false);
             let errorText = "";
-            console.log(error);
             if (error.response) {
               // Request made and server responded
               errorText = error.response.data.message;
@@ -411,7 +406,6 @@ export const store = createStore({
               }
               commit(UPDATE_LOADING, false);
               let errorText = "";
-              console.log(e);
               if (e.response) {
                 // Request made and server responded
                 errorText = e.response.data.message;
@@ -426,7 +420,7 @@ export const store = createStore({
             });
         });
     },
-    UPDATE_GAME_DATA({ commit, state }) {
+    UPDATE_GAME_DATA({ commit, dispatch, state }) {
       axios
         .get(process.env.VUE_APP_HOST + `/group/user/` + state.currentGroupID, {
           headers: { Authorization: `Bearer ${state.user.accessToken}` },
@@ -437,7 +431,11 @@ export const store = createStore({
         })
         .catch((e) => {
           commit(UPDATE_LOADING, false);
-          console.log(e);
+
+          dispatch("handleError", {
+            error: e,
+            message: "Failed to update game data.",
+          });
         });
     },
     createGroup({ commit, dispatch, state }, group) {
@@ -466,7 +464,6 @@ export const store = createStore({
           .catch((error) => {
             commit(UPDATE_LOADING, false);
             let errorText = "";
-            console.log(error);
             if (error.response) {
               // Request made and server responded
               errorText = error.response.data.message;
@@ -539,7 +536,6 @@ export const store = createStore({
           .catch((error) => {
             commit(UPDATE_LOADING, false);
             let errorText = "";
-            console.log(error);
             if (error.response) {
               // Request made and server responded
               errorText = error.response.data.message;
@@ -631,7 +627,7 @@ export const store = createStore({
           });
       });
     },
-    getGroupGuesses({ commit, state }, gameID) {
+    getGroupGuesses({ commit, dispatch, state }, gameID) {
       commit(UPDATE_LOADING, true);
       axios
         .get(
@@ -648,20 +644,13 @@ export const store = createStore({
           commit(UPDATE_LOADING, false);
           commit(UPDATE_GUESSES_FOR_OPEN_GAME, response.data);
         })
-        .catch((error) => {
+        .catch((e) => {
           commit(UPDATE_LOADING, false);
-          let errorText = "";
-          if (error.response) {
-            // Request made and server responded
-            errorText = error.response.data.message;
-          } else if (error.request) {
-            // The request was made but no response was received
-            errorText = error.message;
-          } else {
-            // Something happened in setting up the request that triggered an Error
-            errorText = error.message;
-          }
-          console.log(errorText);
+
+          dispatch("handleError", {
+            error: e,
+            message: "Failed to get group guesses.",
+          });
         });
     },
     addGuess({ commit, state }, details) {
@@ -965,7 +954,8 @@ export const store = createStore({
           });
       });
     },
-    /*showMessageToast({}, toastMessage: string) {
+    showToast({ commit }, toastMessage: string) {
+      commit(UPDATE_LOADING, false);
       toastController
         .create({
           message: toastMessage,
@@ -975,9 +965,43 @@ export const store = createStore({
           value.present();
         });
     },
-    showErrorAlert({}, header:string, message:string) {
-      console.log("test");
-    },*/
+    showErrorToast({ commit }, toastMessage: string) {
+      commit(UPDATE_LOADING, false);
+      toastController
+        .create({
+          message: toastMessage,
+          duration: 2000,
+          color: "danger",
+        })
+        .then((value) => {
+          value.present();
+        });
+    },
+    handleError({ dispatch }, { error, message }) {
+      if (error.response) {
+        if (error.response.status == 401) {
+          router.push("/");
+          dispatch(LOGOUT);
+        }
+      } else {
+        dispatch("showErrorToast", message);
+      }
+    },
+    checkJWT({ state, dispatch }) {
+      axios
+        .get(process.env.VUE_APP_HOST + `/user/single`, {
+          headers: { Authorization: `Bearer ${state.user.accessToken}` },
+        })
+        .catch((error) => {
+          if (error.response) {
+            if (error.response.status == 401) {
+              router.push("/");
+              dispatch(LOGOUT);
+              return false;
+            } else return true;
+          } else return true;
+        });
+    },
   },
 });
 

@@ -64,7 +64,6 @@ import {
   IonRow,
   IonCol,
   IonIcon,
-  toastController,
   IonText,
   modalController,
 } from "@ionic/vue";
@@ -101,33 +100,12 @@ export default defineComponent({
       if (passphrase != "") {
         try {
           navigator.clipboard.writeText(passphrase);
-          toastController
-            .create({
-              message: "Passphrase copied to clipboard.",
-              duration: 2000,
-            })
-            .then((value) => {
-              value.present();
-            });
+          this.$store.dispatch("showToast", "Passphrase copied to clipboard.");
         } catch (e) {
-          toastController
-            .create({
-              message: "Copy failed. Sorry :(",
-              duration: 2000,
-            })
-            .then((value) => {
-              value.present();
-            });
+          this.$store.dispatch("showToast", "Copy failed. Sorry :(");
         }
       } else {
-        toastController
-          .create({
-            message: "Copy failed. Sorry :(",
-            duration: 2000,
-          })
-          .then((value) => {
-            value.present();
-          });
+        this.$store.dispatch("showToast", "Copy failed. Sorry :(");
       }
     },
     async openGroupModal() {

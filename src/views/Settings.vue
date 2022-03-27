@@ -155,7 +155,6 @@ import {
   IonListHeader,
   alertController,
   IonToggle,
-  toastController,
   IonBackButton,
   IonItemDivider,
   IonPage,
@@ -311,22 +310,11 @@ export default defineComponent({
       return localStorage.getItem(escapedID) == "true";
     },
     generateAlert(message: string) {
-      toastController
-        .create({
-          message: message,
-          duration: 2000,
-        })
-        .then((value) => {
-          value.present();
-        });
+      this.$store.dispatch("showToast", message);
     },
   },
   mounted() {
-    const token = this.$store.state.user.accessToken;
-    if (token == "" || token == undefined) {
-      this.$router.push("/");
-      return;
-    }
+    this.$store.dispatch("checkJWT");
     this.username = this.$store.state.user.username;
     this.$store.dispatch("getUserSeasons").catch((e) => {
       this.errorText = e;

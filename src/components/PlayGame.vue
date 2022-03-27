@@ -144,17 +144,10 @@ export default defineComponent({
       const rgb1 = this.hexToRGB(hex1);
       const rgb2 = this.hexToRGB(hex2);
 
-      const rgbString =
-        "linear-gradient(90deg, " + rgb1 + " 0%, " + rgb2 + " 100%);";
       const game = document.getElementById("game" + id);
-      console.log(rgbString);
-      console.log(game);
-
       if (game) {
-        console.log(game.style);
         game.style.background =
           "linear-gradient(to right, " + rgb1 + ", " + rgb2 + ")";
-        console.log(game.style);
       }
     },
     hexToRGB(hex) {

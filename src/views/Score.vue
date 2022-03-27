@@ -49,11 +49,8 @@ export default defineComponent({
       settingsOutline,
     };
   },
-  mounted() {
-    const token = this.$store.state.user.accessToken;
-    if (token == "" || token == undefined) {
-      this.$router.push("/");
-    }
+  async mounted() {
+    if (!(await this.$store.dispatch("checkJWT"))) return;
   },
   methods: {
     async refreshAll() {
@@ -62,9 +59,7 @@ export default defineComponent({
         .then(() => {
           this.refreshGame = !this.refreshGame;
         })
-        .catch((e) => {
-          console.log(e);
-        });
+        .catch();
     },
     doRefresh(event: { target: { complete: () => void } }) {
       this.refreshAll();

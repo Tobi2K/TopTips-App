@@ -105,12 +105,8 @@ export default defineComponent({
       this.$router.push("/season/" + competition);
     },
   },
-  mounted() {
-    const token = this.$store.state.user.accessToken;
-    if (token == "" || token == undefined) {
-      this.$router.push("/");
-      return;
-    }
+  async mounted() {
+    if (!(await this.$store.dispatch("checkJWT"))) return;
     this.$store.dispatch("refreshCompetitions", this.country).catch((e) => {
       this.errorText = e;
       setTimeout(() => {
