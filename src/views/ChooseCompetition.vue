@@ -42,13 +42,9 @@
 import {
   IonPage,
   IonContent,
-  loadingController,
   IonList,
-  IonSelect,
-  IonSelectOption,
   IonItem,
   IonLabel,
-  alertController,
   IonText,
   IonHeader,
   IonToolbar,
@@ -56,13 +52,9 @@ import {
   IonBackButton,
   IonButtons,
   IonButton,
-  IonIcon,
-  IonListHeader,
 } from "@ionic/vue";
 
 import {
-  arrowBackCircleOutline,
-  arrowForwardCircleOutline,
   settingsOutline,
   refresh,
   chevronDownCircleOutline,
@@ -95,8 +87,6 @@ export default defineComponent({
   },
   setup() {
     return {
-      arrowBackCircleOutline,
-      arrowForwardCircleOutline,
       settingsOutline,
       refresh,
       chevronDownCircleOutline,

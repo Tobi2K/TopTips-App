@@ -1,36 +1,37 @@
 <template>
   <div :key="games" style="height: 100%">
     <div v-for="(item, index) in games.games" :key="index">
-      <ion-grid>
+      <ion-grid id="test">
         <ion-card style="background: transparent">
           <ion-card-content
             class="ion-no-padding text-light"
             @click="openModal(item)"
-            style="background: transparent"
+            :do="
+              generateGradient(
+                item.team1_background,
+                item.team2_background,
+                item.id
+              )
+            "
+            :id="'game' + item.id"
           >
-            <ion-card-header v-if="games.special" class="custom-bg-opacity-95">
-              <ion-card-title color="light">
+            <ion-card-header v-if="games.special">
+              <ion-card-title :style="'color:' + item.team1_text">
                 {{ item.game_desc }}
               </ion-card-title>
             </ion-card-header>
-            <ion-row class="align-middle custom-bg-opacity-95 border-bottom">
+            <ion-row class="align-middle border-bottom">
               <ion-col
                 size="6"
                 class="ion-text-end medium-text"
                 style="font-size: 90%"
               >
-                <small>{{ item.team1_name }}</small>
+                <small :style="'color:' + item.team1_text">{{
+                  item.team1_name
+                }}</small>
               </ion-col>
               <ion-col size="4" class="align-middle">
                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                  <rect
-                    x="1"
-                    y="25"
-                    width="97"
-                    height="50"
-                    rx="10"
-                    :fill="item.team1_background"
-                  />
                   <text
                     font-size="2.5em"
                     x="50"
@@ -47,14 +48,6 @@
               }}</ion-col>
               <ion-col size="4" class="align-middle">
                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                  <rect
-                    x="1"
-                    y="25"
-                    width="97"
-                    height="50"
-                    rx="10"
-                    :fill="item.team2_background"
-                  />
                   <text
                     font-size="2.5em"
                     x="50"
@@ -67,14 +60,23 @@
                 </svg>
               </ion-col>
               <ion-col size="6" class="ion-text-start medium-text">
-                <small>{{ item.team2_name }}</small>
+                <small :style="'color:' + item.team2_text">{{
+                  item.team2_name
+                }}</small>
               </ion-col>
             </ion-row>
-            <ion-row class="custom-bg-opacity-95">
-              <ion-col size="16" class="ion-text-start small-text"
+            <ion-row>
+              <ion-col
+                size="16"
+                class="ion-text-start small-text"
+                :style="'color:' + item.team1_text"
                 >Date: {{ item.date_string }}</ion-col
               >
-              <ion-col class="small-text ion-text-center" size="8">
+              <ion-col
+                class="small-text ion-text-center"
+                size="8"
+                :style="'color:' + item.team2_text"
+              >
                 {{ item.bet_string }}
               </ion-col>
             </ion-row>
@@ -137,6 +139,35 @@ export default defineComponent({
       await guessModal.onDidDismiss().then(() => {
         this.refresh = !this.refresh;
       });
+    },
+    generateGradient(hex1, hex2, id) {
+      const rgb1 = this.hexToRGB(hex1);
+      const rgb2 = this.hexToRGB(hex2);
+
+      const rgbString =
+        "linear-gradient(90deg, " + rgb1 + " 0%, " + rgb2 + " 100%);";
+      const game = document.getElementById("game" + id);
+      console.log(rgbString);
+      console.log(game);
+
+      if (game) {
+        console.log(game.style);
+        game.style.background =
+          "linear-gradient(to right, " + rgb1 + ", " + rgb2 + ")";
+        console.log(game.style);
+      }
+    },
+    hexToRGB(hex) {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      const rgb = result
+        ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16),
+          }
+        : null;
+
+      return "rgb(" + rgb.r + "," + rgb.g + "," + rgb.b + ")";
     },
   },
 });

@@ -69,40 +69,69 @@
           <h4><strong>Your Guess:</strong></h4>
         </ion-col>
       </ion-row>
-      <ion-item>
-        <ion-label position="floating">
-          Goals by {{ gameInfo.team1_name }}
-        </ion-label>
-        <ion-input v-model="pointsTeam1" type="number"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">
-          Goals by {{ gameInfo.team2_name }}
-        </ion-label>
-        <ion-input v-model="pointsTeam2" type="number"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">
-          {{ gameInfo.bet_name }}
-        </ion-label>
-        <ion-input v-model="bet" type="number"></ion-input>
-      </ion-item>
-      <ion-row>
-        <ion-col size="6">
-          <ion-text color="danger">
-            <small>{{ errorText }}</small>
-          </ion-text>
-        </ion-col>
-        <ion-col class="ion-align-items-end">
-          <ion-button
-            color="success"
-            class="ion-float-right"
-            @click="sendData()"
-            ><p style="margin-right: 5px">Save</p>
-            <ion-icon :icon="send"
-          /></ion-button>
-        </ion-col>
-      </ion-row>
+      <div v-if="isUpcoming()" class="abc">
+        <ion-item>
+          <ion-label position="floating">
+            Goals by {{ gameInfo.team1_name }}
+          </ion-label>
+          <ion-input v-model="pointsTeam1" type="number"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">
+            Goals by {{ gameInfo.team2_name }}
+          </ion-label>
+          <ion-input v-model="pointsTeam2" type="number"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">
+            {{ gameInfo.bet_name }}
+          </ion-label>
+          <ion-input v-model="bet" type="number"></ion-input>
+        </ion-item>
+        <ion-row>
+          <ion-col size="6">
+            <ion-text color="danger">
+              <small>{{ errorText }}</small>
+            </ion-text>
+          </ion-col>
+          <ion-col class="ion-align-items-end">
+            <ion-button
+              color="success"
+              class="ion-float-right"
+              @click="sendData()"
+              ><p style="margin-right: 5px">Save</p>
+              <ion-icon :icon="send"
+            /></ion-button>
+          </ion-col>
+        </ion-row>
+      </div>
+      <div v-else>
+        <ion-item>
+          <ion-label>
+            <small>Goals by {{ gameInfo.team1_name }}</small>
+          </ion-label>
+          {{ pointsTeam1 }}
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <small>Goals by {{ gameInfo.team2_name }}</small>
+          </ion-label>
+          {{ pointsTeam2 }}
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <small>{{ gameInfo.bet_name }}</small>
+          </ion-label>
+          {{ bet }}
+        </ion-item>
+        <ion-row>
+          <ion-col size="12">
+            <ion-text color="danger">
+              <small>{{ errorText }}</small>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+      </div>
     </ion-grid>
     <game-guesses :gameID="gameInfo.id" :bet="gameInfo.bet_name" />
   </ion-content>
@@ -218,6 +247,9 @@ export default defineComponent({
             }, 3000);
           });
       }
+    },
+    isUpcoming() {
+      return new Date(this.gameInfo.date) > new Date();
     },
   },
   mounted() {

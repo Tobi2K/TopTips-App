@@ -197,15 +197,10 @@ export default defineComponent({
     if (localStorage.getItem("dark") == "t") {
       document.getElementsByTagName("body")[0].classList.add("dark");
     }
-    this.$store
-      .dispatch("checkStatus")
-      .then((response) => {
-        if (response) this.greet(response);
-        this.clearInputs();
-      })
-      .catch(() => {
-        console.log("No login found.");
-      });
+    this.$store.dispatch("checkStatus").then((response) => {
+      if (response) this.greet(response);
+      this.clearInputs();
+    });
   },
 });
 </script>

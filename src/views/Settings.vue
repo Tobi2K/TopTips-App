@@ -288,8 +288,6 @@ export default defineComponent({
     },
     toggleStatus(id: string, name: string) {
       const escapedID = id.replaceAll(":", "");
-      console.log(escapedID);
-
       if (localStorage.getItem(escapedID) == "true") {
         // unsubscribe
         FCM.unsubscribeFrom({ topic: escapedID })

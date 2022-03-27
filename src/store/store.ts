@@ -1,4 +1,5 @@
 import router from "@/router";
+import { toastController } from "@ionic/vue";
 import axios from "axios";
 import { InjectionKey } from "vue";
 import { createStore, Store, useStore as baseUseStore } from "vuex";
@@ -21,7 +22,7 @@ import {
   UPDATE_LOADING,
   LOGOUT,
   UPDATE_GAME_DATA,
-  UPDATE_USER_SEASONS
+  UPDATE_USER_SEASONS,
 } from "./mutation-types";
 
 // define your typings for the store state
@@ -184,7 +185,10 @@ export const store = createStore({
           });
       });
     },
-    login({ commit, dispatch, state }, user: { email: string; password: string }) {
+    login(
+      { commit, dispatch, state },
+      user: { email: string; password: string }
+    ) {
       commit(UPDATE_LOADING, true);
       return new Promise((resolve, reject) => {
         axios
@@ -199,7 +203,7 @@ export const store = createStore({
               accessToken: data.access_token,
             });
             console.log(state.user);
-            
+
             localStorage.setItem("JWT", data.access_token);
             commit(UPDATE_LOADING, false);
             resolve(data.name);
@@ -299,7 +303,7 @@ export const store = createStore({
           )
           .then((response) => {
             console.log(response.data);
-            
+
             commit(UPDATE_ALL_GAMES, response.data);
           })
           .catch((e) => {
@@ -318,8 +322,8 @@ export const store = createStore({
       commit(UPDATE_SHOW_GROUP, false);
       dispatch(UPDATE_ALL_GAMES);
       dispatch(UPDATE_GAME_DATA);
-      dispatch("refreshScores")
-      dispatch("refreshCurrentGameday")
+      dispatch("refreshScores");
+      dispatch("refreshCurrentGameday");
     },
     LOGOUT({ commit }) {
       commit(UPDATE_USER, {
@@ -348,8 +352,8 @@ export const store = createStore({
           .then((response) => {
             localStorage.setItem("groupID", response.data);
             commit(UPDATE_CURRENT_GROUP_ID, response.data);
-            dispatch("refreshGroups")
-            dispatch("refreshScores")
+            dispatch("refreshGroups");
+            dispatch("refreshScores");
             commit(UPDATE_SHOW_GROUP, false);
             commit(UPDATE_LOADING, false);
             dispatch(UPDATE_USER_GROUPS);
@@ -477,18 +481,20 @@ export const store = createStore({
           });
       });
     },
-    refreshCurrentGameday({commit, state}) {
+    refreshCurrentGameday({ commit, state }) {
       commit(UPDATE_LOADING, true);
       return new Promise((resolve, reject) => {
         axios
           .get(
-            process.env.VUE_APP_HOST + `/competition/current/` + state.currentGroupID,
+            process.env.VUE_APP_HOST +
+              `/competition/current/` +
+              state.currentGroupID,
             {
               headers: { Authorization: `Bearer ${state.user.accessToken}` },
             }
           )
           .then((response) => {
-            commit(UPDATE_CURRENT_GAMEDAY, response.data)
+            commit(UPDATE_CURRENT_GAMEDAY, response.data);
             commit(UPDATE_LOADING, false);
             resolve("Success");
           })
@@ -548,7 +554,7 @@ export const store = createStore({
           });
       });
     },
-    refreshScores({ commit, dispatch, state }) {      
+    refreshScores({ commit, dispatch, state }) {
       commit(UPDATE_LOADING, true);
       if (state.currentGroupID == -1) {
         commit(UPDATE_LOADING, false);
@@ -558,7 +564,9 @@ export const store = createStore({
       return new Promise((resolve, reject) => {
         axios
           .get(
-            process.env.VUE_APP_HOST + `/points/all/format/` + state.currentGroupID,
+            process.env.VUE_APP_HOST +
+              `/points/all/format/` +
+              state.currentGroupID,
             {
               headers: { Authorization: `Bearer ${state.user.accessToken}` },
             }
@@ -585,15 +593,17 @@ export const store = createStore({
           });
       });
     },
-    getUserGuess({commit, dispatch, state}, gameID) {
-      console.log("Getting Guess");
-      
+    getUserGuess({ commit, dispatch, state }, gameID) {
       commit(UPDATE_LOADING, true);
-      
+
       return new Promise((resolve, reject) => {
         axios
           .get(
-            process.env.VUE_APP_HOST + `/guess/game/` + gameID + `/` + state.currentGroupID,
+            process.env.VUE_APP_HOST +
+              `/guess/game/` +
+              gameID +
+              `/` +
+              state.currentGroupID,
             {
               headers: { Authorization: `Bearer ${state.user.accessToken}` },
             }
@@ -601,7 +611,7 @@ export const store = createStore({
           .then((response) => {
             commit(UPDATE_LOADING, false);
             commit(UPDATE_USER_GUESS_FOR_OPEN_GAME, response.data);
-            dispatch("getGroupGuesses", gameID)
+            dispatch("getGroupGuesses", gameID);
             resolve(response.data);
           })
           .catch((error) => {
@@ -621,38 +631,42 @@ export const store = createStore({
           });
       });
     },
-    getGroupGuesses({commit, state}, gameID) {
+    getGroupGuesses({ commit, state }, gameID) {
       commit(UPDATE_LOADING, true);
-        axios
-          .get(
-            process.env.VUE_APP_HOST + `/guess/all/` + gameID + `/` + state.currentGroupID,
-            {
-              headers: { Authorization: `Bearer ${state.user.accessToken}` },
-            }
-          )
-          .then((response) => {
-            commit(UPDATE_LOADING, false);
-            commit(UPDATE_GUESSES_FOR_OPEN_GAME, response.data);
-          })
-          .catch((error) => {
-            commit(UPDATE_LOADING, false);
-            let errorText = "";
-            if (error.response) {
-              // Request made and server responded
-              errorText = error.response.data.message;
-            } else if (error.request) {
-              // The request was made but no response was received
-              errorText = error.message;
-            } else {
-              // Something happened in setting up the request that triggered an Error
-              errorText = error.message;
-            }
-            console.log(errorText);
-      });
+      axios
+        .get(
+          process.env.VUE_APP_HOST +
+            `/guess/all/` +
+            gameID +
+            `/` +
+            state.currentGroupID,
+          {
+            headers: { Authorization: `Bearer ${state.user.accessToken}` },
+          }
+        )
+        .then((response) => {
+          commit(UPDATE_LOADING, false);
+          commit(UPDATE_GUESSES_FOR_OPEN_GAME, response.data);
+        })
+        .catch((error) => {
+          commit(UPDATE_LOADING, false);
+          let errorText = "";
+          if (error.response) {
+            // Request made and server responded
+            errorText = error.response.data.message;
+          } else if (error.request) {
+            // The request was made but no response was received
+            errorText = error.message;
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            errorText = error.message;
+          }
+          console.log(errorText);
+        });
     },
-    addGuess({commit,state}, details) {
+    addGuess({ commit, state }, details) {
       commit(UPDATE_LOADING, true);
-      
+
       return new Promise((resolve, reject) => {
         axios
           .post(
@@ -662,7 +676,7 @@ export const store = createStore({
               bet: details.bet,
               team1: details.team1,
               team2: details.team2,
-              groupID: state.currentGroupID
+              groupID: state.currentGroupID,
             },
             {
               headers: { Authorization: `Bearer ${state.user.accessToken}` },
@@ -689,9 +703,9 @@ export const store = createStore({
           });
       });
     },
-    saveName({commit, state}, name) {
+    saveName({ commit, state }, name) {
       commit(UPDATE_LOADING, true);
-      
+
       return new Promise((resolve, reject) => {
         axios
           .post(
@@ -717,18 +731,15 @@ export const store = createStore({
           });
       });
     },
-    refreshCompetitions({commit, state}, country) {
+    refreshCompetitions({ commit, state }, country) {
       commit(UPDATE_LOADING, true);
       return new Promise((resolve, reject) => {
         axios
-          .get(
-            process.env.VUE_APP_HOST + `/competition/country/` + country,
-            {
-              headers: { Authorization: `Bearer ${state.user.accessToken}` },
-            }
-          )
+          .get(process.env.VUE_APP_HOST + `/competition/country/` + country, {
+            headers: { Authorization: `Bearer ${state.user.accessToken}` },
+          })
           .then((response) => {
-            commit(UPDATE_COMPETITIONS, response.data)
+            commit(UPDATE_COMPETITIONS, response.data);
             commit(UPDATE_LOADING, false);
             resolve("Success");
           })
@@ -749,7 +760,7 @@ export const store = createStore({
           });
       });
     },
-    refreshSeasons({commit, state}, competition) {
+    refreshSeasons({ commit, state }, competition) {
       commit(UPDATE_LOADING, true);
       return new Promise((resolve, reject) => {
         axios
@@ -760,7 +771,7 @@ export const store = createStore({
             }
           )
           .then((response) => {
-            commit(UPDATE_SEASONS, response.data)
+            commit(UPDATE_SEASONS, response.data);
             commit(UPDATE_LOADING, false);
             resolve("Success");
           })
@@ -781,18 +792,15 @@ export const store = createStore({
           });
       });
     },
-    refreshCountries({commit, state}) {
+    refreshCountries({ commit, state }) {
       commit(UPDATE_LOADING, true);
       return new Promise((resolve, reject) => {
         axios
-          .get(
-            process.env.VUE_APP_HOST + `/competition/countries`,
-            {
-              headers: { Authorization: `Bearer ${state.user.accessToken}` },
-            }
-          )
+          .get(process.env.VUE_APP_HOST + `/competition/countries`, {
+            headers: { Authorization: `Bearer ${state.user.accessToken}` },
+          })
           .then((response) => {
-            commit(UPDATE_COUNTRIES, response.data)
+            commit(UPDATE_COUNTRIES, response.data);
             commit(UPDATE_LOADING, false);
             resolve("Success");
           })
@@ -813,18 +821,15 @@ export const store = createStore({
           });
       });
     },
-    refreshSeasonData({commit, state}, season) {
+    refreshSeasonData({ commit, state }, season) {
       commit(UPDATE_LOADING, true);
       return new Promise((resolve, reject) => {
         axios
-          .get(
-            process.env.VUE_APP_HOST + `/competition/season/` + season,
-            {
-              headers: { Authorization: `Bearer ${state.user.accessToken}` },
-            }
-          )
+          .get(process.env.VUE_APP_HOST + `/competition/season/` + season, {
+            headers: { Authorization: `Bearer ${state.user.accessToken}` },
+          })
           .then((response) => {
-            commit(UPDATE_NEW_GROUP_SEASON, response.data)
+            commit(UPDATE_NEW_GROUP_SEASON, response.data);
             commit(UPDATE_LOADING, false);
             resolve(response.data);
           })
@@ -845,9 +850,9 @@ export const store = createStore({
           });
       });
     },
-    saveGroupName({commit, state, dispatch}, groupName) {
+    saveGroupName({ commit, state, dispatch }, groupName) {
       commit(UPDATE_LOADING, true);
-      
+
       return new Promise((resolve, reject) => {
         axios
           .post(
@@ -865,7 +870,7 @@ export const store = createStore({
               username: groupName,
               accessToken: state.user.accessToken,
             });
-            dispatch("refreshGroups")
+            dispatch("refreshGroups");
             resolve("Success");
           })
           .catch(() => {
@@ -874,9 +879,9 @@ export const store = createStore({
           });
       });
     },
-    leaveGroup({commit, state, dispatch}) {
+    leaveGroup({ commit, state, dispatch }) {
       commit(UPDATE_LOADING, true);
-      
+
       return new Promise((resolve, reject) => {
         axios
           .get(
@@ -893,7 +898,7 @@ export const store = createStore({
             commit(UPDATE_GROUP_DATA, null);
             commit(UPDATE_SHOW_GROUP, true);
             localStorage.removeItem("groupID");
-            dispatch("refreshGroups")
+            dispatch("refreshGroups");
             commit(UPDATE_LOADING, false);
             resolve("Success");
           })
@@ -903,9 +908,9 @@ export const store = createStore({
           });
       });
     },
-    deleteGroup({commit, state, dispatch}) {
+    deleteGroup({ commit, state, dispatch }) {
       commit(UPDATE_LOADING, true);
-      
+
       return new Promise((resolve, reject) => {
         axios
           .get(
@@ -921,7 +926,7 @@ export const store = createStore({
             commit(UPDATE_GROUP_DATA, null);
             commit(UPDATE_SHOW_GROUP, true);
             localStorage.removeItem("groupID");
-            dispatch("refreshGroups")
+            dispatch("refreshGroups");
             commit(UPDATE_LOADING, false);
             resolve("Success");
           })
@@ -931,18 +936,15 @@ export const store = createStore({
           });
       });
     },
-    getUserSeasons({commit,state}) {
+    getUserSeasons({ commit, state }) {
       commit(UPDATE_LOADING, true);
       return new Promise((resolve, reject) => {
         axios
-          .get(
-            process.env.VUE_APP_HOST + `/competition/user`,
-            {
-              headers: { Authorization: `Bearer ${state.user.accessToken}` },
-            }
-          )
+          .get(process.env.VUE_APP_HOST + `/competition/user`, {
+            headers: { Authorization: `Bearer ${state.user.accessToken}` },
+          })
           .then((response) => {
-            commit(UPDATE_USER_SEASONS, response.data)
+            commit(UPDATE_USER_SEASONS, response.data);
             commit(UPDATE_LOADING, false);
             resolve("Success");
           })
@@ -962,7 +964,20 @@ export const store = createStore({
             reject(errorText);
           });
       });
-    }
+    },
+    /*showMessageToast({}, toastMessage: string) {
+      toastController
+        .create({
+          message: toastMessage,
+          duration: 2000,
+        })
+        .then((value) => {
+          value.present();
+        });
+    },
+    showErrorAlert({}, header:string, message:string) {
+      console.log("test");
+    },*/
   },
 });
 

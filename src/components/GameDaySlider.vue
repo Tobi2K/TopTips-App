@@ -16,7 +16,6 @@
       @activeIndexChange="onSlideChanged"
       :slidesPerView="1"
       :centeredSlides="true"
-      :navigation="true"
       :virtual="true"
     >
       <swiper-slide
@@ -87,29 +86,9 @@ export default defineComponent({
           inline: "center",
         });
     },
-    /*slideTo(index) {
-      console.log("Sliding slides to ", index);
-      this.swiperRef.slideTo(index - 1, 100, false);
-    },
-    onSlideChanged(swiper) {
-      console.log("Sending " + swiper.realIndex);
-      this.gameDay = swiper.realIndex + 1;
-      this.slideSegments();
-    },
-
-    async slideSegments() {
-      this.slideTo(Number(this.gameDay));
-      const segment = document.getElementById("segment-" + this.gameDay);
-      if (segment != null)
-        segment.scrollIntoView({
-          behavior: "auto",
-          block: "center",
-          inline: "center",
-        });
-    },*/
   },
   mounted() {
-    this.gameDay = this.currentGameday
+    this.gameDay = this.currentGameday;
 
     setTimeout(() => {
       this.slideSegments();
@@ -127,9 +106,7 @@ export default defineComponent({
       this.slideSegments();
     },
   },
-  computed: mapState([
-    "currentGameday",
-  ]),
+  computed: mapState(["currentGameday"]),
 });
 </script>
 
