@@ -31,13 +31,6 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <!-- <ion-item
-        lines="none"
-        style="text-align: center; width: 100%"
-        id="imgItem"
-      >
-        <img src="@/img/login.png" alt="customPic" />
-      </ion-item> -->
       <div class="center-vertically">
         <ion-row class="centered-row">
           <ion-item style="width: 100%">

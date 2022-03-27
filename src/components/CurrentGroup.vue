@@ -52,9 +52,6 @@
         </p>
       </ion-label>
     </ion-item>
-    <ion-item lines="none">
-      <small>For notifications check the settings.</small>
-    </ion-item>
   </ion-list>
 </template>
 

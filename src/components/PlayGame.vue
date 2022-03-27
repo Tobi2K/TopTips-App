@@ -14,38 +14,60 @@
               </ion-card-title>
             </ion-card-header>
             <ion-row class="align-middle custom-bg-opacity-95 border-bottom">
-              <ion-col size="7" class="ion-text-end medium-text">
-                {{ item.team1_name }}
+              <ion-col
+                size="6"
+                class="ion-text-end medium-text"
+                style="font-size: 90%"
+              >
+                <small>{{ item.team1_name }}</small>
               </ion-col>
-              <ion-col size="3" class="align-middle">
-                <img
-                  v-if="item.team1_id < 18"
-                  :src="'./assets/img/team_' + item.team1_id + '.png'"
-                  alt="teamLogo"
-                />
-                <img
-                  v-else
-                  :src="'./assets/img/default_team.png'"
-                  alt="teamLogo"
-                />
+              <ion-col size="4" class="align-middle">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                  <rect
+                    x="1"
+                    y="25"
+                    width="97"
+                    height="50"
+                    rx="10"
+                    :fill="item.team1_background"
+                  />
+                  <text
+                    font-size="2.5em"
+                    x="50"
+                    y="53"
+                    :fill="item.team1_text"
+                    textLength="75"
+                  >
+                    {{ item.team1_abbr }}
+                  </text>
+                </svg>
               </ion-col>
               <ion-col class="ion-text-center" size="4">{{
                 item.game_string
               }}</ion-col>
-              <ion-col size="3" class="align-middle">
-                <img
-                  v-if="item.team2_id < 18"
-                  :src="'./assets/img/team_' + item.team2_id + '.png'"
-                  alt="teamLogo"
-                />
-                <img
-                  v-else
-                  :src="'./assets/img/default_team.png'"
-                  alt="teamLogo"
-                />
+              <ion-col size="4" class="align-middle">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                  <rect
+                    x="1"
+                    y="25"
+                    width="97"
+                    height="50"
+                    rx="10"
+                    :fill="item.team2_background"
+                  />
+                  <text
+                    font-size="2.5em"
+                    x="50"
+                    y="53"
+                    :fill="item.team2_text"
+                    textLength="75"
+                  >
+                    {{ item.team2_abbr }}
+                  </text>
+                </svg>
               </ion-col>
-              <ion-col size="7" class="ion-text-start medium-text"
-                >{{ item.team2_name }}
+              <ion-col size="6" class="ion-text-start medium-text">
+                <small>{{ item.team2_name }}</small>
               </ion-col>
             </ion-row>
             <ion-row class="custom-bg-opacity-95">
@@ -125,5 +147,11 @@ ion-grid {
   --ion-grid-columns: 24;
   padding-top: 0;
   padding-bottom: 0;
+}
+
+text {
+  font-family: monospace;
+  text-anchor: middle; /* align center */
+  dominant-baseline: middle; /* vertical alignment fix */
 }
 </style>

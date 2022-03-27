@@ -5,13 +5,7 @@
       <ion-refresher slot="fixed" @ionRefresh="doRefresh($event)">
         <ion-refresher-content> </ion-refresher-content>
       </ion-refresher>
-      <score-section
-        @done="endRefresh"
-        :key="refreshGame"
-      ></score-section>
-      <!-- <ion-item lines="none" id="imgItem">
-        <img src="@/img/ball.jpg" alt="customPic" />
-      </ion-item> -->
+      <score-section @done="endRefresh" :key="refreshGame" />
     </ion-content>
   </ion-page>
 </template>
@@ -56,18 +50,21 @@ export default defineComponent({
     };
   },
   mounted() {
-    const token = this.$store.state.user.accessToken
+    const token = this.$store.state.user.accessToken;
     if (token == "" || token == undefined) {
-      this.$router.push("/")
-    }    
+      this.$router.push("/");
+    }
   },
   methods: {
     async refreshAll() {
-      this.$store.dispatch("refreshScores").then(() => {
-        this.refreshGame = !this.refreshGame;        
-      }).catch((e)=> {
-        console.log(e);
-      })
+      this.$store
+        .dispatch("refreshScores")
+        .then(() => {
+          this.refreshGame = !this.refreshGame;
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
     doRefresh(event: { target: { complete: () => void } }) {
       this.refreshAll();

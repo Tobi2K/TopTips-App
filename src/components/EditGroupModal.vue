@@ -61,6 +61,9 @@
       </ion-row>
     </ion-list>
     <ion-item lines="none">
+      <small>For notifications check the app settings.</small>
+    </ion-item>
+    <ion-item lines="none">
       <ion-text color="danger">
         <small>{{ errorText }}</small>
       </ion-text>

@@ -298,6 +298,8 @@ export const store = createStore({
             }
           )
           .then((response) => {
+            console.log(response.data);
+            
             commit(UPDATE_ALL_GAMES, response.data);
           })
           .catch((e) => {
@@ -348,7 +350,6 @@ export const store = createStore({
             commit(UPDATE_CURRENT_GROUP_ID, response.data);
             dispatch("refreshGroups")
             dispatch("refreshScores")
-            dispatch(UPDATE_ALL_GAMES);
             commit(UPDATE_SHOW_GROUP, false);
             commit(UPDATE_LOADING, false);
             dispatch(UPDATE_USER_GROUPS);

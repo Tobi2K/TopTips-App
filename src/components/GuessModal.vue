@@ -21,17 +21,47 @@
     <ion-grid>
       <ion-row class="align-middle">
         <ion-col class="ion-text-end">
-          <img
-            :src="'./assets/img/team_' + gameInfo.team1_id + '.png'"
-            alt="teamLogo"
-          />
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <rect
+              x="1"
+              y="25"
+              width="97"
+              height="50"
+              rx="10"
+              :fill="gameInfo.team1_background"
+            />
+            <text
+              font-size="2.5em"
+              x="50"
+              y="53"
+              :fill="gameInfo.team1_text"
+              textLength="75"
+            >
+              {{ gameInfo.team1_abbr }}
+            </text>
+          </svg>
         </ion-col>
         <ion-col class="ion-text-center"><h2>vs.</h2></ion-col>
         <ion-col class="ion-text-start">
-          <img
-            :src="'./assets/img/team_' + gameInfo.team2_id + '.png'"
-            alt="teamLogo"
-          />
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <rect
+              x="1"
+              y="25"
+              width="97"
+              height="50"
+              rx="10"
+              :fill="gameInfo.team2_background"
+            />
+            <text
+              font-size="2.5em"
+              x="50"
+              y="53"
+              :fill="gameInfo.team2_text"
+              textLength="75"
+            >
+              {{ gameInfo.team2_abbr }}
+            </text>
+          </svg>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -39,48 +69,24 @@
           <h4><strong>Your Guess:</strong></h4>
         </ion-col>
       </ion-row>
-      <ion-row class="align-middle">
-        <ion-col size="1" class="align-middle">
-          <img
-            :src="'./assets/img/team_' + gameInfo.team1_id + '.png'"
-            alt="teamLogo"
-          />
-        </ion-col>
-        <ion-col>
-          <ion-item>
-            <ion-label position="floating">
-              Goals by {{ gameInfo.team1_name }}
-            </ion-label>
-            <ion-input v-model="pointsTeam1" type="number"></ion-input>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row class="align-middle">
-        <ion-col size="1" class="align-middle">
-          <img
-            :src="'./assets/img/team_' + gameInfo.team2_id + '.png'"
-            alt="teamLogo"
-          />
-        </ion-col>
-        <ion-col>
-          <ion-item>
-            <ion-label position="floating">
-              Goals by {{ gameInfo.team2_name }}
-            </ion-label>
-            <ion-input v-model="pointsTeam2" type="number"></ion-input>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row class="align-middle">
-        <ion-col>
-          <ion-item>
-            <ion-label position="floating">
-              {{ gameInfo.bet_name }}
-            </ion-label>
-            <ion-input v-model="bet" type="number"></ion-input>
-          </ion-item>
-        </ion-col>
-      </ion-row>
+      <ion-item>
+        <ion-label position="floating">
+          Goals by {{ gameInfo.team1_name }}
+        </ion-label>
+        <ion-input v-model="pointsTeam1" type="number"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">
+          Goals by {{ gameInfo.team2_name }}
+        </ion-label>
+        <ion-input v-model="pointsTeam2" type="number"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">
+          {{ gameInfo.bet_name }}
+        </ion-label>
+        <ion-input v-model="bet" type="number"></ion-input>
+      </ion-item>
       <ion-row>
         <ion-col size="6">
           <ion-text color="danger">
@@ -126,7 +132,7 @@ import { defineComponent } from "vue";
 
 import GameGuesses from "@/components/GameGuesses.vue";
 
-import { mapState } from "vuex"
+import { mapState } from "vuex";
 
 export default defineComponent({
   name: "GuessModal",
@@ -195,35 +201,45 @@ export default defineComponent({
           this.errorText = "";
         }, 3000);
       } else {
-        this.$store.dispatch("addGuess", 
-          {
+        this.$store
+          .dispatch("addGuess", {
             game: this.gameInfo.id,
             bet: this.bet,
             team1: this.pointsTeam1,
             team2: this.pointsTeam2,
-          }).then(() => {
+          })
+          .then(() => {
             modalController.dismiss();
-          }).catch((e)=> {
+          })
+          .catch((e) => {
             this.errorText = e;
             setTimeout(() => {
               this.errorText = "";
             }, 3000);
-          })
+          });
       }
     },
   },
   mounted() {
-    this.$store.dispatch("getUserGuess", this.gameInfo.id).then((val) => {
-      
-      this.pointsTeam1 = val.score_team1;
-      this.pointsTeam2 = val.score_team2;
-      this.bet = val.special_bet
-    }).catch((e)=> {
+    this.$store
+      .dispatch("getUserGuess", this.gameInfo.id)
+      .then((val) => {
+        this.pointsTeam1 = val.score_team1;
+        this.pointsTeam2 = val.score_team2;
+        this.bet = val.special_bet;
+      })
+      .catch((e) => {
         console.log(e);
-    })
+      });
   },
-  computed: mapState([
-    "groupData"
-  ]),
+  computed: mapState(["groupData"]),
 });
 </script>
+
+<style scoped>
+text {
+  font-family: monospace;
+  text-anchor: middle; /* align center */
+  dominant-baseline: middle; /* vertical alignment fix */
+}
+</style>
