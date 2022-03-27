@@ -49,8 +49,8 @@ export default defineComponent({
       settingsOutline,
     };
   },
-  async mounted() {
-    if (!(await this.$store.dispatch("checkJWT"))) return;
+  mounted() {
+    this.$store.dispatch("checkJWT");
   },
   methods: {
     async refreshAll() {

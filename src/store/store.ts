@@ -454,6 +454,7 @@ export const store = createStore({
             commit(UPDATE_CURRENT_GROUP_ID, response.data.id);
 
             commit(UPDATE_LOADING, false);
+            commit(UPDATE_SHOW_GROUP, false);
             dispatch(UPDATE_ALL_GAMES);
             resolve(response.data.passphrase);
             dispatch("refreshGroups");

@@ -158,8 +158,8 @@ export default defineComponent({
       });
     },
   },
-  async mounted() {
-    if (!(await this.$store.dispatch("checkJWT"))) return;
+  mounted() {
+    this.$store.dispatch("checkJWT");
     this.$store.dispatch("initGroup").catch((error) => {
       this.errorText = error;
       setTimeout(() => {

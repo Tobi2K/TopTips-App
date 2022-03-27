@@ -99,8 +99,8 @@ export default defineComponent({
       this.$router.push("/competition/" + country);
     },
   },
-  async mounted() {
-    if (!(await this.$store.dispatch("checkJWT"))) return;
+  mounted() {
+    this.$store.dispatch("checkJWT");
     this.$store.dispatch("refreshCountries").catch((e) => {
       this.errorText = e;
       setTimeout(() => {

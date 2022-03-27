@@ -205,8 +205,8 @@ export default defineComponent({
       }
     },
   },
-  async mounted() {
-    if (!(await this.$store.dispatch("checkJWT"))) return;
+  mounted() {
+    this.$store.dispatch("checkJWT");
     this.$store
       .dispatch("refreshSeasonData", this.season)
       .then((val) => {
