@@ -184,10 +184,7 @@ export const store = createStore({
           });
       });
     },
-    login(
-      { commit, dispatch, state },
-      user: { email: string; password: string }
-    ) {
+    login({ commit, dispatch }, user: { email: string; password: string }) {
       commit(UPDATE_LOADING, true);
       return new Promise((resolve, reject) => {
         axios
