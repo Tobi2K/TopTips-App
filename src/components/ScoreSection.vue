@@ -2,12 +2,17 @@
   <div v-if="pointsForGroup">
     <h2 v-if="groupData" class="text-center">{{ groupData.name }}</h2>
     <ion-row>
-      <ion-col size="6">
+      <ion-col size="4">
         <ion-button @click="goLeft()" fill="clear" color="medium">
           <ion-icon :icon="arrowBack" />
         </ion-button>
       </ion-col>
-      <ion-col size="6">
+      <ion-col size="4" style="text-align: center">
+        <ion-button @click="goCurrent()" fill="clear" color="medium">
+          <ion-icon :icon="todayOutline" />
+        </ion-button>
+      </ion-col>
+      <ion-col size="4">
         <ion-button
           @click="goRight()"
           class="ion-float-right"
@@ -18,22 +23,36 @@
         </ion-button>
       </ion-col>
     </ion-row>
-    <div class="container" style="overflow-x: scroll">
-      <table style="white-space: no-wrap">
-        <tr>
-          <th
-            v-for="(title, index) in pointsForGroup[0]"
-            :key="title"
-            :id="'title-' + index"
-          >
-            {{ title }}
-          </th>
-        </tr>
-        <tr v-for="list in pointsForGroup.slice(1)" :key="list">
-          <td v-for="item in list" :key="item">{{ item }}</td>
-        </tr>
-      </table>
-    </div>
+    <ion-row>
+      <ion-col size="3" class="colNoPaddingRight">
+        <table class="coolTable ion-float-right">
+          <tr>
+            <th>
+              {{ pointsForGroup[0][0] }}
+            </th>
+          </tr>
+          <tr v-for="list in pointsForGroup.slice(1)" :key="list">
+            <td>{{ list[0] }}</td>
+          </tr>
+        </table>
+      </ion-col>
+      <ion-col style="overflow-x: scroll" class="colNoPaddingLeft">
+        <table class="coolTable">
+          <tr>
+            <th
+              v-for="(title, index) in pointsForGroup[0].slice(1)"
+              :key="title"
+              :id="'title-' + index"
+            >
+              {{ title }}
+            </th>
+          </tr>
+          <tr v-for="list in pointsForGroup.slice(1)" :key="list">
+            <td v-for="item in list.slice(1)" :key="item">{{ item }}</td>
+          </tr>
+        </table>
+      </ion-col>
+    </ion-row>
   </div>
   <div class="mt text-center" v-else>Please select a group.</div>
 </template>
@@ -43,7 +62,7 @@ import { defineComponent } from "vue";
 
 import { IonButton, IonRow, IonCol, IonIcon } from "@ionic/vue";
 
-import { arrowBack, arrowForward } from "ionicons/icons";
+import { arrowBack, arrowForward, todayOutline } from "ionicons/icons";
 import { mapState } from "vuex";
 
 export default defineComponent({
@@ -58,6 +77,7 @@ export default defineComponent({
     return {
       arrowBack,
       arrowForward,
+      todayOutline,
     };
   },
   data() {
@@ -81,7 +101,18 @@ export default defineComponent({
     },
     goRight() {
       const element = document.getElementById(
-        "title-" + (this.pointsForGroup[0].length - 1)
+        "title-" + (this.pointsForGroup[0].length - 2)
+      );
+      if (element != null)
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "center",
+        });
+    },
+    goCurrent() {
+      const element = document.getElementById(
+        "title-" + this.$store.state.currentGameday
       );
       if (element != null)
         element.scrollIntoView({
@@ -121,5 +152,18 @@ td {
 
 .text-center {
   text-align: center;
+}
+
+.coolTable tr:nth-child(even) {
+  background-color: var(--ion-color-medium-tint);
+  white-space: no-wrap;
+}
+
+.colNoPaddingLeft {
+  --ion-grid-column-padding: 0;
+}
+
+.colNoPaddingRight {
+  --ion-grid-column-padding: 0;
 }
 </style>
