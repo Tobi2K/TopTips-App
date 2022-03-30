@@ -85,16 +85,16 @@ export default defineComponent({
   },
   data() {
     return {
-      groupID: localStorage.getItem("groupID"),
+      groupID: this.$store.state.currentGroupID,
     };
   },
   methods: {
     async refreshAll() {
       this.$store.dispatch(UPDATE_ALL_GAMES);
     },
-    selectedGroup(groupID: string) {
+    selectedGroup(groupID: number) {
       this.$store.dispatch(UPDATE_CURRENT_GROUP_ID, groupID);
-      this.groupID = "";
+      this.groupID = 0;
       this.refreshAll();
     },
   },
@@ -102,8 +102,7 @@ export default defineComponent({
     this.$store.dispatch("checkJWT");
   },
   watch: {
-    groupID(newValue) {
-      localStorage.setItem("groupID", newValue);
+    groupID() {
       this.refreshAll();
     },
   },

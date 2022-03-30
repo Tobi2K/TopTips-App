@@ -105,7 +105,7 @@ export default defineComponent({
       groupPass: "",
       errorText: "",
       groups: [],
-      groupID: localStorage.getItem("groupID"),
+      groupID: this.$store.state.currentGroupID,
       group: null as any,
     };
   },
@@ -168,9 +168,7 @@ export default defineComponent({
     });
   },
   watch: {
-    groupID(newValue) {
-      localStorage.setItem("groupID", newValue);
-
+    groupID() {
       this.refreshAll();
     },
   },

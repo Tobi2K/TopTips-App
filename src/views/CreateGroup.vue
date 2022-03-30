@@ -88,6 +88,8 @@ import moment from "moment";
 
 import { defineComponent } from "vue";
 
+import { toClipboard } from "@soerenmartius/vue3-clipboard";
+
 export default defineComponent({
   name: "Create Group",
   props: {
@@ -184,7 +186,7 @@ export default defineComponent({
             this.groupName = "";
             await alert.present();
           })
-          .catch((e) => {
+          .catch(() => {
             this.groupName = "";
             this.errorText = "Something went wrong. Please try again later.";
 
@@ -195,7 +197,7 @@ export default defineComponent({
     async copyPassphrase(passphrase: string) {
       if (passphrase != "") {
         try {
-          navigator.clipboard.writeText(passphrase);
+          toClipboard(passphrase);
           this.$store.dispatch("showToast", "Passphrase copied to clipboard.");
         } catch (e) {
           this.$store.dispatch("showToast", "Copy failed. Sorry :(");

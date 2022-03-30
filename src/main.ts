@@ -26,9 +26,15 @@ import "./theme/variables.css";
 import dotenv from "dotenv";
 import { store, key } from "./store/store";
 
+import { VueClipboard } from "@soerenmartius/vue3-clipboard";
+
 dotenv.config();
 
-const app = createApp(App).use(IonicVue).use(router).use(store, key);
+const app = createApp(App)
+  .use(IonicVue)
+  .use(router)
+  .use(store, key)
+  .use(VueClipboard);
 
 router.isReady().then(() => {
   app.mount("#app");

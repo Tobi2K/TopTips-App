@@ -15,7 +15,12 @@
         </ion-row>
         <ion-row v-if="groupData.passphrase">
           <ion-col style="padding-left: 0">
-            <strong>Passphrase:</strong> {{ groupData.passphrase }}
+            <strong>Passphrase: </strong>
+            <span
+              class="passphrase"
+              @click="copyPassphrase(groupData.passphrase)"
+              >{{ groupData.passphrase }}</span
+            >
           </ion-col>
           <ion-col>
             <ion-text
@@ -75,6 +80,7 @@ import moment from "moment";
 
 import { mapState } from "vuex";
 import EditGroupModalVue from "./EditGroupModal.vue";
+import { toClipboard } from "@soerenmartius/vue3-clipboard";
 
 export default defineComponent({
   name: "CurrentGroup",
@@ -99,7 +105,7 @@ export default defineComponent({
     async copyPassphrase(passphrase: string) {
       if (passphrase != "") {
         try {
-          navigator.clipboard.writeText(passphrase);
+          toClipboard(passphrase);
           this.$store.dispatch("showToast", "Passphrase copied to clipboard.");
         } catch (e) {
           this.$store.dispatch("showToast", "Copy failed. Sorry :(");
@@ -118,3 +124,19 @@ export default defineComponent({
   computed: mapState(["groupData"]),
 });
 </script>
+
+
+<style scoped>
+@font-face {
+  font-family: "Consolas";
+  src: url("../font/Consolas.ttf");
+}
+
+.passphrase {
+  font-family: "Consolas";
+  padding: 4px;
+  border-radius: 5px;
+  background-color: rgba(120, 120, 120, 0.3);
+  cursor: pointer;
+}
+</style>

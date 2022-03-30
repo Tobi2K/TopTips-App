@@ -179,7 +179,6 @@ export const store = createStore({
           })
           .catch(() => {
             commit(UPDATE_LOADING, false);
-            localStorage.removeItem("groupID");
             reject();
           });
       });
@@ -311,7 +310,6 @@ export const store = createStore({
     },
     UPDATE_CURRENT_GROUP_ID({ commit, dispatch }, groupID: string) {
       commit(UPDATE_CURRENT_GROUP_ID, groupID);
-      localStorage.setItem("groupID", groupID);
       commit(UPDATE_SHOW_GROUP, false);
       dispatch(UPDATE_ALL_GAMES);
       dispatch(UPDATE_GAME_DATA);
@@ -326,7 +324,6 @@ export const store = createStore({
       commit(UPDATE_CURRENT_GROUP_ID, -1);
       commit(UPDATE_GROUP_DATA, null);
       commit(UPDATE_SHOW_GROUP, true);
-      localStorage.removeItem("groupID");
       localStorage.removeItem("JWT");
     },
     JOIN_GROUP({ commit, dispatch, state }, passphrase: string) {
@@ -343,7 +340,6 @@ export const store = createStore({
             }
           )
           .then((response) => {
-            localStorage.setItem("groupID", response.data);
             commit(UPDATE_CURRENT_GROUP_ID, response.data);
             dispatch("refreshGroups");
             dispatch("refreshScores");
@@ -450,7 +446,6 @@ export const store = createStore({
             }
           )
           .then(async (response) => {
-            localStorage.setItem("groupID", response.data.id);
             commit(UPDATE_CURRENT_GROUP_ID, response.data.id);
 
             commit(UPDATE_LOADING, false);
@@ -884,7 +879,6 @@ export const store = createStore({
             commit(UPDATE_ALL_GAMES, []);
             commit(UPDATE_GROUP_DATA, null);
             commit(UPDATE_SHOW_GROUP, true);
-            localStorage.removeItem("groupID");
             dispatch("refreshGroups");
             commit(UPDATE_LOADING, false);
             resolve("Success");
@@ -912,7 +906,6 @@ export const store = createStore({
             commit(UPDATE_ALL_GAMES, []);
             commit(UPDATE_GROUP_DATA, null);
             commit(UPDATE_SHOW_GROUP, true);
-            localStorage.removeItem("groupID");
             dispatch("refreshGroups");
             commit(UPDATE_LOADING, false);
             resolve("Success");
