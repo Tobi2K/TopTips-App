@@ -35,6 +35,15 @@ public class MainActivity extends BridgeActivity {
                     }
                     Log.d(TAG, msg);
                 });
+
+        FirebaseMessaging.getInstance().subscribeToTopic("abcdef")
+                .addOnCompleteListener(task -> {
+                    String msg = getString(R.string.msg_subscribed);
+                    if (!task.isSuccessful()) {
+                        msg = getString(R.string.msg_subscribe_failed);
+                    }
+                    Log.d(TAG, msg);
+                });
     }
 
     private void createNotificationChannel() {

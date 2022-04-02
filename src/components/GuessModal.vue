@@ -20,7 +20,7 @@
   <ion-content class="ion-padding">
     <ion-grid>
       <ion-row class="align-middle">
-        <ion-col class="ion-text-end">
+        <ion-col class="ion-text-end" size="5">
           <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
             <rect
               x="1"
@@ -41,8 +41,8 @@
             </text>
           </svg>
         </ion-col>
-        <ion-col class="ion-text-center"><h2>vs.</h2></ion-col>
-        <ion-col class="ion-text-start">
+        <ion-col class="ion-text-center" size="2"><h2>vs.</h2></ion-col>
+        <ion-col class="ion-text-start" size="5">
           <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
             <rect
               x="1"
@@ -62,6 +62,14 @@
               {{ gameInfo.team2_abbr }}
             </text>
           </svg>
+        </ion-col>
+      </ion-row>
+      <ion-row v-if="!isUpcoming()">
+        <ion-col size="12" class="ion-text-center">
+          <span style="font-size: 2em">{{ gameInfo.game_string }}</span>
+        </ion-col>
+        <ion-col size="12" class="ion-text-center">
+          <span style="font-size: 1.3em">{{ gameInfo.bet_string }}</span>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -196,7 +204,7 @@ export default defineComponent({
       errorText: "",
     };
   },
-  setup() {
+  setup(props) {
     const closeModal = () => {
       modalController.dismiss();
     };

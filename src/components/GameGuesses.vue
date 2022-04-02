@@ -1,5 +1,5 @@
 <template>
-  <ion-grid>
+  <ion-grid v-if="guessesForOpenGame.length > 0">
     <ion-row>
       <ion-col>
         <h6><strong>Group guesses:</strong></h6>
@@ -50,8 +50,6 @@ export default defineComponent({
       guesses,
     };
   },
-  computed: mapState([
-    "guessesForOpenGame",
-  ]),
+  computed: mapState(["guessesForOpenGame"]),
 });
 </script>

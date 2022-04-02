@@ -5,7 +5,7 @@
       :title="'Guessing in ' + groupData.name"
       @refresh="refreshAll"
     />
-    <custom-header v-else title="Tipps" @refresh="refreshAll" />
+    <custom-header v-else title="Tips" @refresh="refreshAll" />
     <ion-content :fullscreen="true" id="mainSlide">
       <ion-item v-if="showSelectGroup">
         <ion-label>Select Group</ion-label>
