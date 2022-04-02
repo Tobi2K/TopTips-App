@@ -63,11 +63,6 @@
     <ion-item lines="none">
       <small>For notifications check the app settings.</small>
     </ion-item>
-    <ion-item lines="none">
-      <ion-text color="danger">
-        <small>{{ errorText }}</small>
-      </ion-text>
-    </ion-item>
   </ion-content>
 </template>
 
@@ -85,7 +80,6 @@ import {
   IonRow,
   IonItem,
   IonIcon,
-  IonText,
   useBackButton,
   IonList,
   IonListHeader,
@@ -115,7 +109,6 @@ export default defineComponent({
     IonRow,
     IonItem,
     IonIcon,
-    IonText,
     IonList,
     IonListHeader,
   },
@@ -136,24 +129,18 @@ export default defineComponent({
   },
   data() {
     return {
-      errorText: "",
       groupName: "",
     };
   },
   methods: {
     async sendName() {
       if (this.groupName != "")
-        this.$store.dispatch("saveGroupName", this.groupName).catch((e) => {
-          this.errorText = e;
-          setTimeout(() => {
-            this.errorText = "";
-          }, 3000);
-        });
+        this.$store.dispatch("saveGroupName", this.groupName);
       else {
-        this.errorText = "There was an error setting the group name, sorry!";
-        setTimeout(() => {
-          this.errorText = "";
-        }, 3000);
+        this.$store.dispatch("handleError", {
+          error: null,
+          message: "There was an error setting the group name, sorry!",
+        });
       }
     },
     async leaveGroup() {
@@ -162,12 +149,7 @@ export default defineComponent({
         .then(() => {
           modalController.dismiss();
         })
-        .catch((e) => {
-          this.errorText = e;
-          setTimeout(() => {
-            this.errorText = "";
-          }, 3000);
-        });
+        .catch();
     },
     async deleteGroup() {
       this.$store
@@ -175,12 +157,7 @@ export default defineComponent({
         .then(() => {
           modalController.dismiss();
         })
-        .catch((e) => {
-          this.errorText = e;
-          setTimeout(() => {
-            this.errorText = "";
-          }, 3000);
-        });
+        .catch();
     },
     async presentEditGroupNamePrompt() {
       const alert = await alertController.create({

@@ -40,11 +40,6 @@
           </ion-col>
         </ion-row>
       </ion-list>
-      <ion-item lines="none">
-        <ion-text color="danger">
-          <small>{{ errorText }}</small>
-        </ion-text>
-      </ion-item>
       <ion-list>
         <h3>Notification Settings</h3>
         <p>
@@ -143,14 +138,11 @@ import {
   IonToolbar,
   IonButtons,
   IonButton,
-  modalController,
   IonCol,
   IonRow,
   IonLabel,
   IonItem,
   IonIcon,
-  IonText,
-  useBackButton,
   IonList,
   IonListHeader,
   alertController,
@@ -168,6 +160,7 @@ import { mapState } from "vuex";
 
 import { FCM } from "@capacitor-community/fcm";
 import { PushNotifications } from "@capacitor/push-notifications";
+import { showToast } from "@/store/helper";
 
 export default defineComponent({
   name: "Settings",
@@ -186,7 +179,6 @@ export default defineComponent({
     IonLabel,
     IonItem,
     IonIcon,
-    IonText,
     IonList,
     IonListHeader,
     IonToggle,
@@ -196,14 +188,7 @@ export default defineComponent({
       await PushNotifications.requestPermissions();
       await PushNotifications.register();
     };
-    const closeModal = () => {
-      modalController.dismiss();
-    };
-    useBackButton(10, () => {
-      modalController.dismiss();
-    });
     return {
-      closeModal,
       logOutOutline,
       close,
       send,
@@ -219,7 +204,6 @@ export default defineComponent({
     }
     return {
       light,
-      errorText: "",
       username: "",
       gameNoti: false,
       groupNoti: false,
@@ -227,18 +211,12 @@ export default defineComponent({
   },
   methods: {
     async sendName() {
-      if (this.username != "")
-        this.$store.dispatch("saveName", this.username).catch((e) => {
-          this.errorText = e;
-          setTimeout(() => {
-            this.errorText = "";
-          }, 3000);
-        });
+      if (this.username != "") this.$store.dispatch("saveName", this.username);
       else {
-        this.errorText = "There was an error setting your username!";
-        setTimeout(() => {
-          this.errorText = "";
-        }, 3000);
+        this.$store.dispatch("handleError", {
+          error: null,
+          message: "There was an error setting your username!",
+        });
       }
     },
     async presentEditUsernamePrompt() {
@@ -281,8 +259,6 @@ export default defineComponent({
     },
     logout() {
       this.$store.dispatch(LOGOUT);
-      localStorage.removeItem("JWT");
-      modalController.dismiss();
       this.$router.push("/");
     },
     toggleStatus(id: string, name: string) {
@@ -310,18 +286,13 @@ export default defineComponent({
       return localStorage.getItem(escapedID) == "true";
     },
     generateAlert(message: string) {
-      this.$store.dispatch("showToast", message);
+      showToast(message);
     },
   },
   mounted() {
     this.$store.dispatch("checkJWT");
     this.username = this.$store.state.user.username;
-    this.$store.dispatch("getUserSeasons").catch((e) => {
-      this.errorText = e;
-      setTimeout(() => {
-        this.errorText = "";
-      }, 3000);
-    });
+    this.$store.dispatch("getUserSeasons");
   },
   computed: mapState(["userSeasons", "userGroups"]),
 });

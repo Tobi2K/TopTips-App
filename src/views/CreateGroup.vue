@@ -47,11 +47,6 @@
       >
         Create Group
       </ion-button>
-      <ion-item lines="none">
-        <ion-text color="danger">
-          <small>{{ errorText }}</small>
-        </ion-text>
-      </ion-item>
     </ion-content>
   </ion-page>
 </template>
@@ -60,12 +55,10 @@
 import {
   IonPage,
   IonContent,
-  loadingController,
   IonList,
   IonItem,
   IonLabel,
   alertController,
-  IonText,
   IonHeader,
   IonToolbar,
   IonTitle,
@@ -89,6 +82,7 @@ import moment from "moment";
 import { defineComponent } from "vue";
 
 import { toClipboard } from "@soerenmartius/vue3-clipboard";
+import { showToast } from "@/store/helper";
 
 export default defineComponent({
   name: "Create Group",
@@ -103,7 +97,6 @@ export default defineComponent({
     IonPage,
     IonList,
     IonItem,
-    IonText,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -127,7 +120,6 @@ export default defineComponent({
   data() {
     return {
       groupName: "",
-      errorText: "",
       seasonData: [],
     };
   },
@@ -136,61 +128,51 @@ export default defineComponent({
       this.$router.push("/tabs/tab3");
     },
     async createGroup() {
-      const loading = await loadingController.create({
-        message: "Please wait...",
-      });
-      await loading.present();
       if (this.seasonData == []) {
-        loading.dismiss();
-        this.errorText = "Something went wrong. Please try again later.";
-        setTimeout(() => {
-          this.errorText = "";
-        }, 3000);
+        this.$store.dispatch("handleError", {
+          error: null,
+          message: "Something went wrong. Please try again later.",
+        });
       } else if (this.groupName == "") {
-        loading.dismiss();
-        this.errorText = "Please give your group a name!";
-        setTimeout(() => {
-          this.errorText = "";
-        }, 3000);
+        showToast("Please give your group a name!");
       } else {
         this.$store
           .dispatch("createGroup", {
             groupName: this.groupName,
             seasonID: this.season,
           })
-          .then(async (response) => {
-            loading.dismiss();
-
-            const alert = await alertController.create({
-              header: this.groupName + " was created!",
-              subHeader: "Passphrase: " + response,
-              message:
-                "Others can join using the passphrase. <br><br> The passphrase can also be found in the group tab later.",
-              buttons: [
-                {
-                  text: "Copy Passphrase",
-                  handler: () => {
-                    this.copyPassphrase(response);
-                    this.$router.push("/tabs/tab3");
+          .then((response) => {
+            alertController
+              .create({
+                header: this.groupName + " was created!",
+                subHeader: "Passphrase: " + response,
+                message:
+                  "Others can join using the passphrase. <br><br> The passphrase can also be found in the group tab later.",
+                buttons: [
+                  {
+                    text: "Copy Passphrase",
+                    handler: () => {
+                      this.copyPassphrase(response);
+                      this.$router.push("/tabs/tab3");
+                    },
                   },
-                },
-                {
-                  text: "Continue",
-                  handler: () => {
-                    this.$router.push("/tabs/tab3");
+                  {
+                    text: "Continue",
+                    handler: () => {
+                      this.$router.push("/tabs/tab3");
+                    },
                   },
-                },
-              ],
-            });
-
-            this.groupName = "";
-            await alert.present();
+                ],
+              })
+              .then((val) => val.present())
+              .finally(() => (this.groupName = ""));
           })
           .catch(() => {
             this.groupName = "";
-            this.errorText = "Something went wrong. Please try again later.";
-
-            loading.dismiss();
+            this.$store.dispatch("handleError", {
+              error: null,
+              message: "Something went wrong. Please try again later.",
+            });
           });
       }
     },
@@ -198,12 +180,12 @@ export default defineComponent({
       if (passphrase != "") {
         try {
           toClipboard(passphrase);
-          this.$store.dispatch("showToast", "Passphrase copied to clipboard.");
+          showToast("Passphrase copied to clipboard.");
         } catch (e) {
-          this.$store.dispatch("showToast", "Copy failed. Sorry :(");
+          showToast("Copy failed. Sorry :(");
         }
       } else {
-        this.$store.dispatch("showToast", "Copy failed. Sorry :(");
+        showToast("Copy failed. Sorry :(");
       }
     },
   },
@@ -214,12 +196,7 @@ export default defineComponent({
       .then((val) => {
         this.seasonData = val;
       })
-      .catch((e) => {
-        this.errorText = e;
-        setTimeout(() => {
-          this.errorText = "";
-        }, 3000);
-      });
+      .catch();
   },
 });
 </script>

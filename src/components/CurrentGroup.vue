@@ -81,6 +81,7 @@ import moment from "moment";
 import { mapState } from "vuex";
 import EditGroupModalVue from "./EditGroupModal.vue";
 import { toClipboard } from "@soerenmartius/vue3-clipboard";
+import { showToast } from "@/store/helper";
 
 export default defineComponent({
   name: "CurrentGroup",
@@ -106,12 +107,12 @@ export default defineComponent({
       if (passphrase != "") {
         try {
           toClipboard(passphrase);
-          this.$store.dispatch("showToast", "Passphrase copied to clipboard.");
+          showToast("Passphrase copied to clipboard.");
         } catch (e) {
-          this.$store.dispatch("showToast", "Copy failed. Sorry :(");
+          showToast("Copy failed. Sorry :(");
         }
       } else {
-        this.$store.dispatch("showToast", "Copy failed. Sorry :(");
+        showToast("Copy failed. Sorry :(");
       }
     },
     async openGroupModal() {

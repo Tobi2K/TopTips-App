@@ -27,12 +27,6 @@
           <ion-label>Create New Group</ion-label>
         </ion-item>
       </ion-list>
-      <ion-item lines="none" v-if="errorText != ''">
-        <ion-text color="danger">
-          <small>{{ errorText }}</small>
-        </ion-text>
-      </ion-item>
-
       <current-group v-if="groupData != null" />
     </ion-content>
   </ion-page>
@@ -47,7 +41,6 @@ import {
   IonItem,
   IonLabel,
   alertController,
-  IonText,
   IonList,
 } from "@ionic/vue";
 
@@ -83,7 +76,6 @@ export default defineComponent({
     IonSelectOption,
     IonItem,
     IonLabel,
-    IonText,
     IonList,
     CurrentGroup,
   },
@@ -103,7 +95,6 @@ export default defineComponent({
     return {
       username: "",
       groupPass: "",
-      errorText: "",
       groups: [],
       groupID: this.$store.state.currentGroupID,
       group: null as any,
@@ -150,22 +141,12 @@ export default defineComponent({
       this.$router.push("/country");
     },
     async joinGroup(passphrase: string) {
-      this.$store.dispatch(JOIN_GROUP, passphrase).catch((error) => {
-        this.errorText = error;
-        setTimeout(() => {
-          this.errorText = "";
-        }, 3000);
-      });
+      this.$store.dispatch(JOIN_GROUP, passphrase);
     },
   },
   mounted() {
     this.$store.dispatch("checkJWT");
-    this.$store.dispatch("initGroup").catch((error) => {
-      this.errorText = error;
-      setTimeout(() => {
-        this.errorText = "";
-      }, 3000);
-    });
+    this.$store.dispatch("initGroup");
   },
   watch: {
     groupID() {

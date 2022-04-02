@@ -5,7 +5,7 @@
         <ion-grid class="ion-no-padding">
           <ion-row>
             <ion-col>
-              <ion-title class="align-middle"> Top Tipps - Register </ion-title>
+              <ion-title class="align-middle"> Top Tips - Register </ion-title>
             </ion-col>
             <ion-col>
               <ion-button
@@ -66,12 +66,6 @@
           </ion-item>
         </ion-row>
 
-        <ion-row class="centered-row">
-          <ion-text color="danger" style="width: 100%; min-height: 19px">
-            {{ errorText }}
-          </ion-text>
-        </ion-row>
-
         <ion-row class="centered-row bottom-row">
           <ion-item lines="none" style="width: 100%">
             <ion-button
@@ -108,7 +102,6 @@ import {
   IonContent,
   IonRow,
   IonButton,
-  IonText,
   IonTitle,
   IonCol,
   IonGrid,
@@ -120,6 +113,7 @@ import {
 
 import { defineComponent } from "vue";
 import { moon, sunny } from "ionicons/icons";
+import { showToast } from "@/store/helper";
 
 export default defineComponent({
   name: "Tabs",
@@ -131,7 +125,6 @@ export default defineComponent({
     IonContent,
     IonRow,
     IonButton,
-    IonText,
     IonTitle,
     IonCol,
     IonGrid,
@@ -152,21 +145,14 @@ export default defineComponent({
       username: "",
       email: "",
       password: "",
-      errorText: "",
     };
   },
   methods: {
     async sendData() {
       if (this.username == "" || this.email == "" || this.password == "") {
-        this.errorText = "Bitte überall etwas ausfüllen!";
-        setTimeout(() => {
-          this.errorText = "";
-        }, 3000);
+        showToast("Please fill out everything!");
       } else if (!this.validateEmail(this.email)) {
-        this.errorText = "Please enter a valid email!";
-        setTimeout(() => {
-          this.errorText = "";
-        }, 3000);
+        showToast("Please enter a valid email!");
       } else {
         this.$store
           .dispatch("register", {
@@ -176,14 +162,10 @@ export default defineComponent({
           })
           .then((response) => {
             this.greet(response);
+            this.$router.push("/tabs/tab3");
             this.clearInputs();
           })
-          .catch((errorText) => {
-            this.errorText = errorText;
-            setTimeout(() => {
-              this.errorText = "";
-            }, 3000);
-          });
+          .catch();
       }
     },
     validateEmail(email: string) {

@@ -4,6 +4,25 @@ import axios from "axios";
 import { InjectionKey } from "vue";
 import { createStore, Store, useStore as baseUseStore } from "vuex";
 import {
+  getAllGames,
+  getCompetitions,
+  getCountries,
+  getCurrentGameday,
+  getGroups,
+  getScores,
+  getSeasons,
+  getSingleGuess,
+  getSingleUser,
+  getUserGroups,
+  joinGroup,
+  requestDeleteGroup,
+  requestGroupGuesses,
+  requestLeaveGroup,
+  requestUserSeasons,
+  sendGroupName,
+  setUserName,
+} from "./helper";
+import {
   UPDATE_CURRENT_GAMEDAY,
   UPDATE_GUESSES_FOR_OPEN_GAME,
   UPDATE_USER_GUESS_FOR_OPEN_GAME,
@@ -153,70 +172,62 @@ export const store = createStore({
   },
   actions: {
     checkStatus({ commit, dispatch }) {
-      commit(UPDATE_LOADING, true);
       const token = localStorage.getItem("JWT");
       if (token == "" || token == undefined) {
-        commit(UPDATE_LOADING, false);
         return null;
       }
-      return new Promise((resolve, reject) => {
-        axios
-          .get(process.env.VUE_APP_HOST + `/user/single`, {
-            headers: { Authorization: `Bearer ${token}` },
-          })
+      commit(UPDATE_LOADING, true);
+      return new Promise((resolve) => {
+        getSingleUser()
           .then((response) => {
-            const data = response.data;
             commit(UPDATE_USER, {
-              username: data.name,
+              username: response.data.name,
               accessToken: token,
             });
             localStorage.setItem("JWT", token);
-
-            commit(UPDATE_LOADING, false);
-            router.push("/tabs");
-            resolve(data.name);
-            dispatch("initEverythingForGame");
+            resolve(response.data.name);
+            commit(UPDATE_SHOW_GROUP, true);
+            dispatch(UPDATE_USER_GROUPS);
           })
-          .catch(() => {
+          .catch(() => console.log("Failed to log back in."))
+          .finally(() => {
             commit(UPDATE_LOADING, false);
-            reject();
           });
       });
     },
     login({ commit, dispatch }, user: { email: string; password: string }) {
       commit(UPDATE_LOADING, true);
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         axios
           .post(process.env.VUE_APP_HOST + `/auth/login`, {
             email: user.email,
             password: user.password,
           })
           .then((response) => {
-            const data = response.data;
             commit(UPDATE_USER, {
-              username: data.name,
-              accessToken: data.access_token,
+              username: response.data.name,
+              accessToken: response.data.access_token,
             });
-            localStorage.setItem("JWT", data.access_token);
-            commit(UPDATE_LOADING, false);
-            resolve(data.name);
-            router.push("/tabs");
-            dispatch("initEverythingForGame");
+
+            localStorage.setItem("JWT", response.data.access_token);
+            resolve(response.data.name);
+            commit(UPDATE_SHOW_GROUP, true);
+            dispatch(UPDATE_USER_GROUPS);
           })
           .catch((error) => {
-            commit(UPDATE_LOADING, false);
             let errorText = "";
             if (error.response) {
-              // Request made and server responded
               errorText = error.response.data.message;
-            } else if (error.request) {
-              // The request was made but no response was received
-              errorText = error.message;
             } else {
-              // Something happened in setting up the request that triggered an Error
               errorText = error.message;
             }
-            reject(errorText);
+            dispatch("handleError", {
+              error: error,
+              message: errorText,
+            });
+          })
+          .finally(() => {
+            commit(UPDATE_LOADING, false);
           });
       });
     },
@@ -233,45 +244,36 @@ export const store = createStore({
             password: user.password,
           })
           .then((response) => {
-            const data = response.data;
             commit(UPDATE_USER, {
               username: user.username,
-              accessToken: data.access_token,
+              accessToken: response.data.access_token,
             });
-            localStorage.setItem("JWT", data.access_token);
-
-            commit(UPDATE_LOADING, false);
-            router.push("/tabs/tab3");
+            localStorage.setItem("JWT", response.data.access_token);
             resolve(user.username);
-            dispatch("initEverythingForGame");
+            commit(UPDATE_SHOW_GROUP, true);
+            dispatch(UPDATE_USER_GROUPS);
             commit(UPDATE_CURRENT_GROUP_ID, -1);
           })
           .catch((error) => {
-            commit(UPDATE_LOADING, false);
             let errorText = "";
             if (error.response) {
-              // Request made and server responded
               errorText = error.response.data.message;
-            } else if (error.request) {
-              // The request was made but no response was received
-              errorText = error.message;
             } else {
-              // Something happened in setting up the request that triggered an Error
               errorText = error.message;
             }
+            dispatch("handleError", {
+              error: error,
+              message: errorText,
+            });
             reject(errorText);
+          })
+          .finally(() => {
+            commit(UPDATE_LOADING, false);
           });
       });
     },
-    initEverythingForGame({ dispatch, commit }) {
-      commit(UPDATE_SHOW_GROUP, true);
-      dispatch(UPDATE_USER_GROUPS);
-    },
-    UPDATE_USER_GROUPS({ state, dispatch, commit }) {
-      axios
-        .get(process.env.VUE_APP_HOST + `/group/user/all`, {
-          headers: { Authorization: `Bearer ${state.user.accessToken}` },
-        })
+    UPDATE_USER_GROUPS({ dispatch, commit }) {
+      getUserGroups()
         .then((response) => {
           commit(UPDATE_USER_GROUPS, response.data);
         })
@@ -282,29 +284,19 @@ export const store = createStore({
           });
         });
     },
-    UPDATE_ALL_GAMES({ state, commit }) {
+    UPDATE_ALL_GAMES({ state, dispatch, commit }) {
       if (state.currentGroupID == -1) {
         return null;
       } else {
-        axios
-          .get(
-            process.env.VUE_APP_HOST +
-              `/game/all/format/` +
-              state.currentGroupID,
-            {
-              headers: { Authorization: `Bearer ${state.user.accessToken}` },
-            }
-          )
+        getAllGames(`/game/all/format/` + state.currentGroupID)
           .then((response) => {
             commit(UPDATE_ALL_GAMES, response.data);
           })
           .catch((e) => {
-            if (e.response) {
-              if (e.response.status == 401) {
-                router.push("/");
-                localStorage.removeItem("JWT");
-              }
-            }
+            dispatch("handleError", {
+              error: e,
+              message: "Failed to update games.",
+            });
           });
       }
     },
@@ -326,45 +318,26 @@ export const store = createStore({
       commit(UPDATE_SHOW_GROUP, true);
       localStorage.removeItem("JWT");
     },
-    JOIN_GROUP({ commit, dispatch, state }, passphrase: string) {
+    JOIN_GROUP({ commit, dispatch }, passphrase: string) {
       commit(UPDATE_LOADING, true);
-      return new Promise((resolve, reject) => {
-        axios
-          .post(
-            process.env.VUE_APP_HOST + `/group/join`,
-            {
-              passphrase: passphrase,
-            },
-            {
-              headers: { Authorization: `Bearer ${state.user.accessToken}` },
-            }
-          )
-          .then((response) => {
-            commit(UPDATE_CURRENT_GROUP_ID, response.data);
-            dispatch("refreshGroups");
-            dispatch("refreshScores");
-            commit(UPDATE_SHOW_GROUP, false);
-            commit(UPDATE_LOADING, false);
-            dispatch(UPDATE_USER_GROUPS);
-            dispatch(UPDATE_ALL_GAMES);
-            resolve("Success");
-          })
-          .catch((error) => {
-            commit(UPDATE_LOADING, false);
-            let errorText = "";
-            if (error.response) {
-              // Request made and server responded
-              errorText = error.response.data.message;
-            } else if (error.request) {
-              // The request was made but no response was received
-              errorText = error.message;
-            } else {
-              // Something happened in setting up the request that triggered an Error
-              errorText = error.message;
-            }
-            reject(errorText);
+      joinGroup({ passphrase: passphrase })
+        .then((response) => {
+          commit(UPDATE_CURRENT_GROUP_ID, response.data);
+          dispatch("refreshGroups");
+          dispatch("refreshScores");
+          commit(UPDATE_SHOW_GROUP, false);
+          dispatch(UPDATE_USER_GROUPS);
+          dispatch(UPDATE_ALL_GAMES);
+        })
+        .catch((e) => {
+          dispatch("handleError", {
+            error: e,
+            message: "Failed to join group.",
           });
-      });
+        })
+        .finally(() => {
+          commit(UPDATE_LOADING, false);
+        });
     },
     initGroup({ commit, dispatch, state }) {
       commit(UPDATE_USER, {
@@ -376,64 +349,45 @@ export const store = createStore({
         dispatch(UPDATE_USER_GROUPS);
         commit(UPDATE_LOADING, false);
       } else
-        return new Promise((resolve, reject) => {
-          axios
-            .get(
-              process.env.VUE_APP_HOST + `/group/user/` + state.currentGroupID,
-              {
-                headers: { Authorization: `Bearer ${state.user.accessToken}` },
-              }
-            )
-            .then((response) => {
-              commit(UPDATE_GROUP_DATA, response.data);
-              commit(UPDATE_LOADING, false);
-              dispatch(UPDATE_USER_GROUPS);
-              resolve("Done");
-            })
-            .catch((e) => {
-              if (e.response) {
-                if (e.response.status == 401) {
-                  router.push("/");
-                  dispatch(LOGOUT);
-                }
-              }
-              commit(UPDATE_LOADING, false);
-              let errorText = "";
-              if (e.response) {
-                // Request made and server responded
-                errorText = e.response.data.message;
-              } else if (e.request) {
-                // The request was made but no response was received
-                errorText = e.message;
-              } else {
-                // Something happened in setting up the request that triggered an Error
-                errorText = e.message;
-              }
-              reject(errorText);
+        getGroups(`/group/user/` + state.currentGroupID)
+          .then((response) => {
+            commit(UPDATE_GROUP_DATA, response.data);
+            dispatch(UPDATE_USER_GROUPS);
+          })
+          .catch((e) => {
+            let errorText = "";
+            if (e.response) {
+              errorText = e.response.data.message;
+            } else {
+              errorText = e.message;
+            }
+            dispatch("handleError", {
+              error: e,
+              message: errorText,
             });
-        });
+          })
+          .finally(() => {
+            commit(UPDATE_LOADING, false);
+          });
     },
     UPDATE_GAME_DATA({ commit, dispatch, state }) {
-      axios
-        .get(process.env.VUE_APP_HOST + `/group/user/` + state.currentGroupID, {
-          headers: { Authorization: `Bearer ${state.user.accessToken}` },
-        })
+      getGroups(`/group/user/` + state.currentGroupID)
         .then((response) => {
           commit(UPDATE_GROUP_DATA, response.data);
-          commit(UPDATE_LOADING, false);
         })
         .catch((e) => {
-          commit(UPDATE_LOADING, false);
-
           dispatch("handleError", {
             error: e,
             message: "Failed to update game data.",
           });
+        })
+        .finally(() => {
+          commit(UPDATE_LOADING, false);
         });
     },
     createGroup({ commit, dispatch, state }, group) {
       commit(UPDATE_LOADING, true);
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         axios
           .post(
             process.env.VUE_APP_HOST + `/group/new/`,
@@ -445,65 +399,34 @@ export const store = createStore({
               headers: { Authorization: `Bearer ${state.user.accessToken}` },
             }
           )
-          .then(async (response) => {
+          .then((response) => {
             commit(UPDATE_CURRENT_GROUP_ID, response.data.id);
-
-            commit(UPDATE_LOADING, false);
             commit(UPDATE_SHOW_GROUP, false);
             dispatch(UPDATE_ALL_GAMES);
             resolve(response.data.passphrase);
             dispatch("refreshGroups");
           })
-          .catch((error) => {
+          .catch((e) => {
+            dispatch("handleError", {
+              error: e,
+              message: "Failed to create group.",
+            });
+          })
+          .finally(() => {
             commit(UPDATE_LOADING, false);
-            let errorText = "";
-            if (error.response) {
-              // Request made and server responded
-              errorText = error.response.data.message;
-            } else if (error.request) {
-              // The request was made but no response was received
-              errorText = error.message;
-            } else {
-              // Something happened in setting up the request that triggered an Error
-              errorText = error.message;
-            }
-            reject(errorText);
           });
       });
     },
     refreshCurrentGameday({ commit, state }) {
       commit(UPDATE_LOADING, true);
-      return new Promise((resolve, reject) => {
-        axios
-          .get(
-            process.env.VUE_APP_HOST +
-              `/competition/current/` +
-              state.currentGroupID,
-            {
-              headers: { Authorization: `Bearer ${state.user.accessToken}` },
-            }
-          )
-          .then((response) => {
-            commit(UPDATE_CURRENT_GAMEDAY, response.data);
-            commit(UPDATE_LOADING, false);
-            resolve("Success");
-          })
-          .catch((error) => {
-            commit(UPDATE_LOADING, false);
-            let errorText = "";
-            if (error.response) {
-              // Request made and server responded
-              errorText = error.response.data.message;
-            } else if (error.request) {
-              // The request was made but no response was received
-              errorText = error.message;
-            } else {
-              // Something happened in setting up the request that triggered an Error
-              errorText = error.message;
-            }
-            reject(errorText);
-          });
-      });
+      getCurrentGameday(`/competition/current/` + state.currentGroupID)
+        .then((response) => {
+          commit(UPDATE_CURRENT_GAMEDAY, response.data);
+        })
+        .catch()
+        .finally(() => {
+          commit(UPDATE_LOADING, false);
+        });
     },
     refreshGroups({ commit, dispatch, state }) {
       commit(UPDATE_LOADING, true);
@@ -512,36 +435,20 @@ export const store = createStore({
         dispatch(UPDATE_USER_GROUPS);
         return;
       }
-      return new Promise((resolve, reject) => {
-        axios
-          .get(
-            process.env.VUE_APP_HOST + `/group/user/` + state.currentGroupID,
-            {
-              headers: { Authorization: `Bearer ${state.user.accessToken}` },
-            }
-          )
-          .then((response) => {
-            commit(UPDATE_LOADING, false);
-            commit(UPDATE_GROUP_DATA, response.data);
-            dispatch(UPDATE_USER_GROUPS);
-            resolve("Success");
-          })
-          .catch((error) => {
-            commit(UPDATE_LOADING, false);
-            let errorText = "";
-            if (error.response) {
-              // Request made and server responded
-              errorText = error.response.data.message;
-            } else if (error.request) {
-              // The request was made but no response was received
-              errorText = error.message;
-            } else {
-              // Something happened in setting up the request that triggered an Error
-              errorText = error.message;
-            }
-            reject(errorText);
+      getGroups(`/group/user/` + state.currentGroupID)
+        .then((response) => {
+          commit(UPDATE_GROUP_DATA, response.data);
+          dispatch(UPDATE_USER_GROUPS);
+        })
+        .catch((e) => {
+          dispatch("handleError", {
+            error: e,
+            message: "Failed to update groups.",
           });
-      });
+        })
+        .finally(() => {
+          commit(UPDATE_LOADING, false);
+        });
     },
     refreshScores({ commit, dispatch, state }) {
       commit(UPDATE_LOADING, true);
@@ -550,106 +457,64 @@ export const store = createStore({
         dispatch(UPDATE_USER_GROUPS);
         return;
       }
-      return new Promise((resolve, reject) => {
-        axios
-          .get(
-            process.env.VUE_APP_HOST +
-              `/points/all/format/` +
-              state.currentGroupID,
-            {
-              headers: { Authorization: `Bearer ${state.user.accessToken}` },
-            }
-          )
+      return new Promise((resolve) => {
+        getScores(`/points/all/format/` + state.currentGroupID)
           .then((response) => {
-            commit(UPDATE_LOADING, false);
             commit(UPDATE_POINTS_FOR_GROUP, response.data);
             resolve("Success");
           })
-          .catch((error) => {
+          .catch((e) => {
+            dispatch("handleError", {
+              error: e,
+              message: "Failed to update scores.",
+            });
+          })
+          .finally(() => {
             commit(UPDATE_LOADING, false);
-            let errorText = "";
-            if (error.response) {
-              // Request made and server responded
-              errorText = error.response.data.message;
-            } else if (error.request) {
-              // The request was made but no response was received
-              errorText = error.message;
-            } else {
-              // Something happened in setting up the request that triggered an Error
-              errorText = error.message;
-            }
-            reject(errorText);
           });
       });
     },
     getUserGuess({ commit, dispatch, state }, gameID) {
       commit(UPDATE_LOADING, true);
 
-      return new Promise((resolve, reject) => {
-        axios
-          .get(
-            process.env.VUE_APP_HOST +
-              `/guess/game/` +
-              gameID +
-              `/` +
-              state.currentGroupID,
-            {
-              headers: { Authorization: `Bearer ${state.user.accessToken}` },
-            }
-          )
+      return new Promise((resolve) => {
+        getSingleGuess(`/guess/game/` + gameID + `/` + state.currentGroupID)
           .then((response) => {
-            commit(UPDATE_LOADING, false);
             commit(UPDATE_USER_GUESS_FOR_OPEN_GAME, response.data);
             dispatch("getGroupGuesses", gameID);
             resolve(response.data);
           })
-          .catch((error) => {
+          .catch((e) => {
+            dispatch("handleError", {
+              error: e,
+              message: "Could not get your guess.",
+            });
+          })
+          .finally(() => {
             commit(UPDATE_LOADING, false);
-            let errorText = "";
-            if (error.response) {
-              // Request made and server responded
-              errorText = error.response.data.message;
-            } else if (error.request) {
-              // The request was made but no response was received
-              errorText = error.message;
-            } else {
-              // Something happened in setting up the request that triggered an Error
-              errorText = error.message;
-            }
-            reject(errorText);
           });
       });
     },
     getGroupGuesses({ commit, dispatch, state }, gameID) {
       commit(UPDATE_LOADING, true);
-      axios
-        .get(
-          process.env.VUE_APP_HOST +
-            `/guess/all/` +
-            gameID +
-            `/` +
-            state.currentGroupID,
-          {
-            headers: { Authorization: `Bearer ${state.user.accessToken}` },
-          }
-        )
+      requestGroupGuesses(`/guess/all/` + gameID + `/` + state.currentGroupID)
         .then((response) => {
-          commit(UPDATE_LOADING, false);
           commit(UPDATE_GUESSES_FOR_OPEN_GAME, response.data);
         })
         .catch((e) => {
-          commit(UPDATE_LOADING, false);
-
           dispatch("handleError", {
             error: e,
             message: "Failed to get group guesses.",
           });
+        })
+        .finally(() => {
+          commit(UPDATE_LOADING, false);
         });
     },
-    addGuess({ commit, state }, details) {
+    addGuess({ commit, dispatch, state }, details) {
       commit(UPDATE_LOADING, true);
 
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         axios
           .post(
             process.env.VUE_APP_HOST + `/guess/add/`,
@@ -665,213 +530,135 @@ export const store = createStore({
             }
           )
           .then(() => {
-            commit(UPDATE_LOADING, false);
-            resolve("Success");
+            resolve("");
           })
-          .catch((error) => {
-            commit(UPDATE_LOADING, false);
-            let errorText = "";
-            if (error.response) {
-              // Request made and server responded
-              errorText = error.response.data.message;
-            } else if (error.request) {
-              // The request was made but no response was received
-              errorText = error.message;
-            } else {
-              // Something happened in setting up the request that triggered an Error
-              errorText = error.message;
-            }
-            reject(errorText);
-          });
-      });
-    },
-    saveName({ commit, state }, name) {
-      commit(UPDATE_LOADING, true);
-
-      return new Promise((resolve, reject) => {
-        axios
-          .post(
-            process.env.VUE_APP_HOST + `/user/name`,
-            {
-              name: name,
-            },
-            {
-              headers: { Authorization: `Bearer ${state.user.accessToken}` },
-            }
-          )
-          .then(() => {
-            commit(UPDATE_LOADING, false);
-            commit(UPDATE_USER, {
-              username: name,
-              accessToken: state.user.accessToken,
+          .catch((e) => {
+            dispatch("handleError", {
+              error: e,
+              message: "Failed to save your guess.",
             });
-            resolve("Success");
           })
-          .catch(() => {
+          .finally(() => {
             commit(UPDATE_LOADING, false);
-            reject("There was an error setting your username!");
           });
       });
     },
-    refreshCompetitions({ commit, state }, country) {
+    saveName({ commit, dispatch, state }, name) {
       commit(UPDATE_LOADING, true);
-      return new Promise((resolve, reject) => {
-        axios
-          .get(process.env.VUE_APP_HOST + `/competition/country/` + country, {
-            headers: { Authorization: `Bearer ${state.user.accessToken}` },
-          })
-          .then((response) => {
-            commit(UPDATE_COMPETITIONS, response.data);
-            commit(UPDATE_LOADING, false);
-            resolve("Success");
-          })
-          .catch((error) => {
-            commit(UPDATE_LOADING, false);
-            let errorText = "";
-            if (error.response) {
-              // Request made and server responded
-              errorText = error.response.data.message;
-            } else if (error.request) {
-              // The request was made but no response was received
-              errorText = error.message;
-            } else {
-              // Something happened in setting up the request that triggered an Error
-              errorText = error.message;
-            }
-            reject(errorText);
+      setUserName({ name: name })
+        .then(() => {
+          commit(UPDATE_USER, {
+            username: name,
+            accessToken: state.user.accessToken,
           });
-      });
-    },
-    refreshSeasons({ commit, state }, competition) {
-      commit(UPDATE_LOADING, true);
-      return new Promise((resolve, reject) => {
-        axios
-          .get(
-            process.env.VUE_APP_HOST + `/competition/seasons/` + competition,
-            {
-              headers: { Authorization: `Bearer ${state.user.accessToken}` },
-            }
-          )
-          .then((response) => {
-            commit(UPDATE_SEASONS, response.data);
-            commit(UPDATE_LOADING, false);
-            resolve("Success");
-          })
-          .catch((error) => {
-            commit(UPDATE_LOADING, false);
-            let errorText = "";
-            if (error.response) {
-              // Request made and server responded
-              errorText = error.response.data.message;
-            } else if (error.request) {
-              // The request was made but no response was received
-              errorText = error.message;
-            } else {
-              // Something happened in setting up the request that triggered an Error
-              errorText = error.message;
-            }
-            reject(errorText);
+        })
+        .catch((e) => {
+          dispatch("handleError", {
+            error: e,
+            message: "There was an error setting your username.",
           });
-      });
+        })
+        .finally(() => {
+          commit(UPDATE_LOADING, false);
+        });
     },
-    refreshCountries({ commit, state }) {
+    refreshCompetitions({ commit, dispatch }, country) {
       commit(UPDATE_LOADING, true);
-      return new Promise((resolve, reject) => {
-        axios
-          .get(process.env.VUE_APP_HOST + `/competition/countries`, {
-            headers: { Authorization: `Bearer ${state.user.accessToken}` },
-          })
-          .then((response) => {
-            commit(UPDATE_COUNTRIES, response.data);
-            commit(UPDATE_LOADING, false);
-            resolve("Success");
-          })
-          .catch((error) => {
-            commit(UPDATE_LOADING, false);
-            let errorText = "";
-            if (error.response) {
-              // Request made and server responded
-              errorText = error.response.data.message;
-            } else if (error.request) {
-              // The request was made but no response was received
-              errorText = error.message;
-            } else {
-              // Something happened in setting up the request that triggered an Error
-              errorText = error.message;
-            }
-            reject(errorText);
+      getCompetitions(`/competition/country/` + country)
+        .then((response) => {
+          commit(UPDATE_COMPETITIONS, response.data);
+        })
+        .catch((e) => {
+          dispatch("handleError", {
+            error: e,
+            message: "Failed to update competitions.",
           });
-      });
+        })
+        .finally(() => {
+          commit(UPDATE_LOADING, false);
+        });
     },
-    refreshSeasonData({ commit, state }, season) {
+    refreshSeasons({ commit, dispatch }, competition) {
       commit(UPDATE_LOADING, true);
-      return new Promise((resolve, reject) => {
+      getSeasons(`/competition/seasons/` + competition)
+        .then((response) => {
+          commit(UPDATE_SEASONS, response.data);
+        })
+        .catch((e) => {
+          dispatch("handleError", {
+            error: e,
+            message: "Failed to update seasons.",
+          });
+        })
+        .finally(() => {
+          commit(UPDATE_LOADING, false);
+        });
+    },
+    refreshCountries({ commit, dispatch }) {
+      commit(UPDATE_LOADING, true);
+      getCountries()
+        .then((response) => {
+          commit(UPDATE_COUNTRIES, response.data);
+        })
+        .catch((e) => {
+          dispatch("handleError", {
+            error: e,
+            message: "Failed to update countries.",
+          });
+        })
+        .finally(() => {
+          commit(UPDATE_LOADING, false);
+        });
+    },
+    refreshSeasonData({ commit, dispatch, state }, season) {
+      commit(UPDATE_LOADING, true);
+      return new Promise((resolve) => {
         axios
           .get(process.env.VUE_APP_HOST + `/competition/season/` + season, {
             headers: { Authorization: `Bearer ${state.user.accessToken}` },
           })
           .then((response) => {
             commit(UPDATE_NEW_GROUP_SEASON, response.data);
-            commit(UPDATE_LOADING, false);
             resolve(response.data);
           })
-          .catch((error) => {
+          .catch((e) => {
+            dispatch("handleError", {
+              error: e,
+              message: "Failed to refresh current season.",
+            });
+          })
+          .finally(() => {
             commit(UPDATE_LOADING, false);
-            let errorText = "";
-            if (error.response) {
-              // Request made and server responded
-              errorText = error.response.data.message;
-            } else if (error.request) {
-              // The request was made but no response was received
-              errorText = error.message;
-            } else {
-              // Something happened in setting up the request that triggered an Error
-              errorText = error.message;
-            }
-            reject(errorText);
           });
       });
     },
     saveGroupName({ commit, state, dispatch }, groupName) {
       commit(UPDATE_LOADING, true);
-
-      return new Promise((resolve, reject) => {
-        axios
-          .post(
-            process.env.VUE_APP_HOST + `/group/rename/` + state.currentGroupID,
-            {
-              name: groupName,
-            },
-            {
-              headers: { Authorization: `Bearer ${state.user.accessToken}` },
-            }
-          )
-          .then(() => {
-            commit(UPDATE_LOADING, false);
-            commit(UPDATE_USER, {
-              username: groupName,
-              accessToken: state.user.accessToken,
-            });
-            dispatch("refreshGroups");
-            resolve("Success");
-          })
-          .catch(() => {
-            commit(UPDATE_LOADING, false);
-            reject("There was an error setting the group name, sorry!");
+      sendGroupName(`/group/rename/` + state.currentGroupID, {
+        name: groupName,
+      })
+        .then(() => {
+          commit(UPDATE_USER, {
+            username: groupName,
+            accessToken: state.user.accessToken,
           });
-      });
+          dispatch("refreshGroups");
+        })
+        .catch((e) => {
+          dispatch("handleError", {
+            error: e,
+            message: "There was an error setting the group name, sorry!",
+          });
+        })
+        .finally(() => {
+          commit(UPDATE_LOADING, false);
+        });
     },
     leaveGroup({ commit, state, dispatch }) {
       commit(UPDATE_LOADING, true);
 
-      return new Promise((resolve, reject) => {
-        axios
-          .get(
-            process.env.VUE_APP_HOST + `/group/leave/` + state.currentGroupID,
-            {
-              headers: { Authorization: `Bearer ${state.user.accessToken}` },
-            }
-          )
+      return new Promise((resolve) => {
+        requestLeaveGroup(`/group/leave/` + state.currentGroupID)
           .then(() => {
             localStorage.removeItem("group" + state.currentGroupID);
             commit(UPDATE_CURRENT_GROUP_ID, -1);
@@ -880,26 +667,24 @@ export const store = createStore({
             commit(UPDATE_GROUP_DATA, null);
             commit(UPDATE_SHOW_GROUP, true);
             dispatch("refreshGroups");
-            commit(UPDATE_LOADING, false);
             resolve("Success");
           })
-          .catch(() => {
+          .catch((e) => {
+            dispatch("handleError", {
+              error: e,
+              message: "There was an error leaving the group, sorry!",
+            });
+          })
+          .finally(() => {
             commit(UPDATE_LOADING, false);
-            reject("There was an error leaving the group, sorry!");
           });
       });
     },
     deleteGroup({ commit, state, dispatch }) {
       commit(UPDATE_LOADING, true);
 
-      return new Promise((resolve, reject) => {
-        axios
-          .get(
-            process.env.VUE_APP_HOST + `/group/delete/` + state.currentGroupID,
-            {
-              headers: { Authorization: `Bearer ${state.user.accessToken}` },
-            }
-          )
+      return new Promise((resolve) => {
+        requestDeleteGroup(`/group/delete/` + state.currentGroupID)
           .then(() => {
             commit(UPDATE_CURRENT_GROUP_ID, -1);
             commit(UPDATE_POINTS_FOR_GROUP, null);
@@ -907,91 +692,62 @@ export const store = createStore({
             commit(UPDATE_GROUP_DATA, null);
             commit(UPDATE_SHOW_GROUP, true);
             dispatch("refreshGroups");
-            commit(UPDATE_LOADING, false);
             resolve("Success");
           })
-          .catch(() => {
+          .catch((e) => {
+            dispatch("handleError", {
+              error: e,
+              message: "There was an error deleting the group, sorry!",
+            });
+          })
+          .finally(() => {
             commit(UPDATE_LOADING, false);
-            reject("There was an error deleting the group, sorry!");
           });
       });
     },
-    getUserSeasons({ commit, state }) {
+    getUserSeasons({ commit, dispatch }) {
       commit(UPDATE_LOADING, true);
-      return new Promise((resolve, reject) => {
-        axios
-          .get(process.env.VUE_APP_HOST + `/competition/user`, {
-            headers: { Authorization: `Bearer ${state.user.accessToken}` },
-          })
-          .then((response) => {
-            commit(UPDATE_USER_SEASONS, response.data);
-            commit(UPDATE_LOADING, false);
-            resolve("Success");
-          })
-          .catch((error) => {
-            commit(UPDATE_LOADING, false);
-            let errorText = "";
-            if (error.response) {
-              // Request made and server responded
-              errorText = error.response.data.message;
-            } else if (error.request) {
-              // The request was made but no response was received
-              errorText = error.message;
-            } else {
-              // Something happened in setting up the request that triggered an Error
-              errorText = error.message;
-            }
-            reject(errorText);
+      requestUserSeasons()
+        .then((response) => {
+          commit(UPDATE_USER_SEASONS, response.data);
+        })
+        .catch((e) => {
+          dispatch("handleError", {
+            error: e,
+            message: "Failed to get your current seasons.",
           });
-      });
-    },
-    showToast({ commit }, toastMessage: string) {
-      commit(UPDATE_LOADING, false);
-      toastController
-        .create({
-          message: toastMessage,
-          duration: 2000,
         })
-        .then((value) => {
-          value.present();
+        .finally(() => {
+          commit(UPDATE_LOADING, false);
         });
     },
-    showErrorToast({ commit }, toastMessage: string) {
-      commit(UPDATE_LOADING, false);
-      toastController
-        .create({
-          message: toastMessage,
-          duration: 2000,
-          color: "danger",
-        })
-        .then((value) => {
-          value.present();
-        });
-    },
-    handleError({ dispatch }, { error, message }) {
-      if (error.response) {
-        if (error.response.status == 401) {
-          router.push("/");
-          dispatch(LOGOUT);
-        }
+    handleError({ commit, dispatch }, { error, message }) {
+      if (error && error.response && error.response.status == 401) {
+        router.push("/");
+        dispatch(LOGOUT);
       } else {
-        dispatch("showErrorToast", message);
+        commit(UPDATE_LOADING, false);
+        toastController
+          .create({
+            message: message,
+            duration: 2000,
+            color: "danger",
+          })
+          .then((value) => {
+            value.present();
+          });
       }
     },
-    checkJWT({ state, dispatch }) {
-      axios
-        .get(process.env.VUE_APP_HOST + `/user/single`, {
-          headers: { Authorization: `Bearer ${state.user.accessToken}` },
-        })
-        .catch((error) => {
-          if (error.response) {
-            if (error.response.status == 401) {
-              router.push("/");
-              dispatch(LOGOUT);
-              return false;
-            } else return true;
+    checkJWT({ dispatch }) {
+      getSingleUser().catch((error) => {
+        if (error.response) {
+          if (error.response.status == 401) {
+            router.push("/");
+            dispatch(LOGOUT);
+            return false;
           } else return true;
-        });
+        } else return true;
+      });
     },
   },
 });

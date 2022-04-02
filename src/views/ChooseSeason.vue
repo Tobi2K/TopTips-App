@@ -34,11 +34,6 @@
           </ion-label>
         </ion-item>
       </ion-list>
-      <ion-item lines="none">
-        <ion-text color="danger">
-          <small>{{ errorText }}</small>
-        </ion-text>
-      </ion-item>
     </ion-content>
   </ion-page>
 </template>
@@ -50,7 +45,6 @@ import {
   IonList,
   IonItem,
   IonLabel,
-  IonText,
   IonHeader,
   IonToolbar,
   IonTitle,
@@ -85,7 +79,6 @@ export default defineComponent({
     IonPage,
     IonList,
     IonItem,
-    IonText,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -104,11 +97,6 @@ export default defineComponent({
       moment,
     };
   },
-  data() {
-    return {
-      errorText: "",
-    };
-  },
   methods: {
     cancel() {
       this.$router.push("/tabs/tab3");
@@ -119,12 +107,7 @@ export default defineComponent({
   },
   mounted() {
     this.$store.dispatch("checkJWT");
-    this.$store.dispatch("refreshSeasons", this.competition).catch((e) => {
-      this.errorText = e;
-      setTimeout(() => {
-        this.errorText = "";
-      }, 3000);
-    });
+    this.$store.dispatch("refreshSeasons", this.competition);
   },
   computed: mapState(["seasons"]),
 });

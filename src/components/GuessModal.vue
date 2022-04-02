@@ -97,11 +97,6 @@
           <ion-input v-model="bet" type="number"></ion-input>
         </ion-item>
         <ion-row>
-          <ion-col size="6">
-            <ion-text color="danger">
-              <small>{{ errorText }}</small>
-            </ion-text>
-          </ion-col>
           <ion-col class="ion-align-items-end">
             <ion-button
               color="success"
@@ -138,13 +133,6 @@
           </ion-label>
           {{ points }}
         </ion-item>
-        <ion-row>
-          <ion-col size="12">
-            <ion-text color="danger">
-              <small>{{ errorText }}</small>
-            </ion-text>
-          </ion-col>
-        </ion-row>
       </div>
     </ion-grid>
     <game-guesses :gameID="gameInfo.id" :bet="gameInfo.bet_name" />
@@ -166,7 +154,6 @@ import {
   IonInput,
   IonItem,
   IonLabel,
-  IonText,
   IonIcon,
   useBackButton,
 } from "@ionic/vue";
@@ -176,6 +163,7 @@ import { defineComponent } from "vue";
 import GameGuesses from "@/components/GameGuesses.vue";
 
 import { mapState } from "vuex";
+import { showToast } from "@/store/helper";
 
 export default defineComponent({
   name: "GuessModal",
@@ -195,7 +183,6 @@ export default defineComponent({
     IonInput,
     IonItem,
     IonLabel,
-    IonText,
     IonIcon,
     GameGuesses,
   },
@@ -209,7 +196,6 @@ export default defineComponent({
       pointsTeam2,
       bet,
       points,
-      errorText: "",
     };
   },
   setup() {
@@ -236,15 +222,9 @@ export default defineComponent({
         this.pointsTeam2 == undefined ||
         this.bet == undefined
       ) {
-        this.errorText = "Bitte überall etwas (≥0) eintragen.";
-        setTimeout(() => {
-          this.errorText = "";
-        }, 3000);
+        showToast("Please fill out everything (≥0).");
       } else if (new Date(this.gameInfo.date) < new Date()) {
-        this.errorText = "Du bist leider zu spät dran :(";
-        setTimeout(() => {
-          this.errorText = "";
-        }, 3000);
+        showToast("You are too late :(");
       } else {
         this.$store
           .dispatch("addGuess", {
@@ -256,12 +236,7 @@ export default defineComponent({
           .then(() => {
             modalController.dismiss();
           })
-          .catch((e) => {
-            this.errorText = e;
-            setTimeout(() => {
-              this.errorText = "";
-            }, 3000);
-          });
+          .catch();
       }
     },
     isUpcoming() {
@@ -286,9 +261,7 @@ export default defineComponent({
           this.points = undefined;
         }
       })
-      .catch(() => {
-        this.$store.dispatch("showErrorToast", "Could not get your guess.");
-      });
+      .catch();
   },
   computed: mapState(["groupData"]),
 });
