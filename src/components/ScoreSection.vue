@@ -24,7 +24,7 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="3" class="colNoPaddingRight">
+      <ion-col size="auto" class="colNoPaddingRight">
         <table class="coolTable ion-float-right">
           <tr>
             <th>
@@ -155,7 +155,7 @@ td {
 }
 
 .coolTable tr:nth-child(even) {
-  background-color: var(--ion-color-medium-tint);
+  background-color: rgba(120, 120, 120, 0.3);
   white-space: no-wrap;
 }
 

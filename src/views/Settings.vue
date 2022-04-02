@@ -326,3 +326,12 @@ export default defineComponent({
   computed: mapState(["userSeasons", "userGroups"]),
 });
 </script>
+
+<style scoped>
+ion-list,
+ion-item,
+ion-item * {
+  background: rgba(0, 0, 0, 0);
+  --background: rgba(0, 0, 0, 0);
+}
+</style>

@@ -10,12 +10,18 @@
       :key="guess"
       style="border-bottom: 1px solid rgba(211, 211, 211, 0.8)"
     >
-      <ion-col size="4" class="ion-text-start">{{ guess.name }}:</ion-col>
-      <ion-col size="4" class="ion-text-center">
+      <ion-col class="ion-text-start">{{ guess.name }}:</ion-col>
+      <ion-col class="ion-text-center">
         {{ guess.guess_string }}
       </ion-col>
-      <ion-col size="4" class="ion-text-center small-text">
+      <ion-col class="ion-text-center small-text">
         {{ bet }}: {{ guess.bet }}
+      </ion-col>
+      <ion-col
+        v-if="guess.points != undefined"
+        class="ion-text-center small-text"
+      >
+        Points: {{ guess.points }}
       </ion-col>
     </ion-row>
   </ion-grid>

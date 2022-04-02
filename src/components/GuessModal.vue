@@ -21,10 +21,10 @@
     <ion-grid>
       <ion-row class="align-middle">
         <ion-col class="ion-text-end" size="5">
-          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
             <rect
               x="1"
-              y="25"
+              y="0"
               width="97"
               height="50"
               rx="10"
@@ -33,7 +33,7 @@
             <text
               font-size="2.5em"
               x="50"
-              y="53"
+              y="28"
               :fill="gameInfo.team1_text"
               textLength="75"
             >
@@ -43,10 +43,10 @@
         </ion-col>
         <ion-col class="ion-text-center" size="2"><h2>vs.</h2></ion-col>
         <ion-col class="ion-text-start" size="5">
-          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
             <rect
               x="1"
-              y="25"
+              y="0"
               width="97"
               height="50"
               rx="10"
@@ -55,7 +55,7 @@
             <text
               font-size="2.5em"
               x="50"
-              y="53"
+              y="28"
               :fill="gameInfo.team2_text"
               textLength="75"
             >
@@ -132,6 +132,12 @@
           </ion-label>
           {{ bet }}
         </ion-item>
+        <ion-item v-if="points != undefined">
+          <ion-label>
+            <small>Points</small>
+          </ion-label>
+          {{ points }}
+        </ion-item>
         <ion-row>
           <ion-col size="12">
             <ion-text color="danger">
@@ -197,14 +203,16 @@ export default defineComponent({
     let pointsTeam1;
     let pointsTeam2;
     let bet;
+    let points;
     return {
       pointsTeam1,
       pointsTeam2,
       bet,
+      points,
       errorText: "",
     };
   },
-  setup(props) {
+  setup() {
     const closeModal = () => {
       modalController.dismiss();
     };
@@ -268,10 +276,14 @@ export default defineComponent({
           this.pointsTeam1 = val.score_team1;
           this.pointsTeam2 = val.score_team2;
           this.bet = val.special_bet;
+          this.points = val.points;
+        } else if (this.isUpcoming()) {
+          this.points = undefined;
         } else {
           this.pointsTeam1 = "-";
           this.pointsTeam2 = "-";
           this.bet = "-";
+          this.points = undefined;
         }
       })
       .catch(() => {
