@@ -15,7 +15,7 @@ declare module "@vue/runtime-core" {
       username: string;
       accessToken: string;
     };
-    countries: any[],
+    countries: any[];
     competitions: any[];
     seasons: any[];
     userSeasons: any[];

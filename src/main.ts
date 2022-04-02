@@ -23,12 +23,11 @@ import "@ionic/vue/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 
-import dotenv from "dotenv";
 import { store, key } from "./store/store";
 
 import { VueClipboard } from "@soerenmartius/vue3-clipboard";
 
-dotenv.config();
+import "./registerServiceWorker";
 
 const app = createApp(App)
   .use(IonicVue)
