@@ -87,7 +87,7 @@ export default defineComponent({
   },
   methods: {
     cancel() {
-      this.$router.push("/tabs/tab3");
+      this.$router.push("/tabs/group");
     },
     selectCompetition(competition: string) {
       this.$router.push("/season/" + competition);

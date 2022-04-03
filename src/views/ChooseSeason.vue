@@ -99,7 +99,7 @@ export default defineComponent({
   },
   methods: {
     cancel() {
-      this.$router.push("/tabs/tab3");
+      this.$router.push("/tabs/group");
     },
     selectSeason(season: string) {
       this.$router.push("/create/" + season);

@@ -125,7 +125,7 @@ export default defineComponent({
   },
   methods: {
     cancel() {
-      this.$router.push("/tabs/tab3");
+      this.$router.push("/tabs/group");
     },
     async createGroup() {
       if (this.seasonData == []) {
@@ -153,13 +153,13 @@ export default defineComponent({
                     text: "Copy Passphrase",
                     handler: () => {
                       this.copyPassphrase(response);
-                      this.$router.push("/tabs/tab3");
+                      this.$router.push("/tabs/group");
                     },
                   },
                   {
                     text: "Continue",
                     handler: () => {
-                      this.$router.push("/tabs/tab3");
+                      this.$router.push("/tabs/group");
                     },
                   },
                 ],

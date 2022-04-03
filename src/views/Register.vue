@@ -165,7 +165,7 @@ export default defineComponent({
           })
           .then((response) => {
             this.greet(response);
-            this.$router.push("/tabs/tab3");
+            this.$router.push("/tabs/group");
             this.clearInputs();
           })
           .catch();

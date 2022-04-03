@@ -6,7 +6,7 @@
         <ion-buttons slot="end">
           <ion-back-button
             text="Go back"
-            defaultHref="/tabs/tab1"
+            defaultHref="/tabs/play"
             class="ion-float-right"
           >
           </ion-back-button>

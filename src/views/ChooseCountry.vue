@@ -3,7 +3,7 @@
     <ion-header>
       <ion-toolbar>
         <ion-buttons slot="start">
-          <ion-back-button defaultHref="/tabs/tab3"></ion-back-button>
+          <ion-back-button defaultHref="/tabs/group"></ion-back-button>
         </ion-buttons>
         <ion-title>Select a country</ion-title>
         <ion-buttons slot="end">
@@ -81,7 +81,7 @@ export default defineComponent({
   },
   methods: {
     cancel() {
-      this.$router.push("/tabs/tab3");
+      this.$router.push("/tabs/group");
     },
     selectCountry(country: string) {
       this.$router.push("/competition/" + country);
