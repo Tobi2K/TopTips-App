@@ -13,5 +13,5 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_TIPPSPIEL_19914 }}'
-          projectId: tippspiel-19914
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_TOP_TIPS_ONLINE }}'
+          projectId: top-tips-online
