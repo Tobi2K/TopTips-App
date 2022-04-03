@@ -1,4 +1,4 @@
-package dev.kalmbach.tippspiel.dev;
+package app.kalmbach.dev;
 
 import static android.content.ContentValues.TAG;
 

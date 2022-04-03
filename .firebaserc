@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "tippspiel-19914"
-  }
+    "default": "top-tips-online"
+  },
+  "targets": {}
 }

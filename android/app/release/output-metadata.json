@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "dev.kalmbach.tippspiel.dev",
+  "applicationId": "app.kalmbach.dev",
   "variantName": "release",
   "elements": [
     {

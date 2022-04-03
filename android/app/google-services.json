@@ -1,62 +1,33 @@
 {
   "project_info": {
-    "project_number": "1094359567193",
-    "project_id": "tippspiel-19914",
-    "storage_bucket": "tippspiel-19914.appspot.com"
+    "project_number": "514959867780",
+    "project_id": "top-tips-online",
+    "storage_bucket": "top-tips-online.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1094359567193:android:7097e56d46b265706eda48",
+        "mobilesdk_app_id": "1:514959867780:android:f495f8d6dd46c66e4267d1",
         "android_client_info": {
-          "package_name": "dev.kalmbach.tippspiel.dev"
+          "package_name": "app.kalmbach.dev"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1094359567193-oc0rvjdh6r5gvkn4bt5t5cikm2sfpd0e.apps.googleusercontent.com",
+          "client_id": "514959867780-1rhf3or0s5kc42n0go9jiu6h1h21oomh.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCL0BTCtT6bDT7iXI828G4doqzw8T2r8fo"
+          "current_key": "AIzaSyCfzbGR9D87PVgxYcPQxVsBWpv7gwAM-RI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1094359567193-oc0rvjdh6r5gvkn4bt5t5cikm2sfpd0e.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1094359567193:android:fe12d4af560d566c6eda48",
-        "android_client_info": {
-          "package_name": "io.ionic.starter"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1094359567193-oc0rvjdh6r5gvkn4bt5t5cikm2sfpd0e.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCL0BTCtT6bDT7iXI828G4doqzw8T2r8fo"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1094359567193-oc0rvjdh6r5gvkn4bt5t5cikm2sfpd0e.apps.googleusercontent.com",
+              "client_id": "514959867780-1rhf3or0s5kc42n0go9jiu6h1h21oomh.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
