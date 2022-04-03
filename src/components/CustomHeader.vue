@@ -3,11 +3,9 @@
     <ion-toolbar class="ion-color custom-bg text-light">
       <ion-grid class="ion-no-padding">
         <ion-row>
-          <ion-col size="4">
-            <img src="@/img/header.png" alt="Top Tips" class="align-middle" />
-          </ion-col>
-          <ion-col>
-            <ion-grid style="height: 100%">
+          <ion-col id="header"> </ion-col>
+          <ion-col size="auto">
+            <ion-grid>
               <ion-row style="height: 50%">
                 <ion-col>
                   <ion-buttons class="align-middle ion-float-right items-end">
@@ -97,3 +95,10 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+#header {
+  background: url(../img/header.png) no-repeat;
+  background-size: auto 100%;
+}
+</style>

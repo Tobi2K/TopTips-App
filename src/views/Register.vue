@@ -40,6 +40,7 @@
               type="text"
               name="Username"
               clear-input
+              @keyup.enter="sendData"
             ></ion-input>
           </ion-item>
         </ion-row>
@@ -51,6 +52,7 @@
               type="email"
               name="Email"
               clear-input
+              @keyup.enter="sendData"
             ></ion-input>
           </ion-item>
         </ion-row>
@@ -62,6 +64,7 @@
               type="password"
               name="Password"
               clear-input
+              @keyup.enter="sendData"
             ></ion-input>
           </ion-item>
         </ion-row>
@@ -231,5 +234,6 @@ export default defineComponent({
 
 ion-item {
   --background: rgba(0, 0, 0, 0);
+  width: 100%;
 }
 </style>

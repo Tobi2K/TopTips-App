@@ -249,10 +249,10 @@ export const store = createStore({
               accessToken: response.data.access_token,
             });
             localStorage.setItem("JWT", response.data.access_token);
-            resolve(user.username);
             commit(UPDATE_SHOW_GROUP, true);
             dispatch(UPDATE_USER_GROUPS);
             commit(UPDATE_CURRENT_GROUP_ID, -1);
+            resolve(user.username);
           })
           .catch((error) => {
             let errorText = "";
@@ -402,9 +402,11 @@ export const store = createStore({
           .then((response) => {
             commit(UPDATE_CURRENT_GROUP_ID, response.data.id);
             commit(UPDATE_SHOW_GROUP, false);
+            dispatch(UPDATE_USER_GROUPS);
             dispatch(UPDATE_ALL_GAMES);
             resolve(response.data.passphrase);
             dispatch("refreshGroups");
+            dispatch("refreshScores");
           })
           .catch((e) => {
             dispatch("handleError", {

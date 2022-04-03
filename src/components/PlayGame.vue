@@ -1,89 +1,106 @@
 <template>
   <div :key="games" style="height: 100%">
-    <div v-for="(item, index) in games.games" :key="index">
-      <ion-grid id="test">
-        <ion-card style="background: transparent">
-          <ion-card-content
-            class="ion-no-padding text-light"
-            @click="openModal(item)"
-            :do="
-              generateGradient(
-                item.team1_background,
-                item.team2_background,
-                item.id
-              )
-            "
-            :id="'game' + item.id"
-          >
-            <ion-card-header v-if="games.special">
-              <ion-card-title :style="'color:' + item.team1_text">
-                {{ item.game_desc }}
-              </ion-card-title>
-            </ion-card-header>
-            <ion-row class="align-middle border-bottom">
-              <ion-col
-                size="6"
-                class="ion-text-end medium-text"
-                style="font-size: 90%"
+    <ion-grid>
+      <ion-row>
+        <ion-col
+          size-xs="24"
+          size-lg="12"
+          size-xl="8"
+          v-for="(item, index) in games.games"
+          :key="index"
+          style="padding: 0"
+        >
+          <ion-grid>
+            <ion-card style="background: transparent">
+              <ion-card-content
+                class="ion-no-padding text-light"
+                @click="openModal(item)"
+                :do="
+                  generateGradient(
+                    item.team1_background,
+                    item.team2_background,
+                    item.id
+                  )
+                "
+                :id="'game' + item.id"
               >
-                <small :style="'color:' + item.team1_text">{{
-                  item.team1_name
-                }}</small>
-              </ion-col>
-              <ion-col size="4" class="align-middle">
-                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                  <text
-                    font-size="2.5em"
-                    x="50"
-                    y="53"
-                    :fill="item.team1_text"
-                    textLength="75"
+                <ion-card-header v-if="games.special">
+                  <ion-card-title :style="'color:' + item.team1_text">
+                    {{ item.game_desc }}
+                  </ion-card-title>
+                </ion-card-header>
+                <ion-row class="align-middle border-bottom">
+                  <ion-col
+                    size="6"
+                    class="ion-text-end medium-text"
+                    style="font-size: 80%"
                   >
-                    {{ item.team1_abbr }}
-                  </text>
-                </svg>
-              </ion-col>
-              <ion-col class="ion-text-center" size="4">{{
-                item.game_string
-              }}</ion-col>
-              <ion-col size="4" class="align-middle">
-                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                  <text
-                    font-size="2.5em"
-                    x="50"
-                    y="53"
-                    :fill="item.team2_text"
-                    textLength="75"
+                    <span :style="'color:' + item.team1_text">{{
+                      item.team1_name
+                    }}</span>
+                  </ion-col>
+                  <ion-col size="4" class="align-middle">
+                    <svg
+                      viewBox="0 0 100 100"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <text
+                        font-size="2.5em"
+                        x="50"
+                        y="53"
+                        :fill="item.team1_text"
+                        textLength="75"
+                      >
+                        {{ item.team1_abbr }}
+                      </text>
+                    </svg>
+                  </ion-col>
+                  <ion-col class="ion-text-center" size="4">{{
+                    item.game_string
+                  }}</ion-col>
+                  <ion-col size="4" class="align-middle">
+                    <svg
+                      viewBox="0 0 100 100"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <text
+                        font-size="2.5em"
+                        x="50"
+                        y="53"
+                        :fill="item.team2_text"
+                        textLength="75"
+                      >
+                        {{ item.team2_abbr }}
+                      </text>
+                    </svg>
+                  </ion-col>
+                  <ion-col size="6" class="ion-text-start medium-text">
+                    <small :style="'color:' + item.team2_text">{{
+                      item.team2_name
+                    }}</small>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col
+                    size="16"
+                    class="ion-text-start small-text"
+                    :style="'color:' + item.team1_text"
+                    >Date: {{ item.date_string }}</ion-col
                   >
-                    {{ item.team2_abbr }}
-                  </text>
-                </svg>
-              </ion-col>
-              <ion-col size="6" class="ion-text-start medium-text">
-                <small :style="'color:' + item.team2_text">{{
-                  item.team2_name
-                }}</small>
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col
-                size="16"
-                class="ion-text-start small-text"
-                :style="'color:' + item.team1_text"
-                >Date: {{ item.date_string }}</ion-col
-              >
-              <ion-col
-                class="small-text ion-text-center"
-                size="8"
-                :style="'color:' + item.team2_text"
-              >
-                {{ item.bet_string }}
-              </ion-col>
-            </ion-row>
-          </ion-card-content>
-        </ion-card>
-      </ion-grid>
-    </div>
+                  <ion-col
+                    class="small-text ion-text-center"
+                    size="8"
+                    :style="'color:' + item.team2_text"
+                  >
+                    {{ item.bet_string }}
+                  </ion-col>
+                </ion-row>
+              </ion-card-content>
+            </ion-card>
+          </ion-grid>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </div>
 </template>
 

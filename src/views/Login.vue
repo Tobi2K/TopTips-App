@@ -33,7 +33,7 @@
     <ion-content>
       <div class="center-vertically">
         <ion-row class="centered-row">
-          <ion-item style="width: 100%">
+          <ion-item>
             <ion-label position="floating">Email</ion-label>
             <ion-input
               v-model="email"
@@ -41,22 +41,24 @@
               name="Email"
               inputmode="email"
               clear-input
+              @keyup.enter="sendData"
             ></ion-input>
           </ion-item>
         </ion-row>
         <ion-row class="centered-row">
-          <ion-item style="width: 100%">
+          <ion-item>
             <ion-label position="floating">Password</ion-label>
             <ion-input
               v-model="password"
               type="password"
               name="Password"
               clear-input
+              @keyup.enter="sendData"
             ></ion-input>
           </ion-item>
         </ion-row>
         <ion-row class="centered-row bottom-row">
-          <ion-item lines="none" style="width: 100%">
+          <ion-item lines="none">
             <ion-button
               @click="sendData"
               expand="block"
@@ -66,7 +68,7 @@
               >Login</ion-button
             >
           </ion-item>
-          <ion-item lines="none" style="width: 100%">
+          <ion-item lines="none">
             <ion-button
               fill="none"
               size="small"
@@ -212,6 +214,7 @@ export default defineComponent({
 
 ion-item {
   --background: rgba(0, 0, 0, 0);
+  width: 100%;
 }
 </style>
 
