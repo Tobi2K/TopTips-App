@@ -53,20 +53,17 @@ export default defineComponent({
     this.$store.dispatch("checkJWT");
   },
   methods: {
-    async refreshAll() {
-      this.$store
-        .dispatch("refreshScores")
-        .then(() => {
-          this.refreshGame = !this.refreshGame;
-        })
-        .catch();
+    refreshAll() {
+      this.refreshGame = !this.refreshGame;
     },
     doRefresh(event: { target: { complete: () => void } }) {
       this.refreshAll();
       this.target = event;
     },
     endRefresh() {
-      if (this.target != null) this.target.target.complete();
+      if (this.target != null) {
+        this.target.target.complete();
+      }
     },
   },
 });

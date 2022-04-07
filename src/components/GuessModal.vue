@@ -235,6 +235,7 @@ export default defineComponent({
           })
           .then(() => {
             modalController.dismiss();
+            showToast("Saved guess successfully");
           })
           .catch();
       }

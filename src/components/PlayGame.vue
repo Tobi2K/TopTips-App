@@ -139,11 +139,6 @@ export default defineComponent({
     IonCardHeader,
     IonCardTitle,
   },
-  data() {
-    return {
-      refresh: false,
-    };
-  },
   methods: {
     async openModal(item) {
       const guessModal = await modalController.create({
@@ -153,9 +148,6 @@ export default defineComponent({
         },
       });
       await guessModal.present();
-      await guessModal.onDidDismiss().then(() => {
-        this.refresh = !this.refresh;
-      });
     },
     generateGradient(hex1, hex2, id) {
       const rgb1 = this.hexToRGB(hex1);

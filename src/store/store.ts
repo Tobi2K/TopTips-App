@@ -178,7 +178,12 @@ export const store = createStore({
       }
       commit(UPDATE_LOADING, true);
       return new Promise((resolve) => {
-        getSingleUser()
+        axios
+          .get(process.env.VUE_APP_HOST + `/user/single`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
           .then((response) => {
             commit(UPDATE_USER, {
               username: response.data.name,
