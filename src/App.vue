@@ -20,12 +20,5 @@ export default defineComponent({
     IonLoading,
   },
   computed: mapState(["loading"]),
-  mounted() {
-    const viewportWidth = window.innerWidth;
-
-    if (viewportWidth > 800) {
-      alert("This webpage is not optimized for large screens!");
-    }
-  },
 });
 </script>
