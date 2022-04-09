@@ -200,12 +200,15 @@ export const store = createStore({
           });
       });
     },
-    login({ commit, dispatch }, user: { email: string; password: string }) {
+    login(
+      { commit, dispatch },
+      user: { name: string; password: string; loggedin: boolean }
+    ) {
       commit(UPDATE_LOADING, true);
       return new Promise((resolve) => {
         axios
           .post(process.env.VUE_APP_HOST + `/auth/login`, {
-            email: user.email,
+            name: user.name,
             password: user.password,
           })
           .then((response) => {
@@ -214,7 +217,8 @@ export const store = createStore({
               accessToken: response.data.access_token,
             });
 
-            localStorage.setItem("JWT", response.data.access_token);
+            if (user.loggedin)
+              localStorage.setItem("JWT", response.data.access_token);
             resolve(response.data.name);
             commit(UPDATE_SHOW_GROUP, true);
             dispatch(UPDATE_USER_GROUPS);
@@ -238,14 +242,13 @@ export const store = createStore({
     },
     register(
       { commit, dispatch },
-      user: { username: string; email: string; password: string }
+      user: { username: string; password: string; loggedin: boolean }
     ) {
       commit(UPDATE_LOADING, true);
       return new Promise((resolve, reject) => {
         axios
           .post(process.env.VUE_APP_HOST + `/auth/register`, {
-            username: user.username,
-            email: user.email,
+            name: user.username,
             password: user.password,
           })
           .then((response) => {
@@ -253,7 +256,8 @@ export const store = createStore({
               username: user.username,
               accessToken: response.data.access_token,
             });
-            localStorage.setItem("JWT", response.data.access_token);
+            if (user.loggedin)
+              localStorage.setItem("JWT", response.data.access_token);
             commit(UPDATE_SHOW_GROUP, true);
             dispatch(UPDATE_USER_GROUPS);
             commit(UPDATE_CURRENT_GROUP_ID, -1);
@@ -320,6 +324,7 @@ export const store = createStore({
       });
       commit(UPDATE_CURRENT_GROUP_ID, -1);
       commit(UPDATE_GROUP_DATA, null);
+      commit(UPDATE_POINTS_FOR_GROUP, null);
       commit(UPDATE_SHOW_GROUP, true);
       localStorage.removeItem("JWT");
     },
@@ -335,9 +340,15 @@ export const store = createStore({
           dispatch(UPDATE_ALL_GAMES);
         })
         .catch((e) => {
+          let errorText = "Failed to join group.";
+          if (e.response) {
+            errorText = e.response.data.message;
+          } else if (e.message && e.message != "") {
+            errorText = e.message;
+          }
           dispatch("handleError", {
             error: e,
-            message: "Failed to join group.",
+            message: errorText,
           });
         })
         .finally(() => {
@@ -345,10 +356,6 @@ export const store = createStore({
         });
     },
     initGroup({ commit, dispatch, state }) {
-      commit(UPDATE_USER, {
-        username: state.user.username,
-        accessToken: localStorage.getItem("JWT"),
-      });
       commit(UPDATE_LOADING, true);
       if (state.currentGroupID == -1 || state.currentGroupID == null) {
         dispatch(UPDATE_USER_GROUPS);
@@ -560,9 +567,15 @@ export const store = createStore({
           });
         })
         .catch((e) => {
+          let errorText = "Failed to log in";
+          if (e.response) {
+            errorText = e.response.data.message;
+          } else {
+            errorText = e.message;
+          }
           dispatch("handleError", {
             error: e,
-            message: "There was an error setting your username.",
+            message: errorText,
           });
         })
         .finally(() => {

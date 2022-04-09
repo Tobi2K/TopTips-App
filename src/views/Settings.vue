@@ -210,10 +210,10 @@ export default defineComponent({
     };
   },
   methods: {
-    async sendName() {
-      if (this.username != "") this.$store.dispatch("saveName", this.username);
+    async sendName(name: string) {
+      if (name != "") return this.$store.dispatch("saveName", name);
       else {
-        this.$store.dispatch("handleError", {
+        return this.$store.dispatch("handleError", {
           error: null,
           message: "There was an error setting your username!",
         });
@@ -238,9 +238,15 @@ export default defineComponent({
           },
           {
             text: "Save Name",
-            handler: (value) => {
-              this.username = value.username;
-              this.sendName();
+            handler: async (value) => {
+              await this.sendName(value.username)
+                .then(() => {
+                  this.username = value.username;
+                  return true;
+                })
+                .catch(() => {
+                  return false;
+                });
             },
           },
         ],

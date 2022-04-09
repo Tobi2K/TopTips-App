@@ -46,18 +46,6 @@
         </ion-row>
         <ion-row class="centered-row">
           <ion-item>
-            <ion-label position="floating">Email</ion-label>
-            <ion-input
-              v-model="email"
-              type="email"
-              name="Email"
-              clear-input
-              @keyup.enter="sendData"
-            ></ion-input>
-          </ion-item>
-        </ion-row>
-        <ion-row class="centered-row">
-          <ion-item>
             <ion-label position="floating">Password</ion-label>
             <ion-input
               v-model="password"
@@ -68,7 +56,17 @@
             ></ion-input>
           </ion-item>
         </ion-row>
-
+        <ion-row class="centered-row">
+          <ion-item lines="none">
+            <ion-checkbox
+              color="secondary"
+              slot="start"
+              v-model="loggedin"
+              :modelValue="loggedin"
+            />
+            <ion-label> Stay logged in</ion-label>
+          </ion-item>
+        </ion-row>
         <ion-row class="centered-row bottom-row">
           <ion-item lines="none" style="width: 100%">
             <ion-button
@@ -112,6 +110,7 @@ import {
   IonHeader,
   toastController,
   IonIcon,
+  IonCheckbox,
 } from "@ionic/vue";
 
 import { defineComponent } from "vue";
@@ -134,6 +133,7 @@ export default defineComponent({
     IonToolbar,
     IonHeader,
     IonIcon,
+    IonCheckbox,
   },
   data() {
     let light = true;
@@ -146,22 +146,20 @@ export default defineComponent({
       sunny,
       light,
       username: "",
-      email: "",
       password: "",
+      loggedin: false,
     };
   },
   methods: {
     async sendData() {
-      if (this.username == "" || this.email == "" || this.password == "") {
+      if (this.username == "" || this.password == "") {
         showToast("Please fill out everything!");
-      } else if (!this.validateEmail(this.email)) {
-        showToast("Please enter a valid email!");
       } else {
         this.$store
           .dispatch("register", {
             username: this.username,
-            email: this.email,
             password: this.password,
+            loggedin: this.loggedin,
           })
           .then((response) => {
             this.greet(response);
@@ -171,17 +169,8 @@ export default defineComponent({
           .catch();
       }
     },
-    validateEmail(email: string) {
-      const regexp = new RegExp(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-      if (regexp.test(email)) {
-        return true;
-      } else return false;
-    },
     clearInputs() {
       this.username = "";
-      this.email = "";
       this.password = "";
     },
     greet(name: string) {

@@ -34,12 +34,12 @@
       <div class="center-vertically">
         <ion-row class="centered-row">
           <ion-item>
-            <ion-label position="floating">Email</ion-label>
+            <ion-label position="floating">Name</ion-label>
             <ion-input
-              v-model="email"
-              type="email"
-              name="Email"
-              inputmode="email"
+              v-model="username"
+              type="text"
+              name="Name"
+              inputmode="text"
               clear-input
               @keyup.enter="sendData"
             ></ion-input>
@@ -55,6 +55,17 @@
               clear-input
               @keyup.enter="sendData"
             ></ion-input>
+          </ion-item>
+        </ion-row>
+        <ion-row class="centered-row">
+          <ion-item lines="none">
+            <ion-checkbox
+              color="secondary"
+              slot="start"
+              v-model="loggedin"
+              :modelValue="loggedin"
+            />
+            <ion-label> Stay logged in</ion-label>
           </ion-item>
         </ion-row>
         <ion-row class="centered-row bottom-row">
@@ -99,6 +110,7 @@ import {
   IonHeader,
   toastController,
   IonIcon,
+  IonCheckbox,
 } from "@ionic/vue";
 
 import { defineComponent } from "vue";
@@ -121,6 +133,7 @@ export default defineComponent({
     IonToolbar,
     IonHeader,
     IonIcon,
+    IonCheckbox,
   },
   data() {
     let light = true;
@@ -132,19 +145,21 @@ export default defineComponent({
       moon,
       sunny,
       light,
-      email: "",
+      username: "",
       password: "",
+      loggedin: false,
     };
   },
   methods: {
     sendData() {
-      if (this.email == "" || this.password == "") {
+      if (this.username == "" || this.password == "") {
         showToast("Please fill out everything");
       } else {
         this.$store
           .dispatch("login", {
-            email: this.email,
+            name: this.username,
             password: this.password,
+            loggedin: this.loggedin,
           })
           .then((response) => {
             this.greet(response);
@@ -154,7 +169,7 @@ export default defineComponent({
       }
     },
     clearInputs() {
-      this.email = "";
+      this.username = "";
       this.password = "";
     },
     greet(name: string) {
