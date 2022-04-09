@@ -78,9 +78,12 @@ Feel free to try out the app yourself. You can find it on [Google Play](https://
 
 Opening the web version in a compatible mobile browser will show a prompt to install a PWA version to your device.
 
-## General information
+## License
 
-Tobias Kalmbach – t.kalmbach35@gmail.com - 
-[My GitHub](https://github.com/Tobi2K/)
+MIT
 
-Distributed under the TBD license. See ``LICENSE`` for more information.
+---
+
+> [kalmbach.dev](https://www.kalmbach.dev) &nbsp;&middot;&nbsp;
+> GitHub [@Tobi2K](https://github.com/Tobi2K) &nbsp;&middot;&nbsp;
+> Email [t.kalmbach35@gmail.com](mailto:t.kalmbach35@gmail.com)
