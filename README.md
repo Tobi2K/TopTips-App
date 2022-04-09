@@ -13,10 +13,10 @@
 <h4 align="center">A lightweight app for a handball guessing game.</h4>
 <br>
 <p align="center">
-  <a href="#">
+  <a href="#readme">
     <img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/Tobi2K/TopTips-App?style=flat-square">
   </a>
-  <a href="#">
+  <a href="#readme">
     <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/Tobi2K/TopTips-App/Deploy%20to%20Firebase%20Hosting%20on%20merge?style=flat-square">
   </a>
   <a href="#license">
@@ -30,25 +30,25 @@
   </a>
 </p>
 <p align="center">
-  <a href="#">
+  <a href="#readme">
     <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/Tobi2K/TopTips-App?style=flat-square">
   </a>
   <a href="https://www.codefactor.io/repository/github/tobi2k/toptips-app">
     <img alt="CodeFactor Grade" src="https://img.shields.io/codefactor/grade/github/Tobi2K/TopTips-App?style=flat-square">
   </a>
-  <a href="#">
+  <a href="#readme">
     <img alt="Libraries.io dependency status for GitHub repo" src="https://img.shields.io/librariesio/github/Tobi2K/TopTips-App?style=flat-square">
   </a>
-  <a href="#">
+  <a href="#readme">
     <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/Tobi2K/TopTips-App?style=flat-square"></a>
-  <a href="#">
+  <a href="#readme">
     <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/Tobi2K/TopTips-App?style=flat-square">
   </a>
   <br>
-  <a href="#">
+  <a href="#readme">
     <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/Tobi2K/TopTips-App?style=flat-square">
   </a>
-  <a href="#">
+  <a href="#readme">
     <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Tobi2K/TopTips-App?style=flat-square">
   </a>
 </p>
