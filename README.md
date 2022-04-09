@@ -13,20 +13,44 @@
 <h4 align="center">A lightweight app for a handball guessing game.</h4>
 <br>
 <p align="center">
-  <img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/Tobi2K/TopTips-App?style=flat-square">
-  <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/Tobi2K/TopTips-App/Deploy%20to%20Firebase%20Hosting%20on%20merge?style=flat-square">
-  <img alt="GitHub" src="https://img.shields.io/github/license/Tobi2K/TopTips-App?style=flat-square">
-  <img alt="GitHub package.json dependency version (prod)" src="https://img.shields.io/github/package-json/dependency-version/Tobi2K/TopTips-App/ionic?style=flat-square">
-  <img alt="Website" src="https://img.shields.io/website?down_message=offline&style=flat-square&up_message=online&url=https%3A%2F%2Fapp.kalmbach.dev">
+  <a href="#">
+    <img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/Tobi2K/TopTips-App?style=flat-square">
+  </a>
+  <a href="#">
+    <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/Tobi2K/TopTips-App/Deploy%20to%20Firebase%20Hosting%20on%20merge?style=flat-square">
+  </a>
+  <a href="#license">
+    <img alt="License" src="https://img.shields.io/github/license/Tobi2K/TopTips-App?style=flat-square">
+  </a>
+  <a href="https://ionicframework.com/">
+    <img alt="GitHub package.json dependency version (prod)" src="https://img.shields.io/github/package-json/dependency-version/Tobi2K/TopTips-App/ionic?style=flat-square">
+  </a>
+  <a href="https://app.kalmbach.dev">
+    <img alt="Website" src="https://img.shields.io/website?down_message=offline&style=flat-square&up_message=online&url=https%3A%2F%2Fapp.kalmbach.dev">
+  </a>
 </p>
 <p align="center">
-  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/Tobi2K/TopTips-App?style=flat-square">
-  <img alt="CodeFactor Grade" src="https://img.shields.io/codefactor/grade/github/Tobi2K/TopTips-App?style=flat-square">
-  <img alt="Libraries.io dependency status for GitHub repo" src="https://img.shields.io/librariesio/github/Tobi2K/TopTips-App?style=flat-square">
-  <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/Tobi2K/TopTips-App?style=flat-square">
-  <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/Tobi2K/TopTips-App?style=flat-square">
-  <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/Tobi2K/TopTips-App?style=flat-square">
-  <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Tobi2K/TopTips-App?style=flat-square">
+  <a href="#">
+    <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/Tobi2K/TopTips-App?style=flat-square">
+  </a>
+  <a href="https://www.codefactor.io/repository/github/tobi2k/toptips-app">
+    <img alt="CodeFactor Grade" src="https://img.shields.io/codefactor/grade/github/Tobi2K/TopTips-App?style=flat-square">
+  </a>
+  <a href="#">
+    <img alt="Libraries.io dependency status for GitHub repo" src="https://img.shields.io/librariesio/github/Tobi2K/TopTips-App?style=flat-square">
+  </a>
+  <a href="#">
+    <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/Tobi2K/TopTips-App?style=flat-square"></a>
+  <a href="#">
+    <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/Tobi2K/TopTips-App?style=flat-square">
+  </a>
+  <br>
+  <a href="#">
+    <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/Tobi2K/TopTips-App?style=flat-square">
+  </a>
+  <a href="#">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Tobi2K/TopTips-App?style=flat-square">
+  </a>
 </p>
 
 <hr>
@@ -80,7 +104,17 @@ Opening the web version in a compatible mobile browser will show a prompt to ins
 
 ## License
 
-MIT
+```
+MIT License
+
+Copyright (c) 2022 Tobias Kalmbach
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
 
 ---
 
