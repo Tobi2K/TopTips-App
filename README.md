@@ -23,7 +23,7 @@
     <img alt="License" src="https://img.shields.io/github/license/Tobi2K/TopTips-App?style=flat-square">
   </a>
   <a href="https://ionicframework.com/">
-    <img alt="GitHub package.json dependency version (prod)" src="https://img.shields.io/github/package-json/dependency-version/Tobi2K/TopTips-App/ionic?style=flat-square">
+    <img alt="GitHub package.json dependency version (prod)" src="https://img.shields.io/github/package-json/dependency-version/Tobi2K/TopTips-App/@ionic/cli?style=flat-square">
   </a>
   <a href="https://app.kalmbach.dev">
     <img alt="Website" src="https://img.shields.io/website?down_message=offline&style=flat-square&up_message=online&url=https%3A%2F%2Fapp.kalmbach.dev">

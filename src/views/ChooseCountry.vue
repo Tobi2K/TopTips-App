@@ -56,7 +56,7 @@ import { defineComponent } from "vue";
 import { mapState } from "vuex";
 
 export default defineComponent({
-  name: "Choose Competition",
+  name: "ChooseCountry",
   components: {
     IonContent,
     IonPage,

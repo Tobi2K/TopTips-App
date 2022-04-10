@@ -35,7 +35,7 @@ import {
 import { dice, trophyOutline, peopleCircleOutline } from "ionicons/icons";
 
 export default {
-  name: "Tabs",
+  name: "MainTabs",
   components: {
     IonLabel,
     IonTabs,

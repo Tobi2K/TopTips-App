@@ -61,13 +61,13 @@ import {
   chevronDownCircleOutline,
 } from "ionicons/icons";
 
-import * as moment from "moment";
+import moment from "moment";
 
 import { defineComponent } from "vue";
 import { mapState } from "vuex";
 
 export default defineComponent({
-  name: "Choose Season",
+  name: "ChooseSeason",
   props: {
     competition: {
       type: String,

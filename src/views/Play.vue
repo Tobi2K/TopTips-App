@@ -60,7 +60,7 @@ import {
 } from "@/store/mutation-types";
 
 export default defineComponent({
-  name: "Play",
+  name: "PlayView",
   components: {
     IonContent,
     IonPage,

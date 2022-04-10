@@ -178,7 +178,7 @@ import { PushNotifications } from "@capacitor/push-notifications";
 import { getUserRank, showToast } from "@/store/helper";
 
 export default defineComponent({
-  name: "Settings",
+  name: "SettingsView",
   components: {
     IonBackButton,
     IonItemDivider,

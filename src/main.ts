@@ -29,9 +29,6 @@ import { VueClipboard } from "@soerenmartius/vue3-clipboard";
 
 import "./registerServiceWorker";
 
-import dotenv from "dotenv";
-dotenv.config();
-
 const app = createApp(App)
   .use(IonicVue)
   .use(router)

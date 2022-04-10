@@ -11,6 +11,7 @@
   </ion-segment>
   <div style="height: calc(100% - 48px); overflow-y: scroll">
     <swiper
+      :modules="modules"
       style="height: 100%; overflow-y: hidden"
       @swiper="setSwiperRef"
       @activeIndexChange="onSlideChanged"
@@ -30,17 +31,14 @@
 </template>
 <script>
 // Import Swiper Vue.js components
-import { Swiper, SwiperSlide } from "swiper/vue/swiper-vue.js";
+import { Swiper, SwiperSlide } from "swiper/vue";
 
 import { IonSegment, IonSegmentButton } from "@ionic/vue";
 
 // Import Swiper styles
-import "swiper/swiper-bundle.min.css";
+import "swiper/css/bundle";
 
-import SwiperCore, { Navigation, Pagination, Virtual } from "swiper";
-
-// install Swiper modules
-SwiperCore.use([Navigation, Virtual, Pagination]);
+import { Navigation, Pagination, Virtual } from "swiper";
 
 import PlayGame from "@/components/PlayGame.vue";
 
@@ -61,6 +59,11 @@ export default defineComponent({
     PlayGame,
     IonSegment,
     IonSegmentButton,
+  },
+  setup() {
+    return {
+      modules: [Navigation, Virtual, Pagination],
+    };
   },
   data() {
     return {

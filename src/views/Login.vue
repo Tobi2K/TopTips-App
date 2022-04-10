@@ -119,7 +119,7 @@ import { moon, sunny } from "ionicons/icons";
 import { showToast } from "@/store/helper";
 
 export default defineComponent({
-  name: "Tabs",
+  name: "LoginView",
   components: {
     IonLabel,
     IonPage,

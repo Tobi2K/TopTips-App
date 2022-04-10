@@ -27,7 +27,7 @@ import { refresh, settingsOutline } from "ionicons/icons";
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "Score",
+  name: "ScoreView",
   components: {
     IonContent,
     IonPage,

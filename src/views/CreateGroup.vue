@@ -85,7 +85,7 @@ import { toClipboard } from "@soerenmartius/vue3-clipboard";
 import { showToast } from "@/store/helper";
 
 export default defineComponent({
-  name: "Create Group",
+  name: "CreateGroup",
   props: {
     season: {
       type: String,

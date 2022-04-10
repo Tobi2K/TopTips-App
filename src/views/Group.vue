@@ -67,7 +67,7 @@ import {
 import CurrentGroup from "@/components/CurrentGroup.vue";
 
 export default defineComponent({
-  name: "Group",
+  name: "GroupView",
   components: {
     IonContent,
     IonPage,
