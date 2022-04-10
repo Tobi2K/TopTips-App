@@ -17,9 +17,16 @@
       <ion-list>
         <h3>General Settings</h3>
         <ion-list-header>User Settings</ion-list-header>
-        <ion-item @click="presentEditUsernamePrompt()">
-          <ion-label>Edit Username</ion-label>
-        </ion-item>
+        <ion-buttons>
+          <ion-button @click="presentEditUsernamePrompt()">
+            <p style="margin-right: 5px">Edit Username</p>
+            <ion-icon :icon="createOutline" />
+          </ion-button>
+          <ion-button color="tertiary" @click="getRank()">
+            <p style="margin-right: 5px">Get Top Tips Rank</p>
+            <ion-icon :icon="podiumOutline" />
+          </ion-button>
+        </ion-buttons>
         <ion-list-header>Application Settings</ion-list-header>
         <ion-row>
           <ion-col size="6">
@@ -152,7 +159,15 @@ import {
   IonPage,
 } from "@ionic/vue";
 import { defineComponent } from "vue";
-import { logOutOutline, close, send, moon, sunny } from "ionicons/icons";
+import {
+  logOutOutline,
+  close,
+  send,
+  moon,
+  sunny,
+  createOutline,
+  podiumOutline,
+} from "ionicons/icons";
 
 import { LOGOUT } from "@/store/mutation-types";
 
@@ -160,7 +175,7 @@ import { mapState } from "vuex";
 
 import { FCM } from "@capacitor-community/fcm";
 import { PushNotifications } from "@capacitor/push-notifications";
-import { showToast } from "@/store/helper";
+import { getUserRank, showToast } from "@/store/helper";
 
 export default defineComponent({
   name: "Settings",
@@ -194,6 +209,8 @@ export default defineComponent({
       send,
       moon,
       sunny,
+      createOutline,
+      podiumOutline,
     };
   },
   data() {
@@ -211,9 +228,12 @@ export default defineComponent({
   },
   methods: {
     async sendName(name: string) {
-      if (name != "") return this.$store.dispatch("saveName", name);
+      if (name != "")
+        this.$store.dispatch("saveName", name).then(() => {
+          this.$router.push("/");
+        });
       else {
-        return this.$store.dispatch("handleError", {
+        this.$store.dispatch("handleError", {
           error: null,
           message: "There was an error setting your username!",
         });
@@ -222,6 +242,7 @@ export default defineComponent({
     async presentEditUsernamePrompt() {
       const alert = await alertController.create({
         header: "Edit Username",
+        message: "You will be logged out.",
         inputs: [
           {
             name: "username",
@@ -238,15 +259,9 @@ export default defineComponent({
           },
           {
             text: "Save Name",
-            handler: async (value) => {
-              await this.sendName(value.username)
-                .then(() => {
-                  this.username = value.username;
-                  return true;
-                })
-                .catch(() => {
-                  return false;
-                });
+            handler: (value) => {
+              this.username = value.username;
+              this.sendName(value.username);
             },
           },
         ],
@@ -293,6 +308,26 @@ export default defineComponent({
     },
     generateAlert(message: string) {
       showToast(message);
+    },
+    getRank() {
+      getUserRank()
+        .then((response) => {
+          alertController
+            .create({
+              header: "You are #" + response.data.rank + " overall.",
+              message:
+                "Total Points: " +
+                response.data.points +
+                "<br>You are part of " +
+                response.data.groups +
+                "  groups.",
+              buttons: ["Dismiss"],
+            })
+            .then((alert) => alert.present());
+        })
+        .catch(() => {
+          this.generateAlert("Could not get your rank. Sorry!");
+        });
     },
   },
   mounted() {

@@ -64,6 +64,7 @@
               slot="start"
               v-model="loggedin"
               :modelValue="loggedin"
+              @keyup.enter="loggedin = !loggedin"
             />
             <ion-label> Stay logged in</ion-label>
           </ion-item>

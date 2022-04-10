@@ -557,30 +557,30 @@ export const store = createStore({
           });
       });
     },
-    saveName({ commit, dispatch, state }, name) {
+    saveName({ commit, dispatch }, name) {
       commit(UPDATE_LOADING, true);
-      setUserName({ name: name })
-        .then(() => {
-          commit(UPDATE_USER, {
-            username: name,
-            accessToken: state.user.accessToken,
+      return new Promise((resolve) => {
+        setUserName({ name: name })
+          .then(() => {
+            dispatch(LOGOUT);
+            resolve("Done");
+          })
+          .catch((e) => {
+            let errorText = "Failed to log in";
+            if (e.response) {
+              errorText = e.response.data.message;
+            } else {
+              errorText = e.message;
+            }
+            dispatch("handleError", {
+              error: e,
+              message: errorText,
+            });
+          })
+          .finally(() => {
+            commit(UPDATE_LOADING, false);
           });
-        })
-        .catch((e) => {
-          let errorText = "Failed to log in";
-          if (e.response) {
-            errorText = e.response.data.message;
-          } else {
-            errorText = e.message;
-          }
-          dispatch("handleError", {
-            error: e,
-            message: errorText,
-          });
-        })
-        .finally(() => {
-          commit(UPDATE_LOADING, false);
-        });
+      });
     },
     refreshCompetitions({ commit, dispatch }, country) {
       commit(UPDATE_LOADING, true);

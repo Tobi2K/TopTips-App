@@ -104,6 +104,12 @@ export async function getSingleUser() {
   });
 }
 
+export async function getUserRank() {
+  return axios.get(process.env.VUE_APP_HOST + `/points/user/rank`, {
+    headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
+  });
+}
+
 export async function showToast(toastMessage: string) {
   toastController
     .create({
