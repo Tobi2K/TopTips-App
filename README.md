@@ -22,10 +22,10 @@
   <a href="#license">
     <img alt="License" src="https://img.shields.io/github/license/Tobi2K/TopTips-App?style=flat-square">
   </a>
-  <a href="https://ionicframework.com/">
+  <a href="https://ionicframework.com/" target="_blank">
     <img alt="GitHub package.json dependency version (prod)" src="https://img.shields.io/github/package-json/dependency-version/Tobi2K/TopTips-App/@ionic/cli?style=flat-square">
   </a>
-  <a href="https://app.kalmbach.dev">
+  <a href="https://app.kalmbach.dev" target="_blank">
     <img alt="Website" src="https://img.shields.io/website?down_message=offline&style=flat-square&up_message=online&url=https%3A%2F%2Fapp.kalmbach.dev">
   </a>
 </p>
@@ -33,10 +33,10 @@
   <a href="#readme">
     <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/Tobi2K/TopTips-App?style=flat-square">
   </a>
-  <a href="https://www.codefactor.io/repository/github/tobi2k/toptips-app">
+  <a href="https://www.codefactor.io/repository/github/tobi2k/toptips-app" target="_blank">
     <img alt="CodeFactor Grade" src="https://img.shields.io/codefactor/grade/github/Tobi2K/TopTips-App?style=flat-square">
   </a>
-  <a href="#readme">
+  <a href="https://libraries.io/github/Tobi2K/TopTips-App" target="_blank">
     <img alt="Libraries.io dependency status for GitHub repo" src="https://img.shields.io/librariesio/github/Tobi2K/TopTips-App?style=flat-square">
   </a>
   <a href="#readme">
