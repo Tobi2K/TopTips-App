@@ -20,7 +20,7 @@ export async function getAllGames(path: string) {
   });
 }
 
-export async function joinGroup(parameter: any) {
+export async function joinGroup(parameter: { passphrase: string }) {
   return axios.post(process.env.VUE_APP_HOST + `/group/join`, parameter, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
   });
@@ -56,7 +56,7 @@ export async function requestGroupGuesses(path: string) {
   });
 }
 
-export async function setUserName(parameter: any) {
+export async function setUserName(parameter: { name: string }) {
   return axios.post(process.env.VUE_APP_HOST + `/user/name`, parameter, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
   });
@@ -74,7 +74,7 @@ export async function getCountries() {
   });
 }
 
-export async function sendGroupName(path: string, parameter: any) {
+export async function sendGroupName(path: string, parameter: { name: string }) {
   return axios.post(process.env.VUE_APP_HOST + path, parameter, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
   });

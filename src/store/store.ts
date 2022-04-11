@@ -481,7 +481,7 @@ export const store = createStore({
           });
       });
     },
-    saveName({ commit, dispatch }, name) {
+    saveName({ commit, dispatch }, name: string) {
       commit("UPDATE_LOADING", true);
       return new Promise((resolve) => {
         helper
@@ -580,7 +580,7 @@ export const store = createStore({
           });
       });
     },
-    saveGroupName({ commit, state, dispatch }, groupName) {
+    saveGroupName({ commit, state, dispatch }, groupName: string) {
       commit("UPDATE_LOADING", true);
       helper
         .sendGroupName(`/group/rename/` + state.currentGroupID, {

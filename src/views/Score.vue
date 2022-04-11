@@ -40,7 +40,11 @@ export default defineComponent({
     return {
       refreshGame: false,
       fullList: true,
-      target: null as any,
+      target: null as unknown as {
+        target: {
+          complete: () => void;
+        };
+      },
     };
   },
   setup() {
