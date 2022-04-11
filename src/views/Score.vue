@@ -16,18 +16,18 @@ import {
   IonContent,
   IonRefresher,
   IonRefresherContent,
-} from "@ionic/vue";
+} from '@ionic/vue';
 
-import ScoreSection from "@/components/ScoreSection.vue";
+import ScoreSection from '@/components/ScoreSection.vue';
 
-import CustomHeader from "@/components/CustomHeader.vue";
+import CustomHeader from '@/components/CustomHeader.vue';
 
-import { refresh, settingsOutline } from "ionicons/icons";
+import { refresh, settingsOutline } from 'ionicons/icons';
 
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: "ScoreView",
+  name: 'ScoreView',
   components: {
     IonContent,
     IonPage,
@@ -54,7 +54,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.$store.dispatch("checkJWT");
+    this.$store.dispatch('checkJWT');
   },
   methods: {
     refreshAll() {

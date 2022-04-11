@@ -28,13 +28,13 @@
 </template>
 
 <script>
-import { IonCol, IonRow, IonGrid } from "@ionic/vue";
-import { defineComponent } from "vue";
+import { IonCol, IonRow, IonGrid } from '@ionic/vue';
+import { defineComponent } from 'vue';
 
-import { mapState } from "vuex";
+import { mapState } from 'vuex';
 
 export default defineComponent({
-  name: "GameGuesses",
+  name: 'GameGuesses',
   props: {
     gameID: {
       type: Number,
@@ -56,6 +56,6 @@ export default defineComponent({
       guesses,
     };
   },
-  computed: mapState(["guessesForOpenGame"]),
+  computed: mapState(['guessesForOpenGame']),
 });
 </script>

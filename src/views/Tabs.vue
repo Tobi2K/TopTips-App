@@ -31,11 +31,11 @@ import {
   IonIcon,
   IonPage,
   IonRouterOutlet,
-} from "@ionic/vue";
-import { dice, trophyOutline, peopleCircleOutline } from "ionicons/icons";
+} from '@ionic/vue';
+import { dice, trophyOutline, peopleCircleOutline } from 'ionicons/icons';
 
 export default {
-  name: "MainTabs",
+  name: 'MainTabs',
   components: {
     IonLabel,
     IonTabs,

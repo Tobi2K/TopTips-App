@@ -114,13 +114,13 @@ import {
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
-} from "@ionic/vue";
-import { defineComponent } from "vue";
+} from '@ionic/vue';
+import { defineComponent } from 'vue';
 
-import GuessModal from "@/components/GuessModal.vue";
+import GuessModal from '@/components/GuessModal.vue';
 
 export default defineComponent({
-  name: "PlayGame",
+  name: 'PlayGame',
   props: {
     sectionID: {
       type: Number,
@@ -153,23 +153,23 @@ export default defineComponent({
       const rgb1 = this.hexToRGB(hex1);
       const rgb2 = this.hexToRGB(hex2);
 
-      const game = document.getElementById("game" + id);
+      const game = document.getElementById('game' + id);
       if (game) {
         game.style.background =
-          "linear-gradient(to right, " + rgb1 + ", " + rgb2 + ")";
+          'linear-gradient(to right, ' + rgb1 + ', ' + rgb2 + ')';
       }
     },
     hexToRGB(hex) {
       const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-      const rgb = result
-        ? {
-            r: parseInt(result[1], 16),
-            g: parseInt(result[2], 16),
-            b: parseInt(result[3], 16),
-          }
-        : null;
+      const rgb = result ?
+        {
+          r: parseInt(result[1], 16),
+          g: parseInt(result[2], 16),
+          b: parseInt(result[3], 16),
+        } :
+        null;
 
-      return "rgb(" + rgb.r + "," + rgb.g + "," + rgb.b + ")";
+      return 'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')';
     },
   },
 });

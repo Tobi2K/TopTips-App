@@ -29,30 +29,31 @@
     </swiper>
   </div>
 </template>
+
 <script>
 // Import Swiper Vue.js components
-import { Swiper, SwiperSlide } from "swiper/vue";
+import { Swiper, SwiperSlide } from 'swiper/vue';
 
-import { IonSegment, IonSegmentButton } from "@ionic/vue";
+import { IonSegment, IonSegmentButton } from '@ionic/vue';
 
 // Import Swiper styles
-import "swiper/css/bundle";
+import 'swiper/css/bundle';
 
-import { Navigation, Pagination, Virtual } from "swiper";
+import { Navigation, Pagination, Virtual } from 'swiper';
 
-import PlayGame from "@/components/PlayGame.vue";
+import PlayGame from '@/components/PlayGame.vue';
 
-import { defineComponent } from "vue";
-import { mapState } from "vuex";
+import { defineComponent } from 'vue';
+import { mapState } from 'vuex';
 
 export default defineComponent({
-  name: "GameDaySlider",
+  name: 'GameDaySlider',
   props: {
     games: {
       required: true,
     },
   },
-  emits: ["segmentValue"],
+  emits: ['segmentValue'],
   components: {
     Swiper,
     SwiperSlide,
@@ -81,13 +82,14 @@ export default defineComponent({
       this.slideSegments();
     },
     async slideSegments() {
-      const segment = document.getElementById("segment-" + this.gameDay);
-      if (segment != null)
+      const segment = document.getElementById('segment-' + this.gameDay);
+      if (segment != null) {
         segment.scrollIntoView({
-          behavior: "auto",
-          block: "center",
-          inline: "center",
+          behavior: 'auto',
+          block: 'center',
+          inline: 'center',
         });
+      }
     },
   },
   mounted() {
@@ -109,7 +111,7 @@ export default defineComponent({
       this.slideSegments();
     },
   },
-  computed: mapState(["currentGameday"]),
+  computed: mapState(['currentGameday']),
 });
 </script>
 

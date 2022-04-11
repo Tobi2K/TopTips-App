@@ -58,15 +58,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 
-import { IonButton, IonRow, IonCol, IonIcon } from "@ionic/vue";
+import { IonButton, IonRow, IonCol, IonIcon } from '@ionic/vue';
 
-import { arrowBack, arrowForward, todayOutline } from "ionicons/icons";
-import { mapState } from "vuex";
+import { arrowBack, arrowForward, todayOutline } from 'ionicons/icons';
+import { mapState } from 'vuex';
 
 export default defineComponent({
-  name: "ScoreSection",
+  name: 'ScoreSection',
   components: {
     IonButton,
     IonRow,
@@ -80,49 +80,52 @@ export default defineComponent({
       todayOutline,
     };
   },
-  emits: ["done"],
+  emits: ['done'],
   methods: {
     goLeft() {
-      const element = document.getElementById("title-0");
-      if (element != null)
+      const element = document.getElementById('title-0');
+      if (element != null) {
         element.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-          inline: "center",
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'center',
         });
+      }
     },
     goRight() {
       const element = document.getElementById(
-        "title-" + (this.pointsForGroup[0].length - 2)
+          'title-' + (this.pointsForGroup[0].length - 2),
       );
-      if (element != null)
+      if (element != null) {
         element.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-          inline: "center",
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'center',
         });
+      }
     },
     goCurrent() {
       const element = document.getElementById(
-        "title-" + this.$store.state.currentGameday
+          'title-' + this.$store.state.currentGameday,
       );
-      if (element != null)
+      if (element != null) {
         element.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-          inline: "center",
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'center',
         });
+      }
     },
   },
   mounted() {
     this.$store
-      .dispatch("refreshScores")
-      .then(() => {
-        this.$emit("done");
-      })
-      .catch();
+        .dispatch('refreshScores')
+        .then(() => {
+          this.$emit('done');
+        })
+        .catch();
   },
-  computed: mapState(["pointsForGroup", "groupData"]),
+  computed: mapState(['pointsForGroup', 'groupData']),
 });
 </script>
 

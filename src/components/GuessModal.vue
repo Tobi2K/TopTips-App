@@ -156,17 +156,17 @@ import {
   IonLabel,
   IonIcon,
   useBackButton,
-} from "@ionic/vue";
-import { close, send } from "ionicons/icons";
-import { defineComponent } from "vue";
+} from '@ionic/vue';
+import { close, send } from 'ionicons/icons';
+import { defineComponent } from 'vue';
 
-import GameGuesses from "@/components/GameGuesses.vue";
+import GameGuesses from '@/components/GameGuesses.vue';
 
-import { mapState } from "vuex";
-import { showToast } from "@/store/helper";
+import { mapState } from 'vuex';
+import { showToast } from '@/store/helper';
 
 export default defineComponent({
-  name: "GuessModal",
+  name: 'GuessModal',
   props: {
     gameInfo: Object,
   },
@@ -222,22 +222,22 @@ export default defineComponent({
         this.pointsTeam2 == undefined ||
         this.bet == undefined
       ) {
-        showToast("Please fill out everything (≥0).");
+        showToast('Please fill out everything (≥0).');
       } else if (new Date(this.gameInfo.date) < new Date()) {
-        showToast("You are too late :(");
+        showToast('You are too late :(');
       } else {
         this.$store
-          .dispatch("addGuess", {
-            game: this.gameInfo.id,
-            bet: this.bet,
-            team1: this.pointsTeam1,
-            team2: this.pointsTeam2,
-          })
-          .then(() => {
-            modalController.dismiss();
-            showToast("Saved guess successfully");
-          })
-          .catch();
+            .dispatch('addGuess', {
+              game: this.gameInfo.id,
+              bet: this.bet,
+              team1: this.pointsTeam1,
+              team2: this.pointsTeam2,
+            })
+            .then(() => {
+              modalController.dismiss();
+              showToast('Saved guess successfully');
+            })
+            .catch();
       }
     },
     isUpcoming() {
@@ -246,25 +246,25 @@ export default defineComponent({
   },
   mounted() {
     this.$store
-      .dispatch("getUserGuess", this.gameInfo.id)
-      .then((val) => {
-        if (val != "") {
-          this.pointsTeam1 = val.score_team1;
-          this.pointsTeam2 = val.score_team2;
-          this.bet = val.special_bet;
-          this.points = val.points;
-        } else if (this.isUpcoming()) {
-          this.points = undefined;
-        } else {
-          this.pointsTeam1 = "-";
-          this.pointsTeam2 = "-";
-          this.bet = "-";
-          this.points = undefined;
-        }
-      })
-      .catch();
+        .dispatch('getUserGuess', this.gameInfo.id)
+        .then((val) => {
+          if (val != '') {
+            this.pointsTeam1 = val.score_team1;
+            this.pointsTeam2 = val.score_team2;
+            this.bet = val.special_bet;
+            this.points = val.points;
+          } else if (this.isUpcoming()) {
+            this.points = undefined;
+          } else {
+            this.pointsTeam1 = '-';
+            this.pointsTeam2 = '-';
+            this.bet = '-';
+            this.points = undefined;
+          }
+        })
+        .catch();
   },
-  computed: mapState(["groupData"]),
+  computed: mapState(['groupData']),
 });
 </script>
 

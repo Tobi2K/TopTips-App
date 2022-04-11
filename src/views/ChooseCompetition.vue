@@ -46,19 +46,19 @@ import {
   IonBackButton,
   IonButtons,
   IonButton,
-} from "@ionic/vue";
+} from '@ionic/vue';
 
 import {
   settingsOutline,
   refresh,
   chevronDownCircleOutline,
-} from "ionicons/icons";
+} from 'ionicons/icons';
 
-import { defineComponent } from "vue";
-import { mapState } from "vuex";
+import { defineComponent } from 'vue';
+import { mapState } from 'vuex';
 
 export default defineComponent({
-  name: "ChooseCompetition",
+  name: 'ChooseCompetition',
   props: {
     country: {
       type: String,
@@ -87,16 +87,16 @@ export default defineComponent({
   },
   methods: {
     cancel() {
-      this.$router.push("/tabs/group");
+      this.$router.push('/tabs/group');
     },
     selectCompetition(competition: string) {
-      this.$router.push("/season/" + competition);
+      this.$router.push('/season/' + competition);
     },
   },
   mounted() {
-    this.$store.dispatch("checkJWT");
-    this.$store.dispatch("refreshCompetitions", this.country);
+    this.$store.dispatch('checkJWT');
+    this.$store.dispatch('refreshCompetitions', this.country);
   },
-  computed: mapState(["competitions"]),
+  computed: mapState(['competitions']),
 });
 </script>

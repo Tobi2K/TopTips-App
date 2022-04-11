@@ -112,14 +112,14 @@ import {
   toastController,
   IonIcon,
   IonCheckbox,
-} from "@ionic/vue";
+} from '@ionic/vue';
 
-import { defineComponent } from "vue";
-import { moon, sunny } from "ionicons/icons";
-import { showToast } from "@/store/helper";
+import { defineComponent } from 'vue';
+import { moon, sunny } from 'ionicons/icons';
+import { showToast } from '@/store/helper';
 
 export default defineComponent({
-  name: "LoginView",
+  name: 'LoginView',
   components: {
     IonLabel,
     IonPage,
@@ -138,70 +138,70 @@ export default defineComponent({
   },
   data() {
     let light = true;
-    const x = document.getElementsByTagName("body")[0].classList;
-    if (x.contains("dark")) {
+    const x = document.getElementsByTagName('body')[0].classList;
+    if (x.contains('dark')) {
       light = false;
     }
     return {
       moon,
       sunny,
       light,
-      username: "",
-      password: "",
+      username: '',
+      password: '',
       loggedin: false,
     };
   },
   methods: {
     sendData() {
-      if (this.username == "" || this.password == "") {
-        showToast("Please fill out everything");
+      if (this.username == '' || this.password == '') {
+        showToast('Please fill out everything');
       } else {
         this.$store
-          .dispatch("login", {
-            name: this.username,
-            password: this.password,
-            loggedin: this.loggedin,
-          })
-          .then((response) => {
-            this.greet(response);
-            this.$router.push("/tabs");
-            this.clearInputs();
-          });
+            .dispatch('login', {
+              name: this.username,
+              password: this.password,
+              loggedin: this.loggedin,
+            })
+            .then((response) => {
+              this.greet(response);
+              this.$router.push('/tabs');
+              this.clearInputs();
+            });
       }
     },
     clearInputs() {
-      this.username = "";
-      this.password = "";
+      this.username = '';
+      this.password = '';
     },
     greet(name: string) {
       toastController
-        .create({
-          message: "Welcome back, " + name + "!",
-          duration: 2000,
-          cssClass: "toast",
-          position: "middle",
-        })
-        .then((toast) => toast.present());
+          .create({
+            message: 'Welcome back, ' + name + '!',
+            duration: 2000,
+            cssClass: 'toast',
+            position: 'middle',
+          })
+          .then((toast) => toast.present());
     },
     toggleTheme() {
-      const x = document.getElementsByTagName("body")[0].classList;
-      if (x.contains("dark")) {
-        localStorage.setItem("dark", "f");
+      const x = document.getElementsByTagName('body')[0].classList;
+      if (x.contains('dark')) {
+        localStorage.setItem('dark', 'f');
       } else {
-        localStorage.setItem("dark", "t");
+        localStorage.setItem('dark', 't');
       }
       this.light = !this.light;
-      x.toggle("dark");
+      x.toggle('dark');
     },
   },
   mounted() {
-    if (localStorage.getItem("dark") == "t") {
-      document.getElementsByTagName("body")[0].classList.add("dark");
+    if (localStorage.getItem('dark') == 't') {
+      document.getElementsByTagName('body')[0].classList.add('dark');
     }
-    this.$store.dispatch("checkStatus").then((response) => {
+    this.$store.dispatch('checkStatus').then((response) => {
       if (response) {
         this.greet(response);
-        this.$router.push("/tabs");
+        this.$router.push('/tabs');
       }
       this.clearInputs();
     });

@@ -1,122 +1,239 @@
-import { toastController } from "@ionic/vue";
-import axios from "axios";
-import { store } from "./store";
+import { toastController } from '@ionic/vue';
+import axios, { AxiosResponse } from 'axios';
+import { store } from './store';
 
-export async function getCompetitions(path: string) {
+/**
+ * Gets all competitions for a country
+ * @param {string} path needs to be /competition/country/ + yourCountry
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function getCompetitions(
+    path: string,
+): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + path, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
   });
 }
 
-export async function getUserGroups() {
+/**
+ * Gets all groups for a user
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function getUserGroups(): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + `/group/user/all`, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
   });
 }
 
-export async function getAllGames(path: string) {
+/**
+ * Gets all games for a group
+ * @param {string} path needs to be /game/all/format/ + yourGroupID
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function getAllGames(
+    path: string,
+): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + path, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
   });
 }
 
-export async function joinGroup(parameter: { passphrase: string }) {
+/**
+ * Requests to join a group
+ * @param {{ passphrase: string }} parameter passes the passphrase
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function joinGroup(parameter: {
+  passphrase: string;
+}): Promise<AxiosResponse<any, any>> {
   return axios.post(process.env.VUE_APP_HOST + `/group/join`, parameter, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
   });
 }
 
-export async function getCurrentGameday(path: string) {
+/**
+ * Gets the current gameday for a group
+ * @param {string} path needs to be /competition/current/ + yourGroupID
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function getCurrentGameday(
+    path: string,
+): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + path, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
   });
 }
 
-export async function getGroups(path: string) {
+/**
+ * Gets info for the current group
+ * @param {string} path needs to be /group/user/ + yourGroupID
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function getGroups(
+    path: string,
+): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + path, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
   });
 }
 
-export async function getScores(path: string) {
+/**
+ * Gets all points for the current group
+ * @param {string} path needs to be /points/all/format/ + yourGroupID
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function getScores(
+    path: string,
+): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + path, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
   });
 }
 
-export async function getSingleGuess(path: string) {
+/**
+ * Gets the user guess for a specified game in a specified group
+ * @param {string} path needs to be /guess/game/ + gameID + / + yourGroupID
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function getSingleGuess(
+    path: string,
+): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + path, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
   });
 }
 
-export async function requestGroupGuesses(path: string) {
+/**
+ * Gets all guesses for a specified game in a specified group
+ * @param {string} path needs to be /guess/all/ + gameID + / + yourGroupID
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function requestGroupGuesses(
+    path: string,
+): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + path, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
   });
 }
 
-export async function setUserName(parameter: { name: string }) {
+/**
+ * Sets the users name
+ * @param {{ passphrase: string }} parameter the new username
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function setUserName(parameter: {
+  name: string;
+}): Promise<AxiosResponse<any, any>> {
   return axios.post(process.env.VUE_APP_HOST + `/user/name`, parameter, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
   });
 }
 
-export async function getSeasons(path: string) {
+/**
+ * Gets all seasons for a competition
+ * @param {string} path needs to be /competition/seasons/ + yourCompetition
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function getSeasons(
+    path: string,
+): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + path, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
   });
 }
 
-export async function getCountries() {
+/**
+ * Gets all countries that have a competition
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function getCountries(): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + `/competition/countries`, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
   });
 }
 
-export async function sendGroupName(path: string, parameter: { name: string }) {
+/**
+ * Changes group name
+ * @param {string} path needs to be /group/rename/ + yourGroupID
+ * @param {{ passphrase: string }} parameter the new group name
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function sendGroupName(
+    path: string,
+    parameter: { name: string },
+): Promise<AxiosResponse<any, any>> {
   return axios.post(process.env.VUE_APP_HOST + path, parameter, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
   });
 }
 
-export async function requestLeaveGroup(path: string) {
+/**
+ * Request to leave a group
+ * @param {string} path needs to be /group/leave/ + yourGroupID
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function requestLeaveGroup(
+    path: string,
+): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + path, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
   });
 }
 
-export async function requestDeleteGroup(path: string) {
+/**
+ * Request to delete a group
+ * @param {string} path needs to be /group/delete/ + yourGroupID
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function requestDeleteGroup(
+    path: string,
+): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + path, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
   });
 }
 
-export async function requestUserSeasons() {
+/**
+ * Gets all seasons for the user
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function requestUserSeasons(): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + `/competition/user`, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
   });
 }
 
-export async function getSingleUser() {
+/**
+ * Gets user data
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function getSingleUser(): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + `/user/single`, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
   });
 }
 
-export async function getUserRank() {
+/**
+ * Gets the overall user rank
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function getUserRank(): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + `/points/user/rank`, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
   });
 }
 
+/**
+ * Generates a toast to be shown at the bottom of the screen
+ * @param {string} toastMessage the message to be displayed
+ */
 export async function showToast(toastMessage: string) {
   toastController
-    .create({
-      message: toastMessage,
-      duration: 2000,
-    })
-    .then((value) => {
-      value.present();
-    });
+      .create({
+        message: toastMessage,
+        duration: 2000,
+      })
+      .then((value) => {
+        value.present();
+      });
 }
