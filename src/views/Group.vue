@@ -58,11 +58,6 @@ import { defineComponent } from "vue";
 
 import { useStore } from "@/store/store";
 import { mapState } from "vuex";
-import {
-  JOIN_GROUP,
-  UPDATE_CURRENT_GROUP_ID,
-  UPDATE_USER_GROUPS,
-} from "@/store/mutation-types";
 
 import CurrentGroup from "@/components/CurrentGroup.vue";
 
@@ -97,16 +92,15 @@ export default defineComponent({
       groupPass: "",
       groups: [],
       groupID: this.$store.state.currentGroupID,
-      group: null as any,
     };
   },
   methods: {
     async refreshAll() {
       this.$store.dispatch("refreshGroups");
-      this.$store.dispatch(UPDATE_USER_GROUPS);
+      this.$store.dispatch("UPDATE_USER_GROUPS");
     },
     selectedGroup(groupID: string) {
-      this.$store.dispatch(UPDATE_CURRENT_GROUP_ID, groupID);
+      this.$store.dispatch("UPDATE_CURRENT_GROUP_ID", groupID);
       //this.refreshAll();
     },
 
@@ -141,7 +135,7 @@ export default defineComponent({
       this.$router.push("/country");
     },
     async joinGroup(passphrase: string) {
-      this.$store.dispatch(JOIN_GROUP, passphrase);
+      this.$store.dispatch("JOIN_GROUP", passphrase);
     },
   },
   mounted() {

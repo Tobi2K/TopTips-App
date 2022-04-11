@@ -1,94 +1,10 @@
 import router from "@/router";
+import { State } from "@/vuex-shim";
 import { toastController } from "@ionic/vue";
 import axios from "axios";
 import { InjectionKey } from "vue";
 import { createStore, Store, useStore as baseUseStore } from "vuex";
-import {
-  getAllGames,
-  getCompetitions,
-  getCountries,
-  getCurrentGameday,
-  getGroups,
-  getScores,
-  getSeasons,
-  getSingleGuess,
-  getSingleUser,
-  getUserGroups,
-  joinGroup,
-  requestDeleteGroup,
-  requestGroupGuesses,
-  requestLeaveGroup,
-  requestUserSeasons,
-  sendGroupName,
-  setUserName,
-} from "./helper";
-import {
-  UPDATE_CURRENT_GAMEDAY,
-  UPDATE_GUESSES_FOR_OPEN_GAME,
-  UPDATE_USER_GUESS_FOR_OPEN_GAME,
-  UPDATE_POINTS_FOR_GROUP,
-  UPDATE_USER,
-  UPDATE_COUNTRIES,
-  UPDATE_COMPETITIONS,
-  UPDATE_SEASONS,
-  UPDATE_NEW_GROUP_SEASON,
-  UPDATE_NEW_GROUP_PASSPHRASE,
-  UPDATE_GROUP_DATA,
-  UPDATE_USER_GROUPS,
-  UPDATE_CURRENT_GROUP_ID,
-  UPDATE_ALL_GAMES,
-  UPDATE_SHOW_GROUP,
-  UPDATE_LOADING,
-  LOGOUT,
-  UPDATE_GAME_DATA,
-  UPDATE_USER_SEASONS,
-} from "./mutation-types";
-
-// define your typings for the store state
-export interface State {
-  currentGameday: number;
-  guessesForOpenGame: any[] | null;
-  userGuessForOpenGame: {
-    pointsTeam1: number;
-    pointsTeam2: number;
-    bet: number;
-  };
-  pointsForGroup: any[] | null;
-  user: {
-    username: string;
-    accessToken: string;
-  };
-  countries: any[];
-  competitions: any[];
-  seasons: any[];
-  userSeasons: any[];
-  newGroupSeason: {
-    name: string;
-    year: number;
-    start_date: Date;
-    end_date: Date;
-  };
-  newGroupPassphrase: string;
-  groupData: {
-    id: number;
-    name: string;
-    passphrase?: string;
-    owner: {
-      name: string;
-    };
-    season: {
-      name: string;
-      start_date: Date;
-      end_date: Date;
-    };
-    members: string[];
-  };
-  userGroups: any[];
-  currentGroupID: number;
-  allGames: any[];
-  showSelectGroup: boolean;
-  loading: boolean;
-}
+import * as helper from "./helper";
 
 // define injection key
 export const key: InjectionKey<Store<State>> = Symbol();
@@ -108,7 +24,6 @@ export const store = createStore({
     seasons: [],
     userSeasons: [],
     newGroupSeason: {},
-    newGroupPassphrase: "",
     groupData: null,
     userGroups: [],
     currentGroupID: -1,
@@ -117,56 +32,53 @@ export const store = createStore({
     loading: false,
   },
   mutations: {
-    [UPDATE_CURRENT_GAMEDAY](state, gameday) {
+    UPDATE_CURRENT_GAMEDAY(state, gameday) {
       state.currentGameday = gameday;
     },
-    [UPDATE_GUESSES_FOR_OPEN_GAME](state, guesses) {
+    UPDATE_GUESSES_FOR_OPEN_GAME(state, guesses) {
       state.guessesForOpenGame = guesses;
     },
-    [UPDATE_USER_GUESS_FOR_OPEN_GAME](state, userGuess) {
+    UPDATE_USER_GUESS_FOR_OPEN_GAME(state, userGuess) {
       state.userGuessForOpenGame = userGuess;
     },
-    [UPDATE_POINTS_FOR_GROUP](state, pointsForGroup) {
+    UPDATE_POINTS_FOR_GROUP(state, pointsForGroup) {
       state.pointsForGroup = pointsForGroup;
     },
-    [UPDATE_USER](state, user) {
+    UPDATE_USER(state, user) {
       state.user.accessToken = user.accessToken;
       state.user.username = user.username;
     },
-    [UPDATE_COUNTRIES](state, countries) {
+    UPDATE_COUNTRIES(state, countries) {
       state.countries = countries;
     },
-    [UPDATE_COMPETITIONS](state, competitions) {
+    UPDATE_COMPETITIONS(state, competitions) {
       state.competitions = competitions;
     },
-    [UPDATE_SEASONS](state, seasons) {
+    UPDATE_SEASONS(state, seasons) {
       state.seasons = seasons;
     },
-    [UPDATE_USER_SEASONS](state, userSeasons) {
+    UPDATE_USER_SEASONS(state, userSeasons) {
       state.userSeasons = userSeasons;
     },
-    [UPDATE_NEW_GROUP_SEASON](state, newGroupSeason) {
+    UPDATE_NEW_GROUP_SEASON(state, newGroupSeason) {
       state.newGroupSeason = newGroupSeason;
     },
-    [UPDATE_NEW_GROUP_PASSPHRASE](state, passphrase) {
-      state.newGroupPassphrase = passphrase;
-    },
-    [UPDATE_GROUP_DATA](state, groupData) {
+    UPDATE_GROUP_DATA(state, groupData) {
       state.groupData = groupData;
     },
-    [UPDATE_USER_GROUPS](state, groups) {
+    UPDATE_USER_GROUPS(state, groups) {
       state.userGroups = groups;
     },
-    [UPDATE_CURRENT_GROUP_ID](state, groupID) {
+    UPDATE_CURRENT_GROUP_ID(state, groupID) {
       state.currentGroupID = groupID;
     },
-    [UPDATE_ALL_GAMES](state, games) {
+    UPDATE_ALL_GAMES(state, games) {
       state.allGames = games;
     },
-    [UPDATE_SHOW_GROUP](state, bool) {
+    UPDATE_SHOW_GROUP(state, bool) {
       state.showSelectGroup = bool;
     },
-    [UPDATE_LOADING](state, bool) {
+    UPDATE_LOADING(state, bool) {
       state.loading = bool;
     },
   },
@@ -176,7 +88,7 @@ export const store = createStore({
       if (token == "" || token == undefined) {
         return null;
       }
-      commit(UPDATE_LOADING, true);
+      commit("UPDATE_LOADING", true);
       return new Promise((resolve) => {
         axios
           .get(process.env.VUE_APP_HOST + `/user/single`, {
@@ -185,18 +97,18 @@ export const store = createStore({
             },
           })
           .then((response) => {
-            commit(UPDATE_USER, {
+            commit("UPDATE_USER", {
               username: response.data.name,
               accessToken: token,
             });
             localStorage.setItem("JWT", token);
             resolve(response.data.name);
-            commit(UPDATE_SHOW_GROUP, true);
-            dispatch(UPDATE_USER_GROUPS);
+            commit("UPDATE_SHOW_GROUP", true);
+            dispatch("UPDATE_USER_GROUPS");
           })
           .catch(() => console.log("Failed to log back in."))
           .finally(() => {
-            commit(UPDATE_LOADING, false);
+            commit("UPDATE_LOADING", false);
           });
       });
     },
@@ -204,7 +116,7 @@ export const store = createStore({
       { commit, dispatch },
       user: { name: string; password: string; loggedin: boolean }
     ) {
-      commit(UPDATE_LOADING, true);
+      commit("UPDATE_LOADING", true);
       return new Promise((resolve) => {
         axios
           .post(process.env.VUE_APP_HOST + `/auth/login`, {
@@ -212,7 +124,7 @@ export const store = createStore({
             password: user.password,
           })
           .then((response) => {
-            commit(UPDATE_USER, {
+            commit("UPDATE_USER", {
               username: response.data.name,
               accessToken: response.data.access_token,
             });
@@ -220,8 +132,8 @@ export const store = createStore({
             if (user.loggedin)
               localStorage.setItem("JWT", response.data.access_token);
             resolve(response.data.name);
-            commit(UPDATE_SHOW_GROUP, true);
-            dispatch(UPDATE_USER_GROUPS);
+            commit("UPDATE_SHOW_GROUP", true);
+            dispatch("UPDATE_USER_GROUPS");
           })
           .catch((error) => {
             let errorText = "";
@@ -236,7 +148,7 @@ export const store = createStore({
             });
           })
           .finally(() => {
-            commit(UPDATE_LOADING, false);
+            commit("UPDATE_LOADING", false);
           });
       });
     },
@@ -244,7 +156,7 @@ export const store = createStore({
       { commit, dispatch },
       user: { username: string; password: string; loggedin: boolean }
     ) {
-      commit(UPDATE_LOADING, true);
+      commit("UPDATE_LOADING", true);
       return new Promise((resolve, reject) => {
         axios
           .post(process.env.VUE_APP_HOST + `/auth/register`, {
@@ -252,15 +164,15 @@ export const store = createStore({
             password: user.password,
           })
           .then((response) => {
-            commit(UPDATE_USER, {
+            commit("UPDATE_USER", {
               username: user.username,
               accessToken: response.data.access_token,
             });
             if (user.loggedin)
               localStorage.setItem("JWT", response.data.access_token);
-            commit(UPDATE_SHOW_GROUP, true);
-            dispatch(UPDATE_USER_GROUPS);
-            commit(UPDATE_CURRENT_GROUP_ID, -1);
+            commit("UPDATE_SHOW_GROUP", true);
+            dispatch("UPDATE_USER_GROUPS");
+            commit("UPDATE_CURRENT_GROUP_ID", -1);
             resolve(user.username);
           })
           .catch((error) => {
@@ -277,14 +189,15 @@ export const store = createStore({
             reject(errorText);
           })
           .finally(() => {
-            commit(UPDATE_LOADING, false);
+            commit("UPDATE_LOADING", false);
           });
       });
     },
     UPDATE_USER_GROUPS({ dispatch, commit }) {
-      getUserGroups()
+      helper
+        .getUserGroups()
         .then((response) => {
-          commit(UPDATE_USER_GROUPS, response.data);
+          commit("UPDATE_USER_GROUPS", response.data);
         })
         .catch((e) => {
           dispatch("handleError", {
@@ -297,9 +210,10 @@ export const store = createStore({
       if (state.currentGroupID == -1) {
         return null;
       } else {
-        getAllGames(`/game/all/format/` + state.currentGroupID)
+        helper
+          .getAllGames(`/game/all/format/` + state.currentGroupID)
           .then((response) => {
-            commit(UPDATE_ALL_GAMES, response.data);
+            commit("UPDATE_ALL_GAMES", response.data);
           })
           .catch((e) => {
             dispatch("handleError", {
@@ -310,34 +224,35 @@ export const store = createStore({
       }
     },
     UPDATE_CURRENT_GROUP_ID({ commit, dispatch }, groupID: string) {
-      commit(UPDATE_CURRENT_GROUP_ID, groupID);
-      commit(UPDATE_SHOW_GROUP, false);
-      dispatch(UPDATE_ALL_GAMES);
-      dispatch(UPDATE_GAME_DATA);
+      commit("UPDATE_CURRENT_GROUP_ID", groupID);
+      commit("UPDATE_SHOW_GROUP", false);
+      dispatch("UPDATE_ALL_GAMES");
+      dispatch("UPDATE_GAME_DATA");
       dispatch("refreshScores");
       dispatch("refreshCurrentGameday");
     },
     LOGOUT({ commit }) {
-      commit(UPDATE_USER, {
+      commit("UPDATE_USER", {
         username: "",
         accessToken: "",
       });
-      commit(UPDATE_CURRENT_GROUP_ID, -1);
-      commit(UPDATE_GROUP_DATA, null);
-      commit(UPDATE_POINTS_FOR_GROUP, null);
-      commit(UPDATE_SHOW_GROUP, true);
+      commit("UPDATE_CURRENT_GROUP_ID", -1);
+      commit("UPDATE_GROUP_DATA", null);
+      commit("UPDATE_POINTS_FOR_GROUP", null);
+      commit("UPDATE_SHOW_GROUP", true);
       localStorage.removeItem("JWT");
     },
     JOIN_GROUP({ commit, dispatch }, passphrase: string) {
-      commit(UPDATE_LOADING, true);
-      joinGroup({ passphrase: passphrase })
+      commit("UPDATE_LOADING", true);
+      helper
+        .joinGroup({ passphrase: passphrase })
         .then((response) => {
-          commit(UPDATE_CURRENT_GROUP_ID, response.data);
+          commit("UPDATE_CURRENT_GROUP_ID", response.data);
           dispatch("refreshGroups");
           dispatch("refreshScores");
-          commit(UPDATE_SHOW_GROUP, false);
-          dispatch(UPDATE_USER_GROUPS);
-          dispatch(UPDATE_ALL_GAMES);
+          commit("UPDATE_SHOW_GROUP", false);
+          dispatch("UPDATE_USER_GROUPS");
+          dispatch("UPDATE_ALL_GAMES");
         })
         .catch((e) => {
           let errorText = "Failed to join group.";
@@ -352,19 +267,20 @@ export const store = createStore({
           });
         })
         .finally(() => {
-          commit(UPDATE_LOADING, false);
+          commit("UPDATE_LOADING", false);
         });
     },
     initGroup({ commit, dispatch, state }) {
-      commit(UPDATE_LOADING, true);
+      commit("UPDATE_LOADING", true);
       if (state.currentGroupID == -1 || state.currentGroupID == null) {
-        dispatch(UPDATE_USER_GROUPS);
-        commit(UPDATE_LOADING, false);
+        dispatch("UPDATE_USER_GROUPS");
+        commit("UPDATE_LOADING", false);
       } else
-        getGroups(`/group/user/` + state.currentGroupID)
+        helper
+          .getGroups(`/group/user/` + state.currentGroupID)
           .then((response) => {
-            commit(UPDATE_GROUP_DATA, response.data);
-            dispatch(UPDATE_USER_GROUPS);
+            commit("UPDATE_GROUP_DATA", response.data);
+            dispatch("UPDATE_USER_GROUPS");
           })
           .catch((e) => {
             let errorText = "";
@@ -379,13 +295,14 @@ export const store = createStore({
             });
           })
           .finally(() => {
-            commit(UPDATE_LOADING, false);
+            commit("UPDATE_LOADING", false);
           });
     },
     UPDATE_GAME_DATA({ commit, dispatch, state }) {
-      getGroups(`/group/user/` + state.currentGroupID)
+      helper
+        .getGroups(`/group/user/` + state.currentGroupID)
         .then((response) => {
-          commit(UPDATE_GROUP_DATA, response.data);
+          commit("UPDATE_GROUP_DATA", response.data);
         })
         .catch((e) => {
           dispatch("handleError", {
@@ -394,11 +311,11 @@ export const store = createStore({
           });
         })
         .finally(() => {
-          commit(UPDATE_LOADING, false);
+          commit("UPDATE_LOADING", false);
         });
     },
     createGroup({ commit, dispatch, state }, group) {
-      commit(UPDATE_LOADING, true);
+      commit("UPDATE_LOADING", true);
       return new Promise((resolve) => {
         axios
           .post(
@@ -412,10 +329,10 @@ export const store = createStore({
             }
           )
           .then((response) => {
-            commit(UPDATE_CURRENT_GROUP_ID, response.data.id);
-            commit(UPDATE_SHOW_GROUP, false);
-            dispatch(UPDATE_USER_GROUPS);
-            dispatch(UPDATE_ALL_GAMES);
+            commit("UPDATE_CURRENT_GROUP_ID", response.data.id);
+            commit("UPDATE_SHOW_GROUP", false);
+            dispatch("UPDATE_USER_GROUPS");
+            dispatch("UPDATE_ALL_GAMES");
             resolve(response.data.passphrase);
             dispatch("refreshGroups");
             dispatch("refreshScores");
@@ -427,32 +344,34 @@ export const store = createStore({
             });
           })
           .finally(() => {
-            commit(UPDATE_LOADING, false);
+            commit("UPDATE_LOADING", false);
           });
       });
     },
     refreshCurrentGameday({ commit, state }) {
-      commit(UPDATE_LOADING, true);
-      getCurrentGameday(`/competition/current/` + state.currentGroupID)
+      commit("UPDATE_LOADING", true);
+      helper
+        .getCurrentGameday(`/competition/current/` + state.currentGroupID)
         .then((response) => {
-          commit(UPDATE_CURRENT_GAMEDAY, response.data);
+          commit("UPDATE_CURRENT_GAMEDAY", response.data);
         })
         .catch()
         .finally(() => {
-          commit(UPDATE_LOADING, false);
+          commit("UPDATE_LOADING", false);
         });
     },
     refreshGroups({ commit, dispatch, state }) {
-      commit(UPDATE_LOADING, true);
+      commit("UPDATE_LOADING", true);
       if (state.currentGroupID == -1) {
-        commit(UPDATE_LOADING, false);
-        dispatch(UPDATE_USER_GROUPS);
+        commit("UPDATE_LOADING", false);
+        dispatch("UPDATE_USER_GROUPS");
         return;
       }
-      getGroups(`/group/user/` + state.currentGroupID)
+      helper
+        .getGroups(`/group/user/` + state.currentGroupID)
         .then((response) => {
-          commit(UPDATE_GROUP_DATA, response.data);
-          dispatch(UPDATE_USER_GROUPS);
+          commit("UPDATE_GROUP_DATA", response.data);
+          dispatch("UPDATE_USER_GROUPS");
         })
         .catch((e) => {
           dispatch("handleError", {
@@ -461,20 +380,21 @@ export const store = createStore({
           });
         })
         .finally(() => {
-          commit(UPDATE_LOADING, false);
+          commit("UPDATE_LOADING", false);
         });
     },
     refreshScores({ commit, dispatch, state }) {
-      commit(UPDATE_LOADING, true);
+      commit("UPDATE_LOADING", true);
       if (state.currentGroupID == -1) {
-        commit(UPDATE_LOADING, false);
-        dispatch(UPDATE_USER_GROUPS);
+        commit("UPDATE_LOADING", false);
+        dispatch("UPDATE_USER_GROUPS");
         return;
       }
       return new Promise((resolve) => {
-        getScores(`/points/all/format/` + state.currentGroupID)
+        helper
+          .getScores(`/points/all/format/` + state.currentGroupID)
           .then((response) => {
-            commit(UPDATE_POINTS_FOR_GROUP, response.data);
+            commit("UPDATE_POINTS_FOR_GROUP", response.data);
             resolve("Success");
           })
           .catch((e) => {
@@ -484,17 +404,18 @@ export const store = createStore({
             });
           })
           .finally(() => {
-            commit(UPDATE_LOADING, false);
+            commit("UPDATE_LOADING", false);
           });
       });
     },
     getUserGuess({ commit, dispatch, state }, gameID) {
-      commit(UPDATE_LOADING, true);
+      commit("UPDATE_LOADING", true);
 
       return new Promise((resolve) => {
-        getSingleGuess(`/guess/game/` + gameID + `/` + state.currentGroupID)
+        helper
+          .getSingleGuess(`/guess/game/` + gameID + `/` + state.currentGroupID)
           .then((response) => {
-            commit(UPDATE_USER_GUESS_FOR_OPEN_GAME, response.data);
+            commit("UPDATE_USER_GUESS_FOR_OPEN_GAME", response.data);
             dispatch("getGroupGuesses", gameID);
             resolve(response.data);
           })
@@ -505,15 +426,18 @@ export const store = createStore({
             });
           })
           .finally(() => {
-            commit(UPDATE_LOADING, false);
+            commit("UPDATE_LOADING", false);
           });
       });
     },
     getGroupGuesses({ commit, dispatch, state }, gameID) {
-      commit(UPDATE_LOADING, true);
-      requestGroupGuesses(`/guess/all/` + gameID + `/` + state.currentGroupID)
+      commit("UPDATE_LOADING", true);
+      helper
+        .requestGroupGuesses(
+          `/guess/all/` + gameID + `/` + state.currentGroupID
+        )
         .then((response) => {
-          commit(UPDATE_GUESSES_FOR_OPEN_GAME, response.data);
+          commit("UPDATE_GUESSES_FOR_OPEN_GAME", response.data);
         })
         .catch((e) => {
           dispatch("handleError", {
@@ -522,11 +446,11 @@ export const store = createStore({
           });
         })
         .finally(() => {
-          commit(UPDATE_LOADING, false);
+          commit("UPDATE_LOADING", false);
         });
     },
     addGuess({ commit, dispatch, state }, details) {
-      commit(UPDATE_LOADING, true);
+      commit("UPDATE_LOADING", true);
 
       return new Promise((resolve) => {
         axios
@@ -553,16 +477,17 @@ export const store = createStore({
             });
           })
           .finally(() => {
-            commit(UPDATE_LOADING, false);
+            commit("UPDATE_LOADING", false);
           });
       });
     },
     saveName({ commit, dispatch }, name) {
-      commit(UPDATE_LOADING, true);
+      commit("UPDATE_LOADING", true);
       return new Promise((resolve) => {
-        setUserName({ name: name })
+        helper
+          .setUserName({ name: name })
           .then(() => {
-            dispatch(LOGOUT);
+            dispatch("LOGOUT");
             resolve("Done");
           })
           .catch((e) => {
@@ -578,15 +503,16 @@ export const store = createStore({
             });
           })
           .finally(() => {
-            commit(UPDATE_LOADING, false);
+            commit("UPDATE_LOADING", false);
           });
       });
     },
     refreshCompetitions({ commit, dispatch }, country) {
-      commit(UPDATE_LOADING, true);
-      getCompetitions(`/competition/country/` + country)
+      commit("UPDATE_LOADING", true);
+      helper
+        .getCompetitions(`/competition/country/` + country)
         .then((response) => {
-          commit(UPDATE_COMPETITIONS, response.data);
+          commit("UPDATE_COMPETITIONS", response.data);
         })
         .catch((e) => {
           dispatch("handleError", {
@@ -595,14 +521,15 @@ export const store = createStore({
           });
         })
         .finally(() => {
-          commit(UPDATE_LOADING, false);
+          commit("UPDATE_LOADING", false);
         });
     },
     refreshSeasons({ commit, dispatch }, competition) {
-      commit(UPDATE_LOADING, true);
-      getSeasons(`/competition/seasons/` + competition)
+      commit("UPDATE_LOADING", true);
+      helper
+        .getSeasons(`/competition/seasons/` + competition)
         .then((response) => {
-          commit(UPDATE_SEASONS, response.data);
+          commit("UPDATE_SEASONS", response.data);
         })
         .catch((e) => {
           dispatch("handleError", {
@@ -611,14 +538,15 @@ export const store = createStore({
           });
         })
         .finally(() => {
-          commit(UPDATE_LOADING, false);
+          commit("UPDATE_LOADING", false);
         });
     },
     refreshCountries({ commit, dispatch }) {
-      commit(UPDATE_LOADING, true);
-      getCountries()
+      commit("UPDATE_LOADING", true);
+      helper
+        .getCountries()
         .then((response) => {
-          commit(UPDATE_COUNTRIES, response.data);
+          commit("UPDATE_COUNTRIES", response.data);
         })
         .catch((e) => {
           dispatch("handleError", {
@@ -627,18 +555,18 @@ export const store = createStore({
           });
         })
         .finally(() => {
-          commit(UPDATE_LOADING, false);
+          commit("UPDATE_LOADING", false);
         });
     },
     refreshSeasonData({ commit, dispatch, state }, season) {
-      commit(UPDATE_LOADING, true);
+      commit("UPDATE_LOADING", true);
       return new Promise((resolve) => {
         axios
           .get(process.env.VUE_APP_HOST + `/competition/season/` + season, {
             headers: { Authorization: `Bearer ${state.user.accessToken}` },
           })
           .then((response) => {
-            commit(UPDATE_NEW_GROUP_SEASON, response.data);
+            commit("UPDATE_NEW_GROUP_SEASON", response.data);
             resolve(response.data);
           })
           .catch((e) => {
@@ -648,17 +576,18 @@ export const store = createStore({
             });
           })
           .finally(() => {
-            commit(UPDATE_LOADING, false);
+            commit("UPDATE_LOADING", false);
           });
       });
     },
     saveGroupName({ commit, state, dispatch }, groupName) {
-      commit(UPDATE_LOADING, true);
-      sendGroupName(`/group/rename/` + state.currentGroupID, {
-        name: groupName,
-      })
+      commit("UPDATE_LOADING", true);
+      helper
+        .sendGroupName(`/group/rename/` + state.currentGroupID, {
+          name: groupName,
+        })
         .then(() => {
-          commit(UPDATE_USER, {
+          commit("UPDATE_USER", {
             username: groupName,
             accessToken: state.user.accessToken,
           });
@@ -671,21 +600,22 @@ export const store = createStore({
           });
         })
         .finally(() => {
-          commit(UPDATE_LOADING, false);
+          commit("UPDATE_LOADING", false);
         });
     },
     leaveGroup({ commit, state, dispatch }) {
-      commit(UPDATE_LOADING, true);
+      commit("UPDATE_LOADING", true);
 
       return new Promise((resolve) => {
-        requestLeaveGroup(`/group/leave/` + state.currentGroupID)
+        helper
+          .requestLeaveGroup(`/group/leave/` + state.currentGroupID)
           .then(() => {
             localStorage.removeItem("group" + state.currentGroupID);
-            commit(UPDATE_CURRENT_GROUP_ID, -1);
-            commit(UPDATE_POINTS_FOR_GROUP, null);
-            commit(UPDATE_ALL_GAMES, []);
-            commit(UPDATE_GROUP_DATA, null);
-            commit(UPDATE_SHOW_GROUP, true);
+            commit("UPDATE_CURRENT_GROUP_ID", -1);
+            commit("UPDATE_POINTS_FOR_GROUP", null);
+            commit("UPDATE_ALL_GAMES", []);
+            commit("UPDATE_GROUP_DATA", null);
+            commit("UPDATE_SHOW_GROUP", true);
             dispatch("refreshGroups");
             resolve("Success");
           })
@@ -696,21 +626,22 @@ export const store = createStore({
             });
           })
           .finally(() => {
-            commit(UPDATE_LOADING, false);
+            commit("UPDATE_LOADING", false);
           });
       });
     },
     deleteGroup({ commit, state, dispatch }) {
-      commit(UPDATE_LOADING, true);
+      commit("UPDATE_LOADING", true);
 
       return new Promise((resolve) => {
-        requestDeleteGroup(`/group/delete/` + state.currentGroupID)
+        helper
+          .requestDeleteGroup(`/group/delete/` + state.currentGroupID)
           .then(() => {
-            commit(UPDATE_CURRENT_GROUP_ID, -1);
-            commit(UPDATE_POINTS_FOR_GROUP, null);
-            commit(UPDATE_ALL_GAMES, []);
-            commit(UPDATE_GROUP_DATA, null);
-            commit(UPDATE_SHOW_GROUP, true);
+            commit("UPDATE_CURRENT_GROUP_ID", -1);
+            commit("UPDATE_POINTS_FOR_GROUP", null);
+            commit("UPDATE_ALL_GAMES", []);
+            commit("UPDATE_GROUP_DATA", null);
+            commit("UPDATE_SHOW_GROUP", true);
             dispatch("refreshGroups");
             resolve("Success");
           })
@@ -721,15 +652,16 @@ export const store = createStore({
             });
           })
           .finally(() => {
-            commit(UPDATE_LOADING, false);
+            commit("UPDATE_LOADING", false);
           });
       });
     },
     getUserSeasons({ commit, dispatch }) {
-      commit(UPDATE_LOADING, true);
-      requestUserSeasons()
+      commit("UPDATE_LOADING", true);
+      helper
+        .requestUserSeasons()
         .then((response) => {
-          commit(UPDATE_USER_SEASONS, response.data);
+          commit("UPDATE_USER_SEASONS", response.data);
         })
         .catch((e) => {
           dispatch("handleError", {
@@ -738,15 +670,15 @@ export const store = createStore({
           });
         })
         .finally(() => {
-          commit(UPDATE_LOADING, false);
+          commit("UPDATE_LOADING", false);
         });
     },
     handleError({ commit, dispatch }, { error, message }) {
       if (error && error.response && error.response.status == 401) {
         router.push("/");
-        dispatch(LOGOUT);
+        dispatch("LOGOUT");
       } else {
-        commit(UPDATE_LOADING, false);
+        commit("UPDATE_LOADING", false);
         toastController
           .create({
             message: message,
@@ -759,11 +691,11 @@ export const store = createStore({
       }
     },
     checkJWT({ dispatch }) {
-      getSingleUser().catch((error) => {
+      helper.getSingleUser().catch((error) => {
         if (error.response) {
           if (error.response.status == 401) {
             router.push("/");
-            dispatch(LOGOUT);
+            dispatch("LOGOUT");
             return false;
           } else return true;
         } else return true;

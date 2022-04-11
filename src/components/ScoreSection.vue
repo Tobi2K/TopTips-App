@@ -80,14 +80,6 @@ export default defineComponent({
       todayOutline,
     };
   },
-  data() {
-    const playerPoints: any[] = [[]];
-    return {
-      playerPoints,
-      gamedays: 0,
-      refreshPoints: false,
-    };
-  },
   emits: ["done"],
   methods: {
     goLeft() {

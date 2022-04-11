@@ -169,8 +169,6 @@ import {
   podiumOutline,
 } from "ionicons/icons";
 
-import { LOGOUT } from "@/store/mutation-types";
-
 import { mapState } from "vuex";
 
 import { FCM } from "@capacitor-community/fcm";
@@ -279,7 +277,7 @@ export default defineComponent({
       x.toggle("dark");
     },
     logout() {
-      this.$store.dispatch(LOGOUT);
+      this.$store.dispatch("LOGOUT");
       this.$router.push("/");
     },
     toggleStatus(id: string, name: string) {

@@ -54,10 +54,6 @@ import {
 import { defineComponent } from "vue";
 import { useStore } from "@/store/store";
 import { mapState } from "vuex";
-import {
-  UPDATE_ALL_GAMES,
-  UPDATE_CURRENT_GROUP_ID,
-} from "@/store/mutation-types";
 
 export default defineComponent({
   name: "PlayView",
@@ -90,10 +86,10 @@ export default defineComponent({
   },
   methods: {
     async refreshAll() {
-      this.$store.dispatch(UPDATE_ALL_GAMES);
+      this.$store.dispatch("UPDATE_ALL_GAMES");
     },
     selectedGroup(groupID: number) {
-      this.$store.dispatch(UPDATE_CURRENT_GROUP_ID, groupID);
+      this.$store.dispatch("UPDATE_CURRENT_GROUP_ID", groupID);
       this.groupID = 0;
       this.refreshAll();
     },
