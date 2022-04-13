@@ -50,6 +50,7 @@
                         y="53"
                         :fill="item.team1_text"
                         textLength="75"
+                        dominant-baseline="middle"
                       >
                         {{ item.team1_abbr }}
                       </text>
@@ -69,6 +70,7 @@
                         y="53"
                         :fill="item.team2_text"
                         textLength="75"
+                        dominant-baseline="middle"
                       >
                         {{ item.team2_abbr }}
                       </text>
@@ -184,7 +186,6 @@ ion-grid {
 
 text {
   font-family: monospace;
-  text-anchor: middle; /* align center */
-  dominant-baseline: middle; /* vertical alignment fix */
+  text-anchor: middle;
 }
 </style>

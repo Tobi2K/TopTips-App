@@ -36,6 +36,7 @@
               y="28"
               :fill="gameInfo.team1_text"
               textLength="75"
+              dominant-baseline="middle"
             >
               {{ gameInfo.team1_abbr }}
             </text>
@@ -58,6 +59,7 @@
               y="28"
               :fill="gameInfo.team2_text"
               textLength="75"
+              dominant-baseline="middle"
             >
               {{ gameInfo.team2_abbr }}
             </text>
@@ -271,7 +273,6 @@ export default defineComponent({
 <style scoped>
 text {
   font-family: monospace;
-  text-anchor: middle; /* align center */
-  dominant-baseline: middle; /* vertical alignment fix */
+  text-anchor: middle;
 }
 </style>
