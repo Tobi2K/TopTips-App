@@ -51,7 +51,7 @@ import {
   IonBackButton,
   IonButtons,
   IonButton,
-} from '@ionic/vue';
+} from "@ionic/vue";
 
 import {
   arrowBackCircleOutline,
@@ -59,15 +59,15 @@ import {
   settingsOutline,
   refresh,
   chevronDownCircleOutline,
-} from 'ionicons/icons';
+} from "ionicons/icons";
 
-import moment from 'moment';
+import moment from "moment";
 
-import { defineComponent } from 'vue';
-import { mapState } from 'vuex';
+import { defineComponent } from "vue";
+import { mapState } from "vuex";
 
 export default defineComponent({
-  name: 'ChooseSeason',
+  name: "ChooseSeason",
   props: {
     competition: {
       type: String,
@@ -99,16 +99,16 @@ export default defineComponent({
   },
   methods: {
     cancel() {
-      this.$router.push('/tabs/group');
+      this.$router.push("/tabs/group");
     },
     selectSeason(season: string) {
-      this.$router.push('/create/' + season);
+      this.$router.push("/create/" + season);
     },
   },
   mounted() {
-    this.$store.dispatch('checkJWT');
-    this.$store.dispatch('refreshSeasons', this.competition);
+    this.$store.dispatch("checkJWT");
+    this.$store.dispatch("refreshSeasons", this.competition);
   },
-  computed: mapState(['seasons']),
+  computed: mapState(["seasons"]),
 });
 </script>

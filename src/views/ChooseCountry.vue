@@ -42,7 +42,7 @@ import {
   IonBackButton,
   IonButtons,
   IonButton,
-} from '@ionic/vue';
+} from "@ionic/vue";
 
 import {
   arrowBackCircleOutline,
@@ -50,13 +50,13 @@ import {
   settingsOutline,
   refresh,
   chevronDownCircleOutline,
-} from 'ionicons/icons';
+} from "ionicons/icons";
 
-import { defineComponent } from 'vue';
-import { mapState } from 'vuex';
+import { defineComponent } from "vue";
+import { mapState } from "vuex";
 
 export default defineComponent({
-  name: 'ChooseCountry',
+  name: "ChooseCountry",
   components: {
     IonContent,
     IonPage,
@@ -81,16 +81,16 @@ export default defineComponent({
   },
   methods: {
     cancel() {
-      this.$router.push('/tabs/group');
+      this.$router.push("/tabs/group");
     },
     selectCountry(country: string) {
-      this.$router.push('/competition/' + country);
+      this.$router.push("/competition/" + country);
     },
   },
   mounted() {
-    this.$store.dispatch('checkJWT');
-    this.$store.dispatch('refreshCountries');
+    this.$store.dispatch("checkJWT");
+    this.$store.dispatch("refreshCountries");
   },
-  computed: mapState(['countries']),
+  computed: mapState(["countries"]),
 });
 </script>

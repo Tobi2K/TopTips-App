@@ -67,7 +67,7 @@ import {
   IonButton,
   IonListHeader,
   IonInput,
-} from '@ionic/vue';
+} from "@ionic/vue";
 
 import {
   arrowBackCircleOutline,
@@ -75,17 +75,17 @@ import {
   settingsOutline,
   refresh,
   chevronDownCircleOutline,
-} from 'ionicons/icons';
+} from "ionicons/icons";
 
-import moment from 'moment';
+import moment from "moment";
 
-import { defineComponent } from 'vue';
+import { defineComponent } from "vue";
 
-import { toClipboard } from '@soerenmartius/vue3-clipboard';
-import { showToast } from '@/store/helper';
+import { toClipboard } from "@soerenmartius/vue3-clipboard";
+import { showToast } from "@/store/helper";
 
 export default defineComponent({
-  name: 'CreateGroup',
+  name: "CreateGroup",
   props: {
     season: {
       type: String,
@@ -119,82 +119,82 @@ export default defineComponent({
   },
   data() {
     return {
-      groupName: '',
+      groupName: "",
       seasonData: [],
     };
   },
   methods: {
     cancel() {
-      this.$router.push('/tabs/group');
+      this.$router.push("/tabs/group");
     },
     async createGroup() {
       if (this.seasonData == []) {
-        this.$store.dispatch('handleError', {
+        this.$store.dispatch("handleError", {
           error: null,
-          message: 'Something went wrong. Please try again later.',
+          message: "Something went wrong. Please try again later.",
         });
-      } else if (this.groupName == '') {
-        showToast('Please give your group a name!');
+      } else if (this.groupName == "") {
+        showToast("Please give your group a name!");
       } else {
         this.$store
-            .dispatch('createGroup', {
+            .dispatch("createGroup", {
               groupName: this.groupName,
               seasonID: this.season,
             })
             .then((response) => {
               alertController
                   .create({
-                    header: this.groupName + ' was created!',
-                    subHeader: 'Passphrase: ' + response,
+                    header: this.groupName + " was created!",
+                    subHeader: "Passphrase: " + response,
                     message:
-                  'Others can join using the passphrase.' +
-                  '<br><br>' +
-                  'The passphrase can also be found in the group tab later.',
+                  "Others can join using the passphrase." +
+                  "<br><br>" +
+                  "The passphrase can also be found in the group tab later.",
                     buttons: [
                       {
-                        text: 'Copy Passphrase',
+                        text: "Copy Passphrase",
                         handler: () => {
                           this.copyPassphrase(response);
-                          this.$router.push('/tabs/group');
+                          this.$router.push("/tabs/group");
                         },
                       },
                       {
-                        text: 'Continue',
+                        text: "Continue",
                         handler: () => {
-                          this.$router.push('/tabs/group');
+                          this.$router.push("/tabs/group");
                         },
                       },
                     ],
                   })
                   .then((val) => val.present())
-                  .finally(() => (this.groupName = ''));
+                  .finally(() => (this.groupName = ""));
             })
             .catch(() => {
-              this.groupName = '';
-              this.$store.dispatch('handleError', {
+              this.groupName = "";
+              this.$store.dispatch("handleError", {
                 error: null,
-                message: 'Something went wrong. Please try again later.',
+                message: "Something went wrong. Please try again later.",
               });
             });
       }
     },
     async copyPassphrase(passphrase: string) {
-      if (passphrase != '') {
+      if (passphrase != "") {
         try {
           toClipboard(passphrase);
-          showToast('Passphrase copied to clipboard.');
+          showToast("Passphrase copied to clipboard.");
         } catch (e) {
-          showToast('Copy failed. Sorry :(');
+          showToast("Copy failed. Sorry :(");
         }
       } else {
-        showToast('Copy failed. Sorry :(');
+        showToast("Copy failed. Sorry :(");
       }
     },
   },
   mounted() {
-    this.$store.dispatch('checkJWT');
+    this.$store.dispatch("checkJWT");
     this.$store
-        .dispatch('refreshSeasonData', this.season)
+        .dispatch("refreshSeasonData", this.season)
         .then((val) => {
           this.seasonData = val;
         })

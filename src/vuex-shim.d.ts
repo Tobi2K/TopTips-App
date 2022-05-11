@@ -8,7 +8,6 @@ declare module "@vue/runtime-core" {
     userGuessForOpenGame: {
       pointsTeam1: number;
       pointsTeam2: number;
-      bet: number;
     };
     pointsForGroup: (string | number)[] | null;
     user: {
@@ -57,7 +56,6 @@ export interface State {
   userGuessForOpenGame: {
     pointsTeam1: number;
     pointsTeam2: number;
-    bet: number;
   };
   pointsForGroup: (string | number)[] | null;
   user: {
@@ -98,7 +96,6 @@ export interface State {
 export interface Guess {
   name: string;
   guess_string: string;
-  bet: number;
   points: number;
 }
 
@@ -158,8 +155,6 @@ export interface FormattedGame {
   team2_text: string;
   team1_name: string;
   team2_name: string;
-  bet_name: string;
-  bet_string: string;
   game_string: string;
   game_desc: string | null;
 }

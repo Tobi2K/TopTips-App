@@ -67,11 +67,8 @@
         </ion-col>
       </ion-row>
       <ion-row v-if="!isUpcoming()">
-        <ion-col size="12" class="ion-text-center">
+        <ion-col class="ion-text-center">
           <span style="font-size: 2em">{{ gameInfo.game_string }}</span>
-        </ion-col>
-        <ion-col size="12" class="ion-text-center">
-          <span style="font-size: 1.3em">{{ gameInfo.bet_string }}</span>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -91,12 +88,6 @@
             Goals by {{ gameInfo.team2_name }}
           </ion-label>
           <ion-input v-model="pointsTeam2" type="number"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">
-            {{ gameInfo.bet_name }}
-          </ion-label>
-          <ion-input v-model="bet" type="number"></ion-input>
         </ion-item>
         <ion-row>
           <ion-col class="ion-align-items-end">
@@ -123,12 +114,6 @@
           </ion-label>
           {{ pointsTeam2 }}
         </ion-item>
-        <ion-item>
-          <ion-label>
-            <small>{{ gameInfo.bet_name }}</small>
-          </ion-label>
-          {{ bet }}
-        </ion-item>
         <ion-item v-if="points != undefined">
           <ion-label>
             <small>Points</small>
@@ -137,7 +122,7 @@
         </ion-item>
       </div>
     </ion-grid>
-    <game-guesses :gameID="gameInfo.id" :bet="gameInfo.bet_name" />
+    <game-guesses :gameID="gameInfo.id" />
   </ion-content>
 </template>
 
@@ -158,17 +143,17 @@ import {
   IonLabel,
   IonIcon,
   useBackButton,
-} from '@ionic/vue';
-import { close, send } from 'ionicons/icons';
-import { defineComponent } from 'vue';
+} from "@ionic/vue";
+import { close, send } from "ionicons/icons";
+import { defineComponent } from "vue";
 
-import GameGuesses from '@/components/GameGuesses.vue';
+import GameGuesses from "@/components/GameGuesses.vue";
 
-import { mapState } from 'vuex';
-import { showToast } from '@/store/helper';
+import { mapState } from "vuex";
+import { showToast } from "@/store/helper";
 
 export default defineComponent({
-  name: 'GuessModal',
+  name: "GuessModal",
   props: {
     gameInfo: Object,
   },
@@ -191,12 +176,10 @@ export default defineComponent({
   data() {
     let pointsTeam1;
     let pointsTeam2;
-    let bet;
     let points;
     return {
       pointsTeam1,
       pointsTeam2,
-      bet,
       points,
     };
   },
@@ -219,25 +202,22 @@ export default defineComponent({
       if (
         this.pointsTeam1 < 0 ||
         this.pointsTeam2 < 0 ||
-        this.bet < 0 ||
         this.pointsTeam1 == undefined ||
-        this.pointsTeam2 == undefined ||
-        this.bet == undefined
+        this.pointsTeam2 == undefined
       ) {
-        showToast('Please fill out everything (≥0).');
+        showToast("Please fill out everything (≥0).");
       } else if (new Date(this.gameInfo.date) < new Date()) {
-        showToast('You are too late :(');
+        showToast("You are too late :(");
       } else {
         this.$store
-            .dispatch('addGuess', {
+            .dispatch("addGuess", {
               game: this.gameInfo.id,
-              bet: this.bet,
               team1: this.pointsTeam1,
               team2: this.pointsTeam2,
             })
             .then(() => {
               modalController.dismiss();
-              showToast('Saved guess successfully');
+              showToast("Saved guess successfully");
             })
             .catch();
       }
@@ -248,25 +228,23 @@ export default defineComponent({
   },
   mounted() {
     this.$store
-        .dispatch('getUserGuess', this.gameInfo.id)
+        .dispatch("getUserGuess", this.gameInfo.id)
         .then((val) => {
-          if (val != '') {
+          if (val != "") {
             this.pointsTeam1 = val.score_team1;
             this.pointsTeam2 = val.score_team2;
-            this.bet = val.special_bet;
             this.points = val.points;
           } else if (this.isUpcoming()) {
             this.points = undefined;
           } else {
-            this.pointsTeam1 = '-';
-            this.pointsTeam2 = '-';
-            this.bet = '-';
+            this.pointsTeam1 = "-";
+            this.pointsTeam2 = "-";
             this.points = undefined;
           }
         })
         .catch();
   },
-  computed: mapState(['groupData']),
+  computed: mapState(["groupData"]),
 });
 </script>
 

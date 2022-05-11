@@ -71,20 +71,20 @@ import {
   IonIcon,
   IonText,
   modalController,
-} from '@ionic/vue';
-import { defineComponent } from 'vue';
+} from "@ionic/vue";
+import { defineComponent } from "vue";
 
-import { copyOutline, pencilOutline } from 'ionicons/icons';
+import { copyOutline, pencilOutline } from "ionicons/icons";
 
-import moment from 'moment';
+import moment from "moment";
 
-import { mapState } from 'vuex';
-import EditGroupModalVue from './EditGroupModal.vue';
-import { toClipboard } from '@soerenmartius/vue3-clipboard';
-import { showToast } from '@/store/helper';
+import { mapState } from "vuex";
+import EditGroupModalVue from "./EditGroupModal.vue";
+import { toClipboard } from "@soerenmartius/vue3-clipboard";
+import { showToast } from "@/store/helper";
 
 export default defineComponent({
-  name: 'CurrentGroup',
+  name: "CurrentGroup",
   setup() {
     return {
       moment,
@@ -104,15 +104,15 @@ export default defineComponent({
   },
   methods: {
     async copyPassphrase(passphrase: string) {
-      if (passphrase != '') {
+      if (passphrase != "") {
         try {
           toClipboard(passphrase);
-          showToast('Passphrase copied to clipboard.');
+          showToast("Passphrase copied to clipboard.");
         } catch (e) {
-          showToast('Copy failed. Sorry :(');
+          showToast("Copy failed. Sorry :(");
         }
       } else {
-        showToast('Copy failed. Sorry :(');
+        showToast("Copy failed. Sorry :(");
       }
     },
     async openGroupModal() {
@@ -122,7 +122,7 @@ export default defineComponent({
       await groupModal.present();
     },
   },
-  computed: mapState(['groupData']),
+  computed: mapState(["groupData"]),
 });
 </script>
 

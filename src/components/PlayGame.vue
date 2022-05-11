@@ -56,9 +56,17 @@
                       </text>
                     </svg>
                   </ion-col>
-                  <ion-col class="ion-text-center" size="4">{{
-                    item.game_string
-                  }}</ion-col>
+                  <ion-col
+                    class="ion-text-center"
+                    size="4"
+                    :style="
+                      'color:' +
+                      (item.team1_text == item.team2_text
+                        ? item.team1_text
+                        : '#464646')
+                    "
+                    >{{ item.game_string }}</ion-col
+                  >
                   <ion-col size="4" class="align-middle">
                     <svg
                       viewBox="0 0 100 100"
@@ -84,18 +92,10 @@
                 </ion-row>
                 <ion-row>
                   <ion-col
-                    size="16"
                     class="ion-text-start small-text"
                     :style="'color:' + item.team1_text"
                     >Date: {{ item.date_string }}</ion-col
                   >
-                  <ion-col
-                    class="small-text ion-text-center"
-                    size="8"
-                    :style="'color:' + item.team2_text"
-                  >
-                    {{ item.bet_string }}
-                  </ion-col>
                 </ion-row>
               </ion-card-content>
             </ion-card>
@@ -116,13 +116,13 @@ import {
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
-} from '@ionic/vue';
-import { defineComponent } from 'vue';
+} from "@ionic/vue";
+import { defineComponent } from "vue";
 
-import GuessModal from '@/components/GuessModal.vue';
+import GuessModal from "@/components/GuessModal.vue";
 
 export default defineComponent({
-  name: 'PlayGame',
+  name: "PlayGame",
   props: {
     sectionID: {
       type: Number,
@@ -155,10 +155,10 @@ export default defineComponent({
       const rgb1 = this.hexToRGB(hex1);
       const rgb2 = this.hexToRGB(hex2);
 
-      const game = document.getElementById('game' + id);
+      const game = document.getElementById("game" + id);
       if (game) {
         game.style.background =
-          'linear-gradient(to right, ' + rgb1 + ', ' + rgb2 + ')';
+          "linear-gradient(to right, " + rgb1 + ", " + rgb2 + ")";
       }
     },
     hexToRGB(hex) {
@@ -171,7 +171,7 @@ export default defineComponent({
         } :
         null;
 
-      return 'rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')';
+      return "rgb(" + rgb.r + "," + rgb.g + "," + rgb.b + ")";
     },
   },
 });

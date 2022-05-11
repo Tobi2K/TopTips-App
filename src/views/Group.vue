@@ -42,9 +42,9 @@ import {
   IonLabel,
   alertController,
   IonList,
-} from '@ionic/vue';
+} from "@ionic/vue";
 
-import CustomHeader from '@/components/CustomHeader.vue';
+import CustomHeader from "@/components/CustomHeader.vue";
 
 import {
   arrowBackCircleOutline,
@@ -52,17 +52,17 @@ import {
   settingsOutline,
   refresh,
   copyOutline,
-} from 'ionicons/icons';
+} from "ionicons/icons";
 
-import { defineComponent } from 'vue';
+import { defineComponent } from "vue";
 
-import { useStore } from '@/store/store';
-import { mapState } from 'vuex';
+import { useStore } from "@/store/store";
+import { mapState } from "vuex";
 
-import CurrentGroup from '@/components/CurrentGroup.vue';
+import CurrentGroup from "@/components/CurrentGroup.vue";
 
 export default defineComponent({
-  name: 'GroupView',
+  name: "GroupView",
   components: {
     IonContent,
     IonPage,
@@ -88,40 +88,40 @@ export default defineComponent({
   },
   data() {
     return {
-      username: '',
-      groupPass: '',
+      username: "",
+      groupPass: "",
       groups: [],
       groupID: this.$store.state.currentGroupID,
     };
   },
   methods: {
     async refreshAll() {
-      this.$store.dispatch('refreshGroups');
-      this.$store.dispatch('UPDATE_USER_GROUPS');
+      this.$store.dispatch("refreshGroups");
+      this.$store.dispatch("UPDATE_USER_GROUPS");
     },
     selectedGroup(groupID: string) {
-      this.$store.dispatch('UPDATE_CURRENT_GROUP_ID', groupID);
+      this.$store.dispatch("UPDATE_CURRENT_GROUP_ID", groupID);
       // this.refreshAll();
     },
 
     async presentJoinGroupPrompt() {
       const alert = await alertController.create({
-        header: 'Join Group',
+        header: "Join Group",
         inputs: [
           {
-            name: 'passphrase',
-            id: 'passphraseID',
-            placeholder: 'Enter Group Passphrase',
+            name: "passphrase",
+            id: "passphraseID",
+            placeholder: "Enter Group Passphrase",
           },
         ],
         buttons: [
           {
-            text: 'Cancel',
-            role: 'cancel',
-            cssClass: 'secondary',
+            text: "Cancel",
+            role: "cancel",
+            cssClass: "secondary",
           },
           {
-            text: 'Join',
+            text: "Join",
             handler: (value) => {
               this.groupPass = value.passphrase;
               this.joinGroup(value.passphrase);
@@ -132,15 +132,15 @@ export default defineComponent({
       return alert.present();
     },
     goToCreateGroup() {
-      this.$router.push('/country');
+      this.$router.push("/country");
     },
     async joinGroup(passphrase: string) {
-      this.$store.dispatch('JOIN_GROUP', passphrase);
+      this.$store.dispatch("JOIN_GROUP", passphrase);
     },
   },
   mounted() {
-    this.$store.dispatch('checkJWT');
-    this.$store.dispatch('initGroup');
+    this.$store.dispatch("checkJWT");
+    this.$store.dispatch("initGroup");
   },
   watch: {
     groupID() {
@@ -148,10 +148,10 @@ export default defineComponent({
     },
   },
   computed: mapState([
-    'groupData',
-    'showSelectGroup',
-    'userGroups',
-    'currentGroupID',
+    "groupData",
+    "showSelectGroup",
+    "userGroups",
+    "currentGroupID",
   ]),
 });
 </script>

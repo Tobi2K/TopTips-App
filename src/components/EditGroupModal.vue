@@ -84,19 +84,19 @@ import {
   IonList,
   IonListHeader,
   alertController,
-} from '@ionic/vue';
-import { defineComponent } from 'vue';
+} from "@ionic/vue";
+import { defineComponent } from "vue";
 import {
   pencilOutline,
   trashOutline,
   exitOutline,
   close,
-} from 'ionicons/icons';
+} from "ionicons/icons";
 
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 
 export default defineComponent({
-  name: 'EditGroupModal',
+  name: "EditGroupModal",
   components: {
     IonContent,
     IonHeader,
@@ -129,23 +129,23 @@ export default defineComponent({
   },
   data() {
     return {
-      groupName: '',
+      groupName: "",
     };
   },
   methods: {
     async sendName() {
-      if (this.groupName != '') {
-        this.$store.dispatch('saveGroupName', this.groupName);
+      if (this.groupName != "") {
+        this.$store.dispatch("saveGroupName", this.groupName);
       } else {
-        this.$store.dispatch('handleError', {
+        this.$store.dispatch("handleError", {
           error: null,
-          message: 'There was an error setting the group name, sorry!',
+          message: "There was an error setting the group name, sorry!",
         });
       }
     },
     async leaveGroup() {
       this.$store
-          .dispatch('leaveGroup')
+          .dispatch("leaveGroup")
           .then(() => {
             modalController.dismiss();
           })
@@ -153,7 +153,7 @@ export default defineComponent({
     },
     async deleteGroup() {
       this.$store
-          .dispatch('deleteGroup')
+          .dispatch("deleteGroup")
           .then(() => {
             modalController.dismiss();
           })
@@ -161,22 +161,22 @@ export default defineComponent({
     },
     async presentEditGroupNamePrompt() {
       const alert = await alertController.create({
-        header: 'Edit Group Name',
+        header: "Edit Group Name",
         inputs: [
           {
-            name: 'groupName',
-            id: 'groupnameID',
+            name: "groupName",
+            id: "groupnameID",
             value: this.groupName,
-            placeholder: 'Group Name',
+            placeholder: "Group Name",
           },
         ],
         buttons: [
           {
-            text: 'Cancel',
-            role: 'cancel',
+            text: "Cancel",
+            role: "cancel",
           },
           {
-            text: 'Save Name',
+            text: "Save Name",
             handler: (value) => {
               this.groupName = value.groupName;
               this.sendName();
@@ -188,19 +188,19 @@ export default defineComponent({
     },
     async presentLeaveGroupPrompt() {
       const alert = await alertController.create({
-        header: 'Leave Group',
+        header: "Leave Group",
         message:
-          'Are you sure you want to leave ' +
+          "Are you sure you want to leave " +
           this.groupName +
-          '? <br> <br> THIS ACTION CANNOT BE UNDONE. YOUR GUESSES WILL BE DELETED!',
+          "? <br> <br> THIS ACTION CANNOT BE UNDONE. YOUR GUESSES WILL BE DELETED!",
         buttons: [
           {
-            text: 'Cancel',
-            role: 'cancel',
+            text: "Cancel",
+            role: "cancel",
           },
           {
-            text: 'Leave',
-            cssClass: 'danger',
+            text: "Leave",
+            cssClass: "danger",
             handler: () => {
               this.leaveGroup();
             },
@@ -211,19 +211,19 @@ export default defineComponent({
     },
     async presentDeleteGroupPrompt() {
       const alert = await alertController.create({
-        header: 'Delete Group',
+        header: "Delete Group",
         message:
-          'Are you sure you want to delete ' +
+          "Are you sure you want to delete " +
           this.groupName +
-          '? <br><br> THIS ACTION CANNOT BE UNDONE. ALL GUESSES WILL BE DELETED!',
+          "? <br><br> THIS ACTION CANNOT BE UNDONE. ALL GUESSES WILL BE DELETED!",
         buttons: [
           {
-            text: 'Cancel',
-            role: 'cancel',
+            text: "Cancel",
+            role: "cancel",
           },
           {
-            text: 'Delete',
-            cssClass: 'danger',
+            text: "Delete",
+            cssClass: "danger",
             handler: () => {
               this.deleteGroup();
             },
@@ -236,7 +236,7 @@ export default defineComponent({
   mounted() {
     this.groupName = this.$store.state.groupData.name;
   },
-  computed: mapState(['groupData']),
+  computed: mapState(["groupData"]),
 });
 </script>
 

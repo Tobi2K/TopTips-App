@@ -14,9 +14,6 @@
       <ion-col class="ion-text-center">
         {{ guess.guess_string }}
       </ion-col>
-      <ion-col class="ion-text-center small-text">
-        {{ bet }}: {{ guess.bet }}
-      </ion-col>
       <ion-col
         v-if="guess.points != undefined"
         class="ion-text-center small-text"
@@ -28,20 +25,16 @@
 </template>
 
 <script>
-import { IonCol, IonRow, IonGrid } from '@ionic/vue';
-import { defineComponent } from 'vue';
+import { IonCol, IonRow, IonGrid } from "@ionic/vue";
+import { defineComponent } from "vue";
 
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 
 export default defineComponent({
-  name: 'GameGuesses',
+  name: "GameGuesses",
   props: {
     gameID: {
       type: Number,
-      required: true,
-    },
-    bet: {
-      type: String,
       required: true,
     },
   },
@@ -56,6 +49,6 @@ export default defineComponent({
       guesses,
     };
   },
-  computed: mapState(['guessesForOpenGame']),
+  computed: mapState(["guessesForOpenGame"]),
 });
 </script>

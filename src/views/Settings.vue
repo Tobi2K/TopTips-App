@@ -157,8 +157,8 @@ import {
   IonBackButton,
   IonItemDivider,
   IonPage,
-} from '@ionic/vue';
-import { defineComponent } from 'vue';
+} from "@ionic/vue";
+import { defineComponent } from "vue";
 import {
   logOutOutline,
   close,
@@ -167,16 +167,16 @@ import {
   sunny,
   createOutline,
   podiumOutline,
-} from 'ionicons/icons';
+} from "ionicons/icons";
 
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 
-import { FCM } from '@capacitor-community/fcm';
-import { PushNotifications } from '@capacitor/push-notifications';
-import { getUserRank, showToast } from '@/store/helper';
+import { FCM } from "@capacitor-community/fcm";
+import { PushNotifications } from "@capacitor/push-notifications";
+import { getUserRank, showToast } from "@/store/helper";
 
 export default defineComponent({
-  name: 'SettingsView',
+  name: "SettingsView",
   components: {
     IonBackButton,
     IonItemDivider,
@@ -213,50 +213,50 @@ export default defineComponent({
   },
   data() {
     let light = true;
-    const x = document.getElementsByTagName('body')[0].classList;
-    if (x.contains('dark')) {
+    const x = document.getElementsByTagName("body")[0].classList;
+    if (x.contains("dark")) {
       light = false;
     }
     return {
       light,
-      username: '',
+      username: "",
       gameNoti: false,
       groupNoti: false,
     };
   },
   methods: {
     async sendName(name: string) {
-      if (name != '') {
-        this.$store.dispatch('saveName', name).then(() => {
-          this.$router.push('/');
+      if (name != "") {
+        this.$store.dispatch("saveName", name).then(() => {
+          this.$router.push("/");
         });
       } else {
-        this.$store.dispatch('handleError', {
+        this.$store.dispatch("handleError", {
           error: null,
-          message: 'There was an error setting your username!',
+          message: "There was an error setting your username!",
         });
       }
     },
     async presentEditUsernamePrompt() {
       const alert = await alertController.create({
-        header: 'Edit Username',
-        message: 'You will be logged out.',
+        header: "Edit Username",
+        message: "You will be logged out.",
         inputs: [
           {
-            name: 'username',
-            id: 'usernameID',
+            name: "username",
+            id: "usernameID",
             value: this.username,
-            placeholder: 'Your Username',
+            placeholder: "Your Username",
           },
         ],
         buttons: [
           {
-            text: 'Cancel',
-            role: 'cancel',
-            cssClass: 'secondary',
+            text: "Cancel",
+            role: "cancel",
+            cssClass: "secondary",
           },
           {
-            text: 'Save Name',
+            text: "Save Name",
             handler: (value) => {
               this.username = value.username;
               this.sendName(value.username);
@@ -267,42 +267,42 @@ export default defineComponent({
       return alert.present();
     },
     toggleTheme() {
-      const x = document.getElementsByTagName('body')[0].classList;
-      if (x.contains('dark')) {
-        localStorage.setItem('dark', 'f');
+      const x = document.getElementsByTagName("body")[0].classList;
+      if (x.contains("dark")) {
+        localStorage.setItem("dark", "f");
       } else {
-        localStorage.setItem('dark', 't');
+        localStorage.setItem("dark", "t");
       }
       this.light = !this.light;
-      x.toggle('dark');
+      x.toggle("dark");
     },
     logout() {
-      this.$store.dispatch('LOGOUT');
-      this.$router.push('/');
+      this.$store.dispatch("LOGOUT");
+      this.$router.push("/");
     },
     toggleStatus(id: string, name: string) {
-      const escapedID = id.replaceAll(':', '');
-      if (localStorage.getItem(escapedID) == 'true') {
+      const escapedID = id.replaceAll(":", "");
+      if (localStorage.getItem(escapedID) == "true") {
         // unsubscribe
         FCM.unsubscribeFrom({ topic: escapedID })
             .then(() => {
-              localStorage.setItem(escapedID, 'false');
-              this.generateAlert(`Unsubscribed from notifications for ` + name);
+              localStorage.setItem(escapedID, "false");
+              this.generateAlert("Unsubscribed from notifications for " + name);
             })
-            .catch(() => this.generateAlert('Operation failed. Sorry!'));
+            .catch(() => this.generateAlert("Operation failed. Sorry!"));
       } else {
         // subscribe
         FCM.subscribeTo({ topic: escapedID })
             .then(() => {
-              localStorage.setItem(escapedID, 'true');
-              this.generateAlert(`Subscribed to notifications for ` + name);
+              localStorage.setItem(escapedID, "true");
+              this.generateAlert("Subscribed to notifications for " + name);
             })
-            .catch(() => this.generateAlert('Operation failed. Sorry!'));
+            .catch(() => this.generateAlert("Operation failed. Sorry!"));
       }
     },
     getStatus(id: string) {
-      const escapedID = id.replaceAll(':', '');
-      return localStorage.getItem(escapedID) == 'true';
+      const escapedID = id.replaceAll(":", "");
+      return localStorage.getItem(escapedID) == "true";
     },
     generateAlert(message: string) {
       showToast(message);
@@ -312,28 +312,28 @@ export default defineComponent({
           .then((response) => {
             alertController
                 .create({
-                  header: 'You are #' + response.data.rank + ' overall.',
+                  header: "You are #" + response.data.rank + " overall.",
                   message:
-                'Total Points: ' +
+                "Total Points: " +
                 response.data.points +
-                '<br>You are part of ' +
+                "<br>You are part of " +
                 response.data.groups +
-                '  groups.',
-                  buttons: ['Dismiss'],
+                "  groups.",
+                  buttons: ["Dismiss"],
                 })
                 .then((alert) => alert.present());
           })
           .catch(() => {
-            this.generateAlert('Could not get your rank. Sorry!');
+            this.generateAlert("Could not get your rank. Sorry!");
           });
     },
   },
   mounted() {
-    this.$store.dispatch('checkJWT');
+    this.$store.dispatch("checkJWT");
     this.username = this.$store.state.user.username;
-    this.$store.dispatch('getUserSeasons');
+    this.$store.dispatch("getUserSeasons");
   },
-  computed: mapState(['userSeasons', 'userGroups']),
+  computed: mapState(["userSeasons", "userGroups"]),
 });
 </script>
 

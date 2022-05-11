@@ -37,11 +37,11 @@ import {
   IonSelect,
   IonSelectOption,
   IonItem,
-} from '@ionic/vue';
+} from "@ionic/vue";
 
-import GameDaySlider from '@/components/GameDaySlider.vue';
+import GameDaySlider from "@/components/GameDaySlider.vue";
 
-import CustomHeader from '@/components/CustomHeader.vue';
+import CustomHeader from "@/components/CustomHeader.vue";
 
 import {
   arrowBackCircleOutline,
@@ -49,14 +49,14 @@ import {
   settingsOutline,
   refresh,
   chevronDownCircleOutline,
-} from 'ionicons/icons';
+} from "ionicons/icons";
 
-import { defineComponent } from 'vue';
-import { useStore } from '@/store/store';
-import { mapState } from 'vuex';
+import { defineComponent } from "vue";
+import { useStore } from "@/store/store";
+import { mapState } from "vuex";
 
 export default defineComponent({
-  name: 'PlayView',
+  name: "PlayView",
   components: {
     IonContent,
     IonPage,
@@ -86,16 +86,16 @@ export default defineComponent({
   },
   methods: {
     async refreshAll() {
-      this.$store.dispatch('UPDATE_ALL_GAMES');
+      this.$store.dispatch("UPDATE_ALL_GAMES");
     },
     selectedGroup(groupID: number) {
-      this.$store.dispatch('UPDATE_CURRENT_GROUP_ID', groupID);
+      this.$store.dispatch("UPDATE_CURRENT_GROUP_ID", groupID);
       this.groupID = 0;
       this.refreshAll();
     },
   },
   mounted() {
-    this.$store.dispatch('checkJWT');
+    this.$store.dispatch("checkJWT");
   },
   watch: {
     groupID() {
@@ -103,11 +103,11 @@ export default defineComponent({
     },
   },
   computed: mapState([
-    'allGames',
-    'showSelectGroup',
-    'userGroups',
-    'currentGroupID',
-    'groupData',
+    "allGames",
+    "showSelectGroup",
+    "userGroups",
+    "currentGroupID",
+    "groupData",
   ]),
 });
 </script>

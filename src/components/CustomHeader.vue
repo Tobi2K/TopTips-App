@@ -54,20 +54,20 @@ import {
   IonButton,
   IonButtons,
   IonText,
-} from '@ionic/vue';
+} from "@ionic/vue";
 
-import { defineComponent } from 'vue';
-import { refresh, settingsOutline } from 'ionicons/icons';
+import { defineComponent } from "vue";
+import { refresh, settingsOutline } from "ionicons/icons";
 
 export default defineComponent({
-  name: 'CustomHeader',
+  name: "CustomHeader",
   props: {
     title: {
       type: String,
       required: true,
     },
   },
-  emits: ['refresh'],
+  emits: ["refresh"],
   components: {
     IonHeader,
     IonToolbar,
@@ -87,10 +87,10 @@ export default defineComponent({
   },
   methods: {
     refreshClicked() {
-      this.$emit('refresh');
+      this.$emit("refresh");
     },
     goToSettings() {
-      this.$router.push('/settings');
+      this.$router.push("/settings");
     },
   },
 });
