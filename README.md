@@ -28,25 +28,25 @@
 </p>
 <p align="center">
   <a href="#readme">
-    <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/Tobi2K/TopTips-App?style=flat-square">
+    <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/Tobi2K/TopTips-App">
   </a>
   <a href="https://www.codefactor.io/repository/github/tobi2k/toptips-app">
-    <img alt="CodeFactor Grade" src="https://img.shields.io/codefactor/grade/github/Tobi2K/TopTips-App?style=flat-square">
+    <img alt="CodeFactor Grade" src="https://img.shields.io/codefactor/grade/github/Tobi2K/TopTips-App">
   </a>
-  <a href="https://libraries.io/github/Tobi2K/TopTips-App">
-    <img alt="Libraries.io dependency status for GitHub repo" src="https://img.shields.io/librariesio/github/Tobi2K/TopTips-App?style=flat-square">
+  <a href="https://depfu.com/github/Tobi2K/TopTips-App?project_id=35393">
+  <img alt="Depfu depency status" src="https://badges.depfu.com/badges/ba1b5b572e1e6f563a0cbb0964ea6fe3/count.svg">
   </a>
   <a href="#readme">
-    <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/Tobi2K/TopTips-App?style=flat-square"></a>
+    <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/Tobi2K/TopTips-App"></a>
   <a href="#readme">
-    <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/Tobi2K/TopTips-App?style=flat-square">
+    <img alt="Lines of code" src="https://img.shields.io/tokei/lines/github/Tobi2K/TopTips-App">
   </a>
   <br>
   <a href="#readme">
-    <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/Tobi2K/TopTips-App?style=flat-square">
+    <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/Tobi2K/TopTips-App">
   </a>
   <a href="#readme">
-    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Tobi2K/TopTips-App?style=flat-square">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Tobi2K/TopTips-App">
   </a>
 </p>
 
