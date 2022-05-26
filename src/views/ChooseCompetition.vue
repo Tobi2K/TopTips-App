@@ -22,10 +22,6 @@
         >
           <ion-label>
             <h2>{{ competition.name }}</h2>
-            <p>
-              Gender:
-              {{ competition.gender.toUpperCase() }}
-            </p>
           </ion-label>
         </ion-item>
       </ion-list>

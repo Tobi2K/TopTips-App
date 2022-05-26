@@ -107,7 +107,6 @@ export interface Competition {
   id: number;
   competition_id: string;
   name: string;
-  gender: string;
   country: string;
 }
 

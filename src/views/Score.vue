@@ -5,6 +5,11 @@
       <ion-refresher slot="fixed" @ionRefresh="doRefresh($event)">
         <ion-refresher-content> </ion-refresher-content>
       </ion-refresher>
+      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button color="light" @click="showPointsDesc()">
+          <ion-icon :icon="helpCircleOutline"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
       <score-section @done="endRefresh" :key="refreshGame" />
     </ion-content>
   </ion-page>
@@ -16,13 +21,17 @@ import {
   IonContent,
   IonRefresher,
   IonRefresherContent,
+  IonFab,
+  IonFabButton,
+  IonIcon,
+  alertController,
 } from "@ionic/vue";
 
 import ScoreSection from "@/components/ScoreSection.vue";
 
 import CustomHeader from "@/components/CustomHeader.vue";
 
-import { refresh, settingsOutline } from "ionicons/icons";
+import { refresh, settingsOutline, helpCircleOutline } from "ionicons/icons";
 
 import { defineComponent } from "vue";
 
@@ -35,6 +44,9 @@ export default defineComponent({
     IonRefresher,
     IonRefresherContent,
     CustomHeader,
+    IonFab,
+    IonFabButton,
+    IonIcon,
   },
   data() {
     return {
@@ -51,6 +63,7 @@ export default defineComponent({
     return {
       refresh,
       settingsOutline,
+      helpCircleOutline,
     };
   },
   mounted() {
@@ -68,6 +81,22 @@ export default defineComponent({
       if (this.target != null) {
         this.target.target.complete();
       }
+    },
+    async showPointsDesc() {
+      alertController.create({
+        cssClass: "points-alert",
+        header: "How are points calculated?",
+        message: "You get 1 point for:<br>" +
+                  "<ul>" +
+                  "<li>Correct Winner</li>" +
+                  "<li>Correct Goals (per Team)</li>" +
+                  "<li>Correct Goal Difference</li>" +
+                  "<li>Perfect Score</li>" +
+                  "</ul>This means a total of 5 points can be achieved per game.",
+        buttons: ["OK"],
+      }).then((val) => {
+        val.present();
+      });
     },
   },
 });
@@ -93,5 +122,11 @@ h2 {
   --inner-padding-end: 0;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+}
+</style>
+
+<style>
+.points-alert .alert-head .alert-title {
+  font-size: 18px !important;
 }
 </style>

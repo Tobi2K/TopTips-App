@@ -126,9 +126,9 @@
               <small>{{ season.competition.country }}</small>
             </ion-label>
             <ion-toggle
-              @ionChange="toggleStatus(season.season_id, season.name)"
-              :value="season.season_id"
-              :checked="getStatus(season.season_id)"
+              @ionChange="toggleStatus('season' + season.id, season.name)"
+              :value="season.id"
+              :checked="getStatus('season' + season.id)"
             />
           </ion-item>
         </div>

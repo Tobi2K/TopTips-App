@@ -16,11 +16,11 @@
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
-      <ion-list>
+      <ion-list v-if="seasons.length > 0">
         <ion-item
           v-for="season in seasons"
           :key="season"
-          @click="selectSeason(season.season_id)"
+          @click="selectSeason(season.id)"
         >
           <ion-label>
             <h2>{{ season.name }}</h2>
@@ -34,6 +34,11 @@
           </ion-label>
         </ion-item>
       </ion-list>
+      <ion-item v-else lines="none">
+        <h4 style="text-align: center; width: 100%">
+          There are currently no seasons for this competition!<br>Check back later.
+        </h4>
+      </ion-item>
     </ion-content>
   </ion-page>
 </template>
