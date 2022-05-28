@@ -224,6 +224,16 @@ export async function getUserRank(): Promise<AxiosResponse<any, any>> {
 }
 
 /**
+ * Gets the newest app version
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function getVersion(): Promise<AxiosResponse<any, any>> {
+  return axios.get(process.env.VUE_APP_HOST + "/version", {
+    headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
+  });
+}
+
+/**
  * Generates a toast to be shown at the bottom of the screen
  * @param {string} toastMessage the message to be displayed
  */

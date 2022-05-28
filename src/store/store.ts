@@ -703,6 +703,13 @@ export const store = createStore({
         } else return true;
       });
     },
+    getVersion() {
+      return helper.getVersion().then((val) => {
+        return val.data;
+      }).catch((error) => {
+        return undefined;
+      });
+    },
   },
 });
 

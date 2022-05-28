@@ -2,7 +2,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 
-import { IonicVue } from "@ionic/vue";
+import { alertController, IonicVue, toastController } from "@ionic/vue";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/vue/css/core.css";
@@ -35,6 +35,72 @@ const app = createApp(App)
     .use(store, key)
     .use(VueClipboard);
 
-router.isReady().then(() => {
+const newMajor = () => {
+  alertController.create({
+    header: "Update Required!",
+    message: "There is an important update available.<br>" +
+        "Correct functionality cannot be ensured, therefore you must update in order to proceed.",
+    buttons: [
+      {
+        text: "Update",
+        handler: () => {
+          window.open("https://play.google.com/store/apps/details?id=app.kalmbach.dev");
+          return false;
+        },
+      },
+    ],
+    backdropDismiss: false,
+  }).then((alert) => {
+    alert.present();
+  });
+};
+const updateAvailable = (message: string) => {
+  toastController
+      .create({
+        message: message,
+        duration: 4000,
+        buttons: [
+          {
+            text: "Update",
+            handler: () => {
+              window.open("https://play.google.com/store/apps/details?id=app.kalmbach.dev");
+            },
+          },
+        ],
+      })
+      .then((value) => {
+        value.present();
+      });
+};
+
+router.isReady().then(async () => {
+  try {
+    const newestVersion = await store.dispatch("getVersion");
+    const appVersion = require("../package.json").version;
+    if (newestVersion && newestVersion !== appVersion) {
+      const splitNewestVersion = (newestVersion as string).split(".");
+      const splitAppVersion = appVersion.split(".");
+
+      const new1 = Number(splitNewestVersion[0]);
+      const new2 = Number(splitNewestVersion[1]);
+      const new3 = Number(splitNewestVersion[2]);
+      const curr1 = Number(splitAppVersion[0]);
+      const curr2 = Number(splitAppVersion[1]);
+      const curr3 = Number(splitAppVersion[2]);
+      if (new1 > curr1) {
+        newMajor();
+        return;
+      } else if (new1 == curr1) {
+        if (new2 > curr2) {
+          updateAvailable("Recommended update available :)");
+        } else if (new2 == curr2 && new3 > curr3) {
+          updateAvailable("Optional update available :)");
+        }
+      }
+    }
+  } catch (error) {
+    // error can be ignored
+  }
+
   app.mount("#app");
 });
