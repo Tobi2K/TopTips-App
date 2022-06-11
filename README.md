@@ -34,7 +34,7 @@
     <img alt="CodeFactor Grade" src="https://img.shields.io/codefactor/grade/github/Tobi2K/TopTips-App">
   </a>
   <a href="https://depfu.com/github/Tobi2K/TopTips-App?project_id=35393">
-  <img alt="Depfu depency status" src="https://badges.depfu.com/badges/ba1b5b572e1e6f563a0cbb0964ea6fe3/count.svg">
+  <img alt="Depfu depency status" src="https://badges.depfu.com/badges/ba1b5b572e1e6f563a0cbb0964ea6fe3/overview.svg">
   </a>
   <a href="#readme">
     <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/Tobi2K/TopTips-App"></a>
