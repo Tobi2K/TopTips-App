@@ -61,7 +61,7 @@
 
 ## What?
 
-Top Tips is a lightweight guessing game for handball leagues. You can choose from more than 130 leagues in 25 countries as well as international leagues.
+Top Tips is a lightweight guessing game for handball leagues. You can choose from more than 190 leagues in 30+ countries as well as international leagues.
 
 You can create groups for different leagues and seasons and play with your friends.
 
