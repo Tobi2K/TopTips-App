@@ -20,6 +20,9 @@
   <ion-content class="ion-padding">
     <ion-grid>
       <ion-row class="align-middle">
+        {{ timeString }}
+      </ion-row>
+      <ion-row class="align-middle">
         <ion-col class="ion-text-end" size="5">
           <svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
             <rect
@@ -149,9 +152,10 @@ import { defineComponent } from "vue";
 
 import GameGuesses from "@/components/GameGuesses.vue";
 
+import moment from "moment";
+
 import { mapState } from "vuex";
 import { showToast } from "@/store/helper";
-
 export default defineComponent({
   name: "GuessModal",
   props: {
@@ -183,7 +187,7 @@ export default defineComponent({
       points,
     };
   },
-  setup() {
+  setup(props) {
     const closeModal = () => {
       modalController.dismiss();
     };
@@ -191,7 +195,36 @@ export default defineComponent({
     useBackButton(10, () => {
       modalController.dismiss();
     });
+    let timeString = "In about ";
+    const minutes = moment(props.gameInfo.date).diff(moment(), "minutes") % 60;
+    const hours = moment(props.gameInfo.date).diff(moment(), "hours") % 24;
+    const days = (moment(props.gameInfo.date).diff(moment(), "hours") - hours) / 24;
+
+    if (moment(props.gameInfo.date).diff(moment()) < 0) {
+      timeString = moment(props.gameInfo.date).fromNow();
+    } else {
+      if (days == 1) {
+        timeString += "1 day, ";
+      } else if (days > 1) {
+        timeString += days + " days, ";
+      }
+
+      if (hours == 1) {
+        timeString += "1 hour, ";
+      } else if (hours > 1) {
+        timeString += hours + " hours, ";
+      }
+
+      if (minutes == 1) {
+        timeString += "1 minute.";
+      } else if (minutes > 1) {
+        timeString += minutes + " minutes.";
+      }
+    }
+
     return {
+      timeString,
+      moment,
       closeModal,
       close,
       send,

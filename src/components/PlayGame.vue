@@ -96,6 +96,13 @@
                     :style="'color:' + item.team1_text"
                     >Date: {{ item.date_string }}</ion-col
                   >
+                  <ion-col
+                    v-if="item.guessed"
+                    class="ion-text-end small-text"
+                    :style="'color:' + item.team2_text"
+                    ><ion-icon :icon="checkmarkOutline" />
+                    </ion-col
+                  >
                 </ion-row>
               </ion-card-content>
             </ion-card>
@@ -116,8 +123,11 @@ import {
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
+  IonIcon,
 } from "@ionic/vue";
 import { defineComponent } from "vue";
+
+import { checkmarkOutline } from "ionicons/icons";
 
 import GuessModal from "@/components/GuessModal.vue";
 
@@ -132,6 +142,12 @@ export default defineComponent({
       required: true,
     },
   },
+  setup(props) {
+    console.log(props.games);
+    return {
+      checkmarkOutline,
+    };
+  },
   components: {
     IonCol,
     IonRow,
@@ -140,6 +156,7 @@ export default defineComponent({
     IonCardContent,
     IonCardHeader,
     IonCardTitle,
+    IonIcon,
   },
   methods: {
     async openModal(item) {
