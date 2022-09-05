@@ -1,5 +1,5 @@
 <template>
-  <ion-segment scrollable v-model="gameDay" style="height: 48px">
+  <ion-segment scrollable v-model="this.gameDay" style="height: 48px">
     <ion-segment-button
       v-for="section in games.length"
       :key="section"
@@ -24,7 +24,7 @@
         :key="index"
         :virtualIndex="index"
       >
-        <play-game :sectionID="Number(index)" :games="gameday" />
+        <play-game :sectionID="Number(index)" :games="gameday" @loaded="sectionLoaded()" />
       </swiper-slide>
     </swiper>
   </div>
@@ -70,7 +70,8 @@ export default defineComponent({
     return {
       swiperRef: null,
       // gameDay is 1-indexed!
-      gameDay: 1,
+      gameDay: this.$store.state.currentGameday,
+      loaded: false,
     };
   },
   methods: {
@@ -91,23 +92,23 @@ export default defineComponent({
         });
       }
     },
+    sectionLoaded() {
+      if (!this.loaded) {
+        this.loaded = true;
+        this.gameDay = this.currentGameday;
+        this.swiperRef.slideTo(this.gameDay - 1, 0, false);
+        this.slideSegments();
+      }
+    },
   },
   mounted() {
     this.gameDay = this.currentGameday;
-
-    setTimeout(() => {
-      this.slideSegments();
-    }, 3000);
-
-    for (let i = 0; i < 4; i++) {
-      setTimeout(() => {
-        this.slideSegments();
-      }, 3000 + i * 1000);
-    }
+    this.slideSegments();
   },
   watch: {
     gameDay(newValue) {
-      this.swiperRef.slideTo(newValue - 1, 100, false);
+      const slide = newValue - 1;
+      this.swiperRef.slideTo(slide, 100, false);
       this.slideSegments();
     },
   },

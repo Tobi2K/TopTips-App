@@ -142,7 +142,8 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props) {
+  emits: ["loaded"],
+  setup() {
     return {
       checkmarkOutline,
     };
@@ -156,6 +157,9 @@ export default defineComponent({
     IonCardHeader,
     IonCardTitle,
     IonIcon,
+  },
+  mounted() {
+    this.$emit("loaded");
   },
   methods: {
     async openModal(item) {
