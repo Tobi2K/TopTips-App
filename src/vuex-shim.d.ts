@@ -91,6 +91,7 @@ export interface State {
   allGames: GameDay[];
   showSelectGroup: boolean;
   loading: boolean;
+  activeGamedays: Number[];
 }
 
 export interface Guess {

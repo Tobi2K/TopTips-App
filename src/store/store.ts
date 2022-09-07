@@ -30,6 +30,7 @@ export const store = createStore({
     allGames: [],
     showSelectGroup: true,
     loading: false,
+    activeGamedays: [],
   },
   mutations: {
     UPDATE_CURRENT_GAMEDAY(state, gameday) {
@@ -80,6 +81,9 @@ export const store = createStore({
     },
     UPDATE_LOADING(state, bool) {
       state.loading = bool;
+    },
+    UPDATE_ACTIVE_GAMEDAYS(state, days) {
+      state.activeGamedays = days;
     },
   },
   actions: {
@@ -216,6 +220,17 @@ export const store = createStore({
             .getAllGames("/game/all/format/" + state.currentGroupID)
             .then((response) => {
               commit("UPDATE_ALL_GAMES", response.data);
+            })
+            .catch((e) => {
+              dispatch("handleError", {
+                error: e,
+                message: "Failed to update games.",
+              });
+            });
+        helper
+            .getActiveGamedays("/game/days/active/" + state.currentGroupID)
+            .then((response) => {
+              commit("UPDATE_ACTIVE_GAMEDAYS", response.data);
             })
             .catch((e) => {
               dispatch("handleError", {
@@ -616,6 +631,7 @@ export const store = createStore({
               commit("UPDATE_CURRENT_GROUP_ID", -1);
               commit("UPDATE_POINTS_FOR_GROUP", null);
               commit("UPDATE_ALL_GAMES", []);
+              commit("UPDATE_ACTIVE_GAMEDAYS", []);
               commit("UPDATE_GROUP_DATA", null);
               commit("UPDATE_SHOW_GROUP", true);
               dispatch("refreshGroups");
@@ -642,6 +658,7 @@ export const store = createStore({
               commit("UPDATE_CURRENT_GROUP_ID", -1);
               commit("UPDATE_POINTS_FOR_GROUP", null);
               commit("UPDATE_ALL_GAMES", []);
+              commit("UPDATE_ACTIVE_GAMEDAYS", []);
               commit("UPDATE_GROUP_DATA", null);
               commit("UPDATE_SHOW_GROUP", true);
               dispatch("refreshGroups");

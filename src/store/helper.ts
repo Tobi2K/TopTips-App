@@ -39,6 +39,19 @@ export async function getAllGames(
 }
 
 /**
+ * Gets all currently active gamedays (i.e. gameday with a game today)
+ * @param {string} path needs to be /game/days/active/ + yourGroupID
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function getActiveGamedays(
+    path: string,
+): Promise<AxiosResponse<any, any>> {
+  return axios.get(process.env.VUE_APP_HOST + path, {
+    headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
+  });
+}
+
+/**
  * Requests to join a group
  * @param {{ passphrase: string }} parameter passes the passphrase
  * @return {Promise<AxiosResponse<any, any>>} axios request promise

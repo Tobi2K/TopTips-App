@@ -10,6 +10,11 @@
           <ion-icon :icon="helpCircleOutline"></ion-icon>
         </ion-fab-button>
       </ion-fab>
+      <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+        <ion-fab-button color="light" @click="getRank()">
+          <ion-icon :icon="podiumOutline" />
+        </ion-fab-button>
+      </ion-fab>
       <score-section @done="endRefresh" :key="refreshGame" />
     </ion-content>
   </ion-page>
@@ -31,9 +36,15 @@ import ScoreSection from "@/components/ScoreSection.vue";
 
 import CustomHeader from "@/components/CustomHeader.vue";
 
-import { refresh, settingsOutline, helpCircleOutline } from "ionicons/icons";
+import {
+  refresh,
+  settingsOutline,
+  helpCircleOutline,
+  podiumOutline,
+} from "ionicons/icons";
 
 import { defineComponent } from "vue";
+import { getUserRank, showToast } from "@/store/helper";
 
 export default defineComponent({
   name: "ScoreView",
@@ -64,6 +75,7 @@ export default defineComponent({
       refresh,
       settingsOutline,
       helpCircleOutline,
+      podiumOutline,
     };
   },
   mounted() {
@@ -83,20 +95,47 @@ export default defineComponent({
       }
     },
     async showPointsDesc() {
-      alertController.create({
-        cssClass: "points-alert",
-        header: "How are points calculated?",
-        message: "You get 1 point for:<br>" +
-                  "<ul>" +
-                  "<li>Correct Winner</li>" +
-                  "<li>Correct Goals (per Team)</li>" +
-                  "<li>Correct Goal Difference</li>" +
-                  "<li>Perfect Score</li>" +
-                  "</ul>This means a total of 5 points can be achieved per game.",
-        buttons: ["OK"],
-      }).then((val) => {
-        val.present();
-      });
+      alertController
+          .create({
+            cssClass: "points-alert",
+            header: "How are points calculated?",
+            message:
+            "You get 1 point for:<br>" +
+            "<ul>" +
+            "<li>Correct Winner</li>" +
+            "<li>Correct Goals (per Team)</li>" +
+            "<li>Correct Goal Difference</li>" +
+            "<li>Perfect Score</li>" +
+            "</ul>This means a total of 5 points can be achieved per game.",
+            buttons: ["OK"],
+          })
+          .then((val) => {
+            val.present();
+          });
+    },
+    generateAlert(message: string) {
+      showToast(message);
+    },
+    getRank() {
+      getUserRank()
+          .then((response) => {
+            alertController
+                .create({
+                  header: "You are #" + response.data.rank + " overall.",
+                  message:
+                "This is your position compared to all other TopTips users.<br><br>" +
+                "Total Points: " +
+                response.data.points +
+                "<br>You are part of " +
+                response.data.groups +
+                "  group(s).",
+                  buttons: ["Dismiss"],
+                })
+                .then((alert) => alert.present());
+          })
+          .catch(() => {
+            this.generateAlert("Could not get your rank. Sorry!");
+          });
     },
   },
 });

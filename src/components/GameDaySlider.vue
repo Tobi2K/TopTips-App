@@ -24,17 +24,38 @@
         :key="index"
         :virtualIndex="index"
       >
-        <play-game :sectionID="Number(index)" :games="gameday" @loaded="sectionLoaded()" />
+        <play-game
+          :sectionID="Number(index)"
+          :games="gameday"
+          @loaded="sectionLoaded()"
+        />
       </swiper-slide>
     </swiper>
   </div>
+  <ion-fab
+    vertical="bottom"
+    horizontal="start"
+    slot="fixed"
+    v-if="this.activeGamedays.length > 0"
+  >
+    <ion-fab-button color="light" @click="getGameday()">
+      <ion-icon :icon="todayOutline" />
+    </ion-fab-button>
+  </ion-fab>
 </template>
 
 <script>
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from "swiper/vue";
 
-import { IonSegment, IonSegmentButton } from "@ionic/vue";
+import {
+  IonSegment,
+  IonSegmentButton,
+  IonFab,
+  IonFabButton,
+  IonIcon,
+  alertController,
+} from "@ionic/vue";
 
 // Import Swiper styles
 import "swiper/css/bundle";
@@ -45,6 +66,8 @@ import PlayGame from "@/components/PlayGame.vue";
 
 import { defineComponent } from "vue";
 import { mapState } from "vuex";
+
+import { todayOutline } from "ionicons/icons";
 
 export default defineComponent({
   name: "GameDaySlider",
@@ -60,10 +83,14 @@ export default defineComponent({
     PlayGame,
     IonSegment,
     IonSegmentButton,
+    IonFab,
+    IonFabButton,
+    IonIcon,
   },
   setup() {
     return {
       modules: [Navigation, Virtual, Pagination],
+      todayOutline,
     };
   },
   data() {
@@ -100,6 +127,16 @@ export default defineComponent({
         this.slideSegments();
       }
     },
+    getGameday() {
+      alertController
+          .create({
+            header: "There are games today!",
+            message:
+            "Gamedays: " + (this.activeGamedays + "").replaceAll(",", ", "),
+            buttons: ["Dismiss"],
+          })
+          .then((alert) => alert.present());
+    },
   },
   mounted() {
     this.gameDay = this.currentGameday;
@@ -112,7 +149,7 @@ export default defineComponent({
       this.slideSegments();
     },
   },
-  computed: mapState(["currentGameday"]),
+  computed: mapState(["currentGameday", "activeGamedays"]),
 });
 </script>
 

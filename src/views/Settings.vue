@@ -16,31 +16,35 @@
     <ion-content class="ion-padding">
       <ion-list>
         <h3>General Settings</h3>
-        <ion-list-header>User Settings</ion-list-header>
-        <ion-buttons>
-          <ion-button @click="presentEditUsernamePrompt()">
-            <p style="margin-right: 5px">Edit Username</p>
-            <ion-icon :icon="createOutline" />
-          </ion-button>
-          <ion-button color="tertiary" @click="getRank()">
-            <p style="margin-right: 5px">Get Top Tips Rank</p>
-            <ion-icon :icon="podiumOutline" />
-          </ion-button>
-        </ion-buttons>
-        <ion-list-header>Application Settings</ion-list-header>
         <ion-row>
-          <ion-col size="6">
-            <ion-button v-if="light" color="medium" @click="toggleTheme()">
+          <ion-col size="12">
+            <ion-button
+              v-if="light"
+              color="medium"
+              @click="toggleTheme()"
+              expand="full"
+            >
               <p style="margin-right: 5px">Change Theme</p>
               <ion-icon :icon="moon" />
             </ion-button>
-            <ion-button v-else color="medium" @click="toggleTheme()">
+            <ion-button
+              v-else
+              color="medium"
+              @click="toggleTheme()"
+              expand="full"
+            >
               <p style="margin-right: 5px">Change Theme</p>
               <ion-icon :icon="sunny" />
             </ion-button>
           </ion-col>
           <ion-col size="6">
-            <ion-button color="danger" class="ion-float-right" @click="logout">
+            <ion-button @click="presentEditUsernamePrompt()" expand="full">
+              <p style="margin-right: 5px">Edit Username</p>
+              <ion-icon :icon="createOutline" />
+            </ion-button>
+          </ion-col>
+          <ion-col size="6">
+            <ion-button color="danger" @click="logout" expand="full">
               <p style="margin-right: 5px">Logout</p>
               <ion-icon :icon="logOutOutline" />
             </ion-button>
@@ -173,7 +177,7 @@ import { mapState } from "vuex";
 
 import { FCM } from "@capacitor-community/fcm";
 import { PushNotifications } from "@capacitor/push-notifications";
-import { getUserRank, showToast } from "@/store/helper";
+import { showToast } from "@/store/helper";
 
 export default defineComponent({
   name: "SettingsView",
@@ -306,26 +310,6 @@ export default defineComponent({
     },
     generateAlert(message: string) {
       showToast(message);
-    },
-    getRank() {
-      getUserRank()
-          .then((response) => {
-            alertController
-                .create({
-                  header: "You are #" + response.data.rank + " overall.",
-                  message:
-                "Total Points: " +
-                response.data.points +
-                "<br>You are part of " +
-                response.data.groups +
-                "  groups.",
-                  buttons: ["Dismiss"],
-                })
-                .then((alert) => alert.present());
-          })
-          .catch(() => {
-            this.generateAlert("Could not get your rank. Sorry!");
-          });
     },
   },
   mounted() {

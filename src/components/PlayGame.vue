@@ -100,9 +100,8 @@
                     v-if="item.guessed"
                     class="ion-text-end small-text"
                     :style="'color:' + item.team2_text"
-                    ><ion-icon :icon="checkmarkOutline" />
-                    </ion-col
-                  >
+                    ><ion-icon :icon="checkmarkOutline" /> ({{ item.guess }})
+                  </ion-col>
                 </ion-row>
               </ion-card-content>
             </ion-card>
