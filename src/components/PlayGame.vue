@@ -166,6 +166,7 @@ export default defineComponent({
         component: GuessModal,
         componentProps: {
           gameInfo: item,
+          sectionID: this.sectionID, // 0-indexed
         },
       });
       await guessModal.present();

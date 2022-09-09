@@ -36,11 +36,23 @@
           </tr>
         </table>
       </ion-col>
+      <ion-col size="auto" class="colNoPaddingLeft">
+        <table class="coolTable ion-float-right">
+          <tr>
+            <th>
+              {{ pointsForGroup[0][1] }}
+            </th>
+          </tr>
+          <tr v-for="list in pointsForGroup.slice(1)" :key="list">
+            <td>{{ list[1] }}</td>
+          </tr>
+        </table>
+      </ion-col>
       <ion-col style="overflow-x: scroll" class="colNoPaddingLeft">
         <table class="coolTable">
           <tr>
             <th
-              v-for="(title, index) in pointsForGroup[0].slice(1)"
+              v-for="(title, index) in pointsForGroup[0].slice(2)"
               :key="title"
               :id="'title-' + index"
             >
@@ -48,7 +60,7 @@
             </th>
           </tr>
           <tr v-for="list in pointsForGroup.slice(1)" :key="list">
-            <td v-for="item in list.slice(1)" :key="item">{{ item }}</td>
+            <td v-for="item in list.slice(2)" :key="item">{{ item }}</td>
           </tr>
         </table>
       </ion-col>
@@ -94,7 +106,7 @@ export default defineComponent({
     },
     goRight() {
       const element = document.getElementById(
-          "title-" + (this.pointsForGroup[0].length - 2),
+          "title-" + (this.pointsForGroup[0].length - 3),
       );
       if (element != null) {
         element.scrollIntoView({
@@ -106,13 +118,13 @@ export default defineComponent({
     },
     goCurrent() {
       const element = document.getElementById(
-          "title-" + this.$store.state.currentGameday,
+          "title-" + (this.$store.state.currentGameday - 1),
       );
       if (element != null) {
         element.scrollIntoView({
           behavior: "smooth",
           block: "center",
-          inline: "center",
+          inline: "start",
         });
       }
     },
@@ -122,6 +134,16 @@ export default defineComponent({
         .dispatch("refreshScores")
         .then(() => {
           this.$emit("done");
+          const element = document.getElementById(
+              "title-" + (this.$store.state.currentGameday - 1),
+          );
+          if (element != null) {
+            element.scrollIntoView({
+              behavior: "smooth",
+              block: "center",
+              inline: "start",
+            });
+          }
         })
         .catch();
   },

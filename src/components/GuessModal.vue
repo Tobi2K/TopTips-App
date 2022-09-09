@@ -160,6 +160,10 @@ export default defineComponent({
   name: "GuessModal",
   props: {
     gameInfo: Object,
+    sectionID: { // 0-indexed
+      type: Number,
+      required: true,
+    },
   },
   components: {
     IonContent,
@@ -195,32 +199,10 @@ export default defineComponent({
     useBackButton(10, () => {
       modalController.dismiss();
     });
-    let timeString = "In about ";
-    const minutes = moment(props.gameInfo.date).diff(moment(), "minutes") % 60;
-    const hours = moment(props.gameInfo.date).diff(moment(), "hours") % 24;
-    const days = (moment(props.gameInfo.date).diff(moment(), "hours") - hours) / 24;
 
-    if (moment(props.gameInfo.date).diff(moment()) < 0) {
-      timeString = moment(props.gameInfo.date).fromNow();
-    } else {
-      if (days == 1) {
-        timeString += "1 day, ";
-      } else if (days > 1) {
-        timeString += days + " days, ";
-      }
+    let timeString = moment(props.gameInfo.date).fromNow();
 
-      if (hours == 1) {
-        timeString += "1 hour, ";
-      } else if (hours > 1) {
-        timeString += hours + " hours, ";
-      }
-
-      if (minutes == 1) {
-        timeString += "1 minute.";
-      } else if (minutes > 1) {
-        timeString += minutes + " minutes.";
-      }
-    }
+    timeString = timeString[0].toUpperCase() + timeString.substr(1);
 
     return {
       timeString,
@@ -247,6 +229,7 @@ export default defineComponent({
               game: this.gameInfo.id,
               team1: this.pointsTeam1,
               team2: this.pointsTeam2,
+              sectionID: this.sectionID, // 0-indexed
             })
             .then(() => {
               modalController.dismiss();

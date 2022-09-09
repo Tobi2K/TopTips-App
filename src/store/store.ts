@@ -485,6 +485,17 @@ export const store = createStore({
                 },
             )
             .then(() => {
+              const section = details.sectionID;
+              let id = -1;
+              const gameday = (state.allGames[section] as any).games;
+              gameday.filter((val: { id: any }, index: any) => {
+                if (val.id == details.game) id = index;
+              });
+              if (id != -1) {
+                (state.allGames[section] as any).games[id].guess =
+                details.team1 + " : " + details.team2;
+                (state.allGames[section] as any).games[id].guessed = true;
+              }
               resolve("");
             })
             .catch((e) => {
@@ -721,11 +732,14 @@ export const store = createStore({
       });
     },
     getVersion() {
-      return helper.getVersion().then((val) => {
-        return val.data;
-      }).catch((error) => {
-        return undefined;
-      });
+      return helper
+          .getVersion()
+          .then((val) => {
+            return val.data;
+          })
+          .catch((error) => {
+            return undefined;
+          });
     },
   },
 });
