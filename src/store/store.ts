@@ -338,9 +338,6 @@ export const store = createStore({
               error: e,
               message: "Failed to update game data.",
             });
-          })
-          .finally(() => {
-            commit("UPDATE_LOADING", false);
           });
     },
     UPDATE_RANKING({ commit, dispatch, state }) {
@@ -354,9 +351,6 @@ export const store = createStore({
               error: e,
               message: "Failed to update game data.",
             });
-          })
-          .finally(() => {
-            commit("UPDATE_LOADING", false);
           });
     },
     createGroup({ commit, dispatch, state }, group) {
@@ -395,21 +389,15 @@ export const store = createStore({
       });
     },
     refreshCurrentGameday({ commit, state }) {
-      commit("UPDATE_LOADING", true);
       helper
           .getCurrentGameday("/competition/current/" + state.currentGroupID)
           .then((response) => {
             commit("UPDATE_CURRENT_GAMEDAY", response.data);
           })
-          .catch()
-          .finally(() => {
-            commit("UPDATE_LOADING", false);
-          });
+          .catch();
     },
     refreshGroups({ commit, dispatch, state }) {
-      commit("UPDATE_LOADING", true);
       if (state.currentGroupID == -1) {
-        commit("UPDATE_LOADING", false);
         dispatch("UPDATE_USER_GROUPS");
         return;
       }
@@ -424,15 +412,10 @@ export const store = createStore({
               error: e,
               message: "Failed to update groups.",
             });
-          })
-          .finally(() => {
-            commit("UPDATE_LOADING", false);
           });
     },
     refreshScores({ commit, dispatch, state }) {
-      commit("UPDATE_LOADING", true);
       if (state.currentGroupID == -1) {
-        commit("UPDATE_LOADING", false);
         dispatch("UPDATE_USER_GROUPS");
         return;
       }
@@ -448,9 +431,6 @@ export const store = createStore({
                 error: e,
                 message: "Failed to update scores.",
               });
-            })
-            .finally(() => {
-              commit("UPDATE_LOADING", false);
             });
       });
     },

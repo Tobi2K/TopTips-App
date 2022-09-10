@@ -43,7 +43,7 @@
           </ion-item>
         </ion-col>
       </ion-row>
-      <ion-row class="tiny-text">
+      <ion-row class="tiny-text align-middle px-auto">
         <ion-col size="auto" class="colNoPaddingRight">
           <table class="coolTable">
             <tr class="border-bottom">
@@ -56,7 +56,7 @@
             </tr>
           </table>
         </ion-col>
-        <ion-col style="overflow-x: scroll" class="colNoPaddingLeft">
+        <ion-col size-sm="auto" style="overflow-x: scroll" class="colNoPaddingLeft">
           <table class="coolTable">
             <tr class="border-bottom">
               <th v-if="games">P</th>
