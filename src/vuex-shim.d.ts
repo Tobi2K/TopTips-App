@@ -92,6 +92,7 @@ export interface State {
   showSelectGroup: boolean;
   loading: boolean;
   activeGamedays: Number[];
+  ranking: TeamDetails[];
 }
 
 export interface Guess {
@@ -157,4 +158,17 @@ export interface FormattedGame {
   team2_name: string;
   game_string: string;
   game_desc: string | null;
+}
+
+export interface TeamDetails {
+  name: string;
+  team_id: number;
+  position: number;
+  win: number;
+  draw: number;
+  lose: number;
+  goals_for: number;
+  goals_against: number;
+  points: number;
+  history: string;
 }

@@ -52,6 +52,19 @@ export async function getActiveGamedays(
 }
 
 /**
+ * Gets the ranking for the current season.
+ * @param {string} path needs to be /standing/ + yourGroupID
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function getRanking(
+    path: string,
+): Promise<AxiosResponse<any, any>> {
+  return axios.get(process.env.VUE_APP_HOST + path, {
+    headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
+  });
+}
+
+/**
  * Requests to join a group
  * @param {{ passphrase: string }} parameter passes the passphrase
  * @return {Promise<AxiosResponse<any, any>>} axios request promise

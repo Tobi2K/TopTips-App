@@ -170,7 +170,6 @@ import {
   moon,
   sunny,
   createOutline,
-  podiumOutline,
 } from "ionicons/icons";
 
 import { mapState } from "vuex";
@@ -212,7 +211,6 @@ export default defineComponent({
       moon,
       sunny,
       createOutline,
-      podiumOutline,
     };
   },
   data() {

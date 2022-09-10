@@ -42,6 +42,16 @@
       <ion-icon :icon="todayOutline" />
     </ion-fab-button>
   </ion-fab>
+  <ion-fab
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+    v-if="this.ranking.length > 0"
+  >
+    <ion-fab-button color="light" @click="openRankingModal()">
+      <ion-icon :icon="podiumOutline" />
+    </ion-fab-button>
+  </ion-fab>
 </template>
 
 <script>
@@ -55,6 +65,7 @@ import {
   IonFabButton,
   IonIcon,
   alertController,
+  modalController,
 } from "@ionic/vue";
 
 // Import Swiper styles
@@ -67,7 +78,8 @@ import PlayGame from "@/components/PlayGame.vue";
 import { defineComponent } from "vue";
 import { mapState } from "vuex";
 
-import { todayOutline } from "ionicons/icons";
+import { todayOutline, podiumOutline } from "ionicons/icons";
+import RankingModal from "./RankingModal.vue";
 
 export default defineComponent({
   name: "GameDaySlider",
@@ -91,6 +103,7 @@ export default defineComponent({
     return {
       modules: [Navigation, Virtual, Pagination],
       todayOutline,
+      podiumOutline,
     };
   },
   data() {
@@ -137,6 +150,15 @@ export default defineComponent({
           })
           .then((alert) => alert.present());
     },
+    async openRankingModal() {
+      const rankingModal = await modalController.create({
+        component: RankingModal,
+        componentProps: {
+          ranking: this.ranking,
+        },
+      });
+      await rankingModal.present();
+    },
   },
   mounted() {
     this.gameDay = this.currentGameday;
@@ -149,7 +171,7 @@ export default defineComponent({
       this.slideSegments();
     },
   },
-  computed: mapState(["currentGameday", "activeGamedays"]),
+  computed: mapState(["currentGameday", "activeGamedays", "ranking"]),
 });
 </script>
 

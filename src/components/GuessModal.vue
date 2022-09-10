@@ -8,9 +8,9 @@
           </ion-col>
           <ion-col>
             <ion-buttons class="ion-float-right">
-              <ion-button @click="closeModal"
-                ><ion-icon :icon="close"
-              /></ion-button>
+              <ion-button @click="closeModal">
+                <ion-icon :icon="close"/>
+              </ion-button>
             </ion-buttons>
           </ion-col>
         </ion-row>
@@ -67,6 +67,50 @@
               {{ gameInfo.team2_abbr }}
             </text>
           </svg>
+        </ion-col>
+      </ion-row>
+      <ion-row class="align-middle" v-if="gameInfo.team1_position && gameInfo.team2_position">
+        <ion-col class="ion-text-center" size="5" >
+          #{{ gameInfo.team1_position }}
+        </ion-col>
+        <ion-col class="ion-text-center" size="2">Rank</ion-col>
+        <ion-col class="ion-text-center" size="5">
+          #{{ gameInfo.team2_position }}
+        </ion-col>
+      </ion-row>
+      <ion-row class="align-middle" v-if="gameInfo.team1_history && gameInfo.team2_history">
+        <ion-col class="ion-text-center" size="5" >
+          <span v-for="i in gameInfo.team1_history" :key="i">
+            <ion-icon v-if="i == 'W'" style="color:green" :icon="ellipse" />
+            <ion-icon v-if="i == 'L'" style="color:red" :icon="ellipse" />
+          </span>
+        </ion-col>
+        <ion-col class="ion-text-center" size="2">
+          <ion-icon id="click-trigger" :icon="helpCircleOutline"/>
+          <ion-popover
+            trigger="click-trigger"
+            trigger-action="click"
+            size="auto"
+            alignment="center"
+            show-backdrop="false"
+          >
+            <ion-content class="ion-padding">
+              <small>
+                5 most recent games (from left to right)
+                <ul>
+                  <li>Win: Green</li>
+                  <li>Loss: Red</li>
+                  <li>Draw: Not shown</li>
+                </ul>
+              </small>
+              </ion-content>
+          </ion-popover>
+        </ion-col>
+        <ion-col class="ion-text-center" size="5">
+          <span v-for="i in gameInfo.team2_history" :key="i">
+            <ion-icon v-if="i == 'W'" style="color:green" :icon="ellipse" />
+            <ion-icon v-if="i == 'L'" style="color:red" :icon="ellipse" />
+          </span>
         </ion-col>
       </ion-row>
       <ion-row v-if="!isUpcoming()">
@@ -146,8 +190,9 @@ import {
   IonLabel,
   IonIcon,
   useBackButton,
+  IonPopover,
 } from "@ionic/vue";
-import { close, send } from "ionicons/icons";
+import { close, send, ellipse, helpCircleOutline } from "ionicons/icons";
 import { defineComponent } from "vue";
 
 import GameGuesses from "@/components/GameGuesses.vue";
@@ -180,6 +225,7 @@ export default defineComponent({
     IonLabel,
     IonIcon,
     GameGuesses,
+    IonPopover,
   },
   data() {
     let pointsTeam1;
@@ -210,6 +256,8 @@ export default defineComponent({
       closeModal,
       close,
       send,
+      ellipse,
+      helpCircleOutline,
     };
   },
   methods: {

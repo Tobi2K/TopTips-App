@@ -12,7 +12,7 @@
       </ion-fab>
       <ion-fab vertical="bottom" horizontal="start" slot="fixed">
         <ion-fab-button color="light" @click="getRank()">
-          <ion-icon :icon="podiumOutline" />
+          <ion-icon :icon="medalOutline" />
         </ion-fab-button>
       </ion-fab>
       <score-section @done="endRefresh" :key="refreshGame" />
@@ -40,7 +40,7 @@ import {
   refresh,
   settingsOutline,
   helpCircleOutline,
-  podiumOutline,
+  medalOutline,
 } from "ionicons/icons";
 
 import { defineComponent } from "vue";
@@ -75,7 +75,7 @@ export default defineComponent({
       refresh,
       settingsOutline,
       helpCircleOutline,
-      podiumOutline,
+      medalOutline,
     };
   },
   mounted() {
