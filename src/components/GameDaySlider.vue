@@ -36,21 +36,28 @@
     vertical="bottom"
     horizontal="start"
     slot="fixed"
-    v-if="this.activeGamedays.length > 0"
+    v-if="this.ranking.length > 0 || this.activeGamedays.length > 0"
   >
-    <ion-fab-button color="light" @click="getGameday()">
-      <ion-icon :icon="todayOutline" />
-    </ion-fab-button>
-  </ion-fab>
-  <ion-fab
-    vertical="bottom"
-    horizontal="end"
-    slot="fixed"
-    v-if="this.ranking.length > 0"
-  >
-    <ion-fab-button color="light" @click="openRankingModal()">
-      <ion-icon :icon="podiumOutline" />
-    </ion-fab-button>
+    <ion-fab-button size="small" color="medium"
+      ><ion-icon :icon="caretUpOutline"
+    /></ion-fab-button>
+
+    <ion-fab-list side="top">
+      <ion-fab-button
+        color="light"
+        @click="openRankingModal()"
+        v-if="this.ranking.length > 0"
+      >
+        <ion-icon :icon="podiumOutline" />
+      </ion-fab-button>
+      <ion-fab-button
+        color="light"
+        @click="getGameday()"
+        v-if="this.activeGamedays.length > 0"
+      >
+        <ion-icon :icon="todayOutline" />
+      </ion-fab-button>
+    </ion-fab-list>
   </ion-fab>
 </template>
 
@@ -66,6 +73,7 @@ import {
   IonIcon,
   alertController,
   modalController,
+  IonFabList,
 } from "@ionic/vue";
 
 // Import Swiper styles
@@ -78,7 +86,7 @@ import PlayGame from "@/components/PlayGame.vue";
 import { defineComponent } from "vue";
 import { mapState } from "vuex";
 
-import { todayOutline, podiumOutline } from "ionicons/icons";
+import { todayOutline, podiumOutline, caretUpOutline } from "ionicons/icons";
 import RankingModal from "./RankingModal.vue";
 
 export default defineComponent({
@@ -98,12 +106,14 @@ export default defineComponent({
     IonFab,
     IonFabButton,
     IonIcon,
+    IonFabList,
   },
   setup() {
     return {
       modules: [Navigation, Virtual, Pagination],
       todayOutline,
       podiumOutline,
+      caretUpOutline,
     };
   },
   data() {

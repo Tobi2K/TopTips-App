@@ -5,15 +5,19 @@
       <ion-refresher slot="fixed" @ionRefresh="doRefresh($event)">
         <ion-refresher-content> </ion-refresher-content>
       </ion-refresher>
-      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button color="light" @click="showPointsDesc()">
-          <ion-icon :icon="helpCircleOutline"></ion-icon>
-        </ion-fab-button>
-      </ion-fab>
       <ion-fab vertical="bottom" horizontal="start" slot="fixed">
-        <ion-fab-button color="light" @click="getRank()">
-          <ion-icon :icon="medalOutline" />
+        <ion-fab-button size="small" color="medium">
+          <ion-icon :icon="caretUpOutline" />
         </ion-fab-button>
+
+        <ion-fab-list side="top">
+          <ion-fab-button color="light" @click="showPointsDesc()">
+            <ion-icon :icon="helpCircleOutline"></ion-icon>
+          </ion-fab-button>
+          <ion-fab-button color="light" @click="getRank()">
+            <ion-icon :icon="medalOutline" />
+          </ion-fab-button>
+        </ion-fab-list>
       </ion-fab>
       <score-section @done="endRefresh" :key="refreshGame" />
     </ion-content>
@@ -30,6 +34,7 @@ import {
   IonFabButton,
   IonIcon,
   alertController,
+  IonFabList,
 } from "@ionic/vue";
 
 import ScoreSection from "@/components/ScoreSection.vue";
@@ -41,6 +46,7 @@ import {
   settingsOutline,
   helpCircleOutline,
   medalOutline,
+  caretUpOutline,
 } from "ionicons/icons";
 
 import { defineComponent } from "vue";
@@ -58,6 +64,7 @@ export default defineComponent({
     IonFab,
     IonFabButton,
     IonIcon,
+    IonFabList,
   },
   data() {
     return {
@@ -76,6 +83,7 @@ export default defineComponent({
       settingsOutline,
       helpCircleOutline,
       medalOutline,
+      caretUpOutline,
     };
   },
   mounted() {
