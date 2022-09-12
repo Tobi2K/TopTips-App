@@ -147,4 +147,8 @@ export default {
   );
   --color: #f2f2f2;
 }
+
+.pointer {
+  cursor: pointer;
+}
 </style>

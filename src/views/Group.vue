@@ -20,10 +20,10 @@
             >
           </ion-select>
         </ion-item>
-        <ion-item @click="presentJoinGroupPrompt()">
+        <ion-item @click="presentJoinGroupPrompt()" button>
           <ion-label>Join Group</ion-label>
         </ion-item>
-        <ion-item @click="goToCreateGroup()">
+        <ion-item @click="goToCreateGroup()" button>
           <ion-label>Create New Group</ion-label>
         </ion-item>
       </ion-list>

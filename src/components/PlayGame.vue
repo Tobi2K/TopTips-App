@@ -11,7 +11,7 @@
           style="padding: 0"
         >
           <ion-grid>
-            <ion-card style="background: transparent">
+            <ion-card style="background: transparent" class="pointer">
               <ion-card-content
                 class="ion-no-padding text-light"
                 @click="openModal(item)"

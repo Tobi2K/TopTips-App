@@ -751,6 +751,9 @@ export const store = createStore({
             return undefined;
           });
     },
+    UPDATE_LOADING({ commit }, bool) {
+      commit("UPDATE_LOADING", bool);
+    },
   },
 });
 

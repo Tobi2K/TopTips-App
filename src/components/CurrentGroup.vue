@@ -8,7 +8,7 @@
             <h2><strong>Name:</strong> {{ groupData.name }}</h2>
           </ion-col>
           <ion-col>
-            <ion-text @click="openGroupModal()" class="ion-float-right">
+            <ion-text @click="openGroupModal()" class="ion-float-right pointer">
               <ion-icon :icon="pencilOutline" />
             </ion-text>
           </ion-col>
@@ -25,7 +25,7 @@
           <ion-col>
             <ion-text
               @click="copyPassphrase(groupData.passphrase)"
-              class="ion-float-right"
+              class="ion-float-right pointer"
             >
               <ion-icon :icon="copyOutline" />
             </ion-text>

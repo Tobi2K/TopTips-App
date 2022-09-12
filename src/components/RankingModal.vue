@@ -81,7 +81,7 @@
           </table>
         </ion-col>
       </ion-row>
-      <ion-row class="text-center">
+      <ion-row class="align-middle">
         <small><ion-icon :icon="informationCircleOutline" />
         Leaderboards are updated daily at 04:00 AM CEST.</small>
       </ion-row>
