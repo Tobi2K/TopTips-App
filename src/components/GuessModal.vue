@@ -83,6 +83,7 @@
           <span v-for="i in gameInfo.team1_history" :key="i">
             <ion-icon v-if="i == 'W'" style="color:green" :icon="ellipse" />
             <ion-icon v-if="i == 'L'" style="color:red" :icon="ellipse" />
+            <ion-icon v-if="i == 'D'" style="color:orange" :icon="ellipse" />
           </span>
         </ion-col>
         <ion-col class="ion-text-center" size="2">
@@ -110,6 +111,7 @@
           <span v-for="i in gameInfo.team2_history" :key="i">
             <ion-icon v-if="i == 'W'" style="color:green" :icon="ellipse" />
             <ion-icon v-if="i == 'L'" style="color:red" :icon="ellipse" />
+            <ion-icon v-if="i == 'D'" style="color:orange" :icon="ellipse" />
           </span>
         </ion-col>
       </ion-row>

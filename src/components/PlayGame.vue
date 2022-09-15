@@ -63,7 +63,7 @@
                       'color:' +
                       (item.team1_text == item.team2_text
                         ? item.team1_text
-                        : '#464646')
+                        : '#FFFFFF')
                     "
                     >{{ item.game_string }}</ion-col
                   >

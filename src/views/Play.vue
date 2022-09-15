@@ -91,15 +91,14 @@ export default defineComponent({
     selectedGroup(groupID: number) {
       this.$store.dispatch("UPDATE_CURRENT_GROUP_ID", groupID);
       this.groupID = 0;
-      this.refreshAll();
     },
   },
   mounted() {
     this.$store.dispatch("checkJWT");
   },
   watch: {
-    groupID() {
-      this.refreshAll();
+    groupID(newValue) {
+      if (newValue != 0) this.refreshAll();
     },
   },
   computed: mapState([

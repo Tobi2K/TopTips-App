@@ -27,7 +27,7 @@
         <play-game
           :sectionID="Number(index)"
           :games="gameday"
-          @loaded="sectionLoaded()"
+          @loaded.once="sectionLoaded()"
         />
       </swiper-slide>
     </swiper>
@@ -148,6 +148,9 @@ export default defineComponent({
         this.gameDay = this.currentGameday;
         this.swiperRef.slideTo(this.gameDay - 1, 0, false);
         this.slideSegments();
+        setTimeout(() => {
+          this.slideSegments();
+        }, 1000);
       }
     },
     getGameday() {
