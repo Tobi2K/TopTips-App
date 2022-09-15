@@ -101,7 +101,7 @@
                 <ul>
                   <li>Win: Green</li>
                   <li>Loss: Red</li>
-                  <li>Draw: Not shown</li>
+                  <li>Draw: Orange</li>
                 </ul>
               </small>
               </ion-content>
