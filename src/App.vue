@@ -19,15 +19,6 @@ export default defineComponent({
     IonRouterOutlet,
     IonLoading,
   },
-  watch: {
-    loading(newValue) {
-      if (newValue) {
-        setTimeout(() => {
-          store.dispatch("UPDATE_LOADING", false);
-        }, 7500);
-      }
-    },
-  },
   computed: mapState(["loading"]),
 });
 </script>

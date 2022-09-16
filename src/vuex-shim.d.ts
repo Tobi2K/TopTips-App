@@ -135,6 +135,7 @@ export interface Group {
     };
     season: Season;
   };
+  memberCount: number;
 }
 
 export interface GameDay {

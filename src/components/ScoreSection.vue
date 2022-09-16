@@ -167,10 +167,6 @@ td {
   margin-top: 10%;
 }
 
-.text-center {
-  text-align: center;
-}
-
 .coolTable tr:nth-child(even) {
   background-color: rgba(120, 120, 120, 0.3);
   white-space: no-wrap;

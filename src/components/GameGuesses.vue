@@ -8,7 +8,7 @@
     <ion-row
       v-for="guess in guessesForOpenGame"
       :key="guess"
-      style="border-bottom: 1px solid rgba(211, 211, 211, 0.8)"
+      class="coolTable"
     >
       <ion-col class="ion-text-start">{{ guess.name }}:</ion-col>
       <ion-col class="ion-text-center">
@@ -52,3 +52,9 @@ export default defineComponent({
   computed: mapState(["guessesForOpenGame"]),
 });
 </script>
+
+<style scoped>
+.coolTable:nth-child(even) {
+  background-color: rgba(120, 120, 120, 0.3);
+}
+</style>

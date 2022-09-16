@@ -174,14 +174,6 @@ td {
   margin-top: 10%;
 }
 
-.text-center {
-  text-align: center;
-}
-
-.text-left {
-  text-align: left !important;
-}
-
 .tiny-text {
   font-size: 0.55em;
 }

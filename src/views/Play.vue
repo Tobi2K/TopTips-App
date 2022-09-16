@@ -7,23 +7,43 @@
     />
     <custom-header v-else title="Tips" @refresh="refreshAll" />
     <ion-content :fullscreen="true" id="mainSlide">
-      <ion-item v-if="showSelectGroup">
-        <ion-label>Select Group</ion-label>
-        <ion-select
-          interface="action-sheet"
-          placeholder="Select One"
-          v-model="groupID"
-          :key="userGroups"
-          @ionChange="selectedGroup(groupID)"
-        >
-          <ion-select-option
-            v-for="group in userGroups"
-            :key="group"
-            :value="group.group.id"
-            >{{ group.group.name }}</ion-select-option
-          >
-        </ion-select>
-      </ion-item>
+      <ion-grid v-if="showSelectGroup" class="ion-padding" style="max-width: 600px">
+        <ion-row class="align-middle">
+          <h3 v-if="userGroups.length > 0" class="text-center">Your groups:</h3>
+          <h3 v-else class="text-center">
+            You aren't part of any groups. Head over to the 'Groups' tab to
+            create one.
+          </h3>
+        </ion-row>
+        <ion-row class="ion-align-items-center">
+          <ion-col v-for="group in userGroups" :key="group">
+            <ion-button
+              :value="group.group.id"
+              color="medium"
+              @click="selectedGroup(group.group.id)"
+              expand="block"
+            >
+              {{
+                group.group.name.length > 10
+                  ? group.group.name.substr(0, 10) + "\u2026"
+                  : group.group.name
+              }}
+              <ion-icon
+                :icon="peopleCircleOutline"
+                style="margin-left: 5px; margin-right: 3px"
+                v-if="group.memberCount"
+              />
+              {{ group.memberCount }}
+              <ion-icon
+                :icon="podiumOutline"
+                style="margin-left: 5px; margin-right: 3px"
+                v-if="group.rank"
+              />
+              {{ group.rank }}
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
       <game-day-slider v-else :games="allGames" :key="allGames" />
     </ion-content>
   </ion-page>
@@ -33,10 +53,11 @@
 import {
   IonPage,
   IonContent,
-  IonLabel,
-  IonSelect,
-  IonSelectOption,
-  IonItem,
+  IonButton,
+  IonRow,
+  IonCol,
+  IonGrid,
+  IonIcon,
 } from "@ionic/vue";
 
 import GameDaySlider from "@/components/GameDaySlider.vue";
@@ -49,6 +70,8 @@ import {
   settingsOutline,
   refresh,
   chevronDownCircleOutline,
+  peopleCircleOutline,
+  podiumOutline,
 } from "ionicons/icons";
 
 import { defineComponent } from "vue";
@@ -62,10 +85,11 @@ export default defineComponent({
     IonPage,
     GameDaySlider,
     CustomHeader,
-    IonLabel,
-    IonSelect,
-    IonSelectOption,
-    IonItem,
+    IonButton,
+    IonRow,
+    IonCol,
+    IonGrid,
+    IonIcon,
   },
   setup() {
     const store = useStore();
@@ -77,6 +101,8 @@ export default defineComponent({
       settingsOutline,
       refresh,
       chevronDownCircleOutline,
+      peopleCircleOutline,
+      podiumOutline,
     };
   },
   data() {

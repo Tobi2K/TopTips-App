@@ -131,6 +131,14 @@ export default {
   --button-color: #ff4500 !important;
 }
 
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
 .toast {
   --width: 60%;
   --border-radius: 20px;
