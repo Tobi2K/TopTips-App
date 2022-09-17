@@ -21,8 +21,20 @@
       </ion-grid>
     </ion-toolbar>
   </ion-header>
-  <ion-content class="ion-padding">
+  <ion-content class="ion-padding" :key="index">
     <ion-grid>
+      <ion-row>
+        <ion-col class="ion-text-start">
+          <ion-button fill="clear" color="dark" @click="slideLeft()" v-if="index > 0">
+            <ion-icon slot="icon-only" :icon="caretBack"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col class="ion-text-end">
+          <ion-button fill="clear" color="dark" @click="slideRight()" v-if="index < games.length - 1">
+            <ion-icon slot="icon-only" :icon="caretForward"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
       <ion-row class="align-middle">
         {{ timeString }}
       </ion-row>
@@ -90,7 +102,10 @@
           </svg>
         </ion-col>
       </ion-row>
-      <team-stats v-if="gameInfo.team1_stats && gameInfo.team2_stats" :gameInfo="gameInfo" />
+      <team-stats
+        v-if="gameInfo.team1_stats && gameInfo.team2_stats"
+        :gameInfo="gameInfo"
+      />
       <div v-if="!isUpcoming()" class="ion-margin-top">
         <ion-row>
           <ion-col class="ion-text-center" style="padding-bottom: 0">
@@ -153,10 +168,7 @@
             {{ pointsTeam1 }} : {{ pointsTeam2 }}
           </ion-col>
           <ion-col class="ion-text-center" v-else>-</ion-col>
-          <ion-col
-            v-if="points != undefined"
-            class="ion-text-center"
-          >
+          <ion-col v-if="points != undefined" class="ion-text-center">
             Points: {{ points }}
           </ion-col>
         </ion-row>
@@ -184,7 +196,17 @@ import {
   IonIcon,
   useBackButton,
 } from "@ionic/vue";
-import { close, send, ellipse, helpCircleOutline, textOutline, imageOutline } from "ionicons/icons";
+
+import {
+  close,
+  send,
+  ellipse,
+  helpCircleOutline,
+  textOutline,
+  imageOutline,
+  caretBack,
+  caretForward,
+} from "ionicons/icons";
 import { defineComponent } from "vue";
 
 import GameGuesses from "@/components/GameGuesses.vue";
@@ -197,7 +219,14 @@ import { showToast } from "@/store/helper";
 export default defineComponent({
   name: "GuessModal",
   props: {
-    gameInfo: Object,
+    gameIndex: {
+      type: Number,
+      required: true,
+    },
+    games: {
+      type: Object,
+      required: true,
+    },
     sectionID: { // 0-indexed
       type: Number,
       required: true,
@@ -224,14 +253,23 @@ export default defineComponent({
     let pointsTeam1;
     let pointsTeam2;
     let points;
+    const index = this.gameIndex;
+    const gameInfo = this.games[index];
+
+    let timeString = moment(gameInfo.date).fromNow();
+
+    timeString = timeString[0].toUpperCase() + timeString.substr(1);
     return {
+      timeString,
       pointsTeam1,
       pointsTeam2,
       points,
+      index,
+      gameInfo,
       showNames: false,
     };
   },
-  setup(props) {
+  setup() {
     const closeModal = () => {
       modalController.dismiss();
     };
@@ -240,12 +278,7 @@ export default defineComponent({
       modalController.dismiss();
     });
 
-    let timeString = moment(props.gameInfo.date).fromNow();
-
-    timeString = timeString[0].toUpperCase() + timeString.substr(1);
-
     return {
-      timeString,
       moment,
       closeModal,
       close,
@@ -254,6 +287,8 @@ export default defineComponent({
       helpCircleOutline,
       imageOutline,
       textOutline,
+      caretBack,
+      caretForward,
     };
   },
   methods: {
@@ -287,6 +322,68 @@ export default defineComponent({
     },
     toggleName() {
       this.showNames = !this.showNames;
+    },
+    slideRight() {
+      if (this.index < this.games.length - 1) {
+        const tempIndex = this.index + 1;
+
+        this.gameInfo = this.games[tempIndex];
+        let timeString = moment(this.gameInfo.date).fromNow();
+
+        timeString = timeString[0].toUpperCase() + timeString.substr(1);
+
+        this.timeString = timeString;
+
+        this.index = tempIndex;
+
+        this.$store
+            .dispatch("getUserGuess", this.gameInfo.id)
+            .then((val) => {
+              if (val != "") {
+                this.pointsTeam1 = val.score_team1;
+                this.pointsTeam2 = val.score_team2;
+                this.points = val.points;
+              } else if (this.isUpcoming()) {
+                this.points = undefined;
+              } else {
+                this.pointsTeam1 = "-";
+                this.pointsTeam2 = "-";
+                this.points = undefined;
+              }
+            })
+            .catch();
+      }
+    },
+    slideLeft() {
+      if (this.index > 0) {
+        const tempIndex = this.index - 1;
+
+        this.gameInfo = this.games[tempIndex];
+        let timeString = moment(this.gameInfo.date).fromNow();
+
+        timeString = timeString[0].toUpperCase() + timeString.substr(1);
+
+        this.timeString = timeString;
+
+        this.index = tempIndex;
+
+        this.$store
+            .dispatch("getUserGuess", this.gameInfo.id)
+            .then((val) => {
+              if (val != "") {
+                this.pointsTeam1 = val.score_team1;
+                this.pointsTeam2 = val.score_team2;
+                this.points = val.points;
+              } else if (this.isUpcoming()) {
+                this.points = undefined;
+              } else {
+                this.pointsTeam1 = "-";
+                this.pointsTeam2 = "-";
+                this.points = undefined;
+              }
+            })
+            .catch();
+      }
     },
   },
   mounted() {

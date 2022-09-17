@@ -14,7 +14,7 @@
             <ion-card style="background: transparent" class="pointer">
               <ion-card-content
                 class="ion-no-padding text-light"
-                @click="openModal(item)"
+                @click="openModal(index, this.games.games)"
                 :do="
                   generateGradient(
                     item.team1_background,
@@ -161,11 +161,12 @@ export default defineComponent({
     this.$emit("loaded");
   },
   methods: {
-    async openModal(item) {
+    async openModal(index, games) {
       const guessModal = await modalController.create({
         component: GuessModal,
         componentProps: {
-          gameInfo: item,
+          gameIndex: index,
+          games: games,
           sectionID: this.sectionID, // 0-indexed
         },
       });

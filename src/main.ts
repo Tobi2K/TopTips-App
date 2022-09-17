@@ -2,7 +2,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 
-import { alertController, IonicVue, toastController } from "@ionic/vue";
+import { alertController, IonicVue, toastController, isPlatform } from "@ionic/vue";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/vue/css/core.css";
@@ -35,16 +35,23 @@ const app = createApp(App)
     .use(store, key)
     .use(VueClipboard);
 
-const newMajor = () => {
+const newMajor = (android: boolean) => {
   alertController.create({
     header: "Update Required!",
     message: "There is an important update available.<br>" +
-        "Correct functionality cannot be ensured, therefore you must update in order to proceed.",
+        "Correct functionality cannot be ensured, therefore you must" +
+        (android ? " update " : " reload ") +
+        "in order to proceed." +
+        (android ? "" : " You might have to full-reload (Ctrl + F5) or reinstall the PWA (if applicable)"),
     buttons: [
       {
-        text: "Update",
+        text: (android ? "Update" : "Reload"),
         handler: () => {
-          window.open("https://play.google.com/store/apps/details?id=app.kalmbach.dev");
+          if (android) {
+            window.open("https://play.google.com/store/apps/details?id=app.kalmbach.dev");
+          } else {
+            location.reload();
+          }
           return false;
         },
       },
@@ -54,16 +61,20 @@ const newMajor = () => {
     alert.present();
   });
 };
-const updateAvailable = (message: string) => {
+const updateAvailable = (message: string, android: boolean) => {
   toastController
       .create({
         message: message,
         duration: 4000,
         buttons: [
           {
-            text: "Update",
+            text: (android ? "Update" : "Reload"),
             handler: () => {
-              window.open("https://play.google.com/store/apps/details?id=app.kalmbach.dev");
+              if (android) {
+                window.open("https://play.google.com/store/apps/details?id=app.kalmbach.dev");
+              } else {
+                location.reload();
+              }
             },
           },
         ],
@@ -81,6 +92,8 @@ router.isReady().then(async () => {
       const splitNewestVersion = (newestVersion as string).split(".");
       const splitAppVersion = appVersion.split(".");
 
+      const android = isPlatform("android") && !isPlatform("pwa") && !isPlatform("mobileweb");
+
       const new1 = Number(splitNewestVersion[0]);
       const new2 = Number(splitNewestVersion[1]);
       const new3 = Number(splitNewestVersion[2]);
@@ -88,13 +101,19 @@ router.isReady().then(async () => {
       const curr2 = Number(splitAppVersion[1]);
       const curr3 = Number(splitAppVersion[2]);
       if (new1 > curr1) {
-        newMajor();
+        newMajor(android);
         return;
       } else if (new1 == curr1) {
         if (new2 > curr2) {
-          updateAvailable("Recommended update available :)");
+          updateAvailable(
+              "Recommended update available :)",
+              android,
+          );
         } else if (new2 == curr2 && new3 > curr3) {
-          updateAvailable("Optional update available :)");
+          updateAvailable(
+              "Optional update available :)",
+              android,
+          );
         }
       }
     }

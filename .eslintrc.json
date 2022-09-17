@@ -19,7 +19,7 @@
     "@typescript-eslint/no-var-requires": "off",
 
     // custom rule config
-    "max-len": ["error", { "code": 100 }],
+    "max-len": ["error", { "code": 120 }],
     "object-curly-spacing": ["error", "always"],
     "quotes": ["error", "double"]
   },

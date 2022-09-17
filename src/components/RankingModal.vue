@@ -43,7 +43,7 @@
           </ion-item>
         </ion-col>
       </ion-row>
-      <ion-row class="tiny-text align-middle px-auto ion-margin-bottom">
+      <ion-row class="tiny-text align-middle ion-margin-bottom">
         <ion-col size="auto" class="colNoPaddingRight">
           <table class="coolTable">
             <tr class="border-bottom">
@@ -56,7 +56,7 @@
             </tr>
           </table>
         </ion-col>
-        <ion-col size-sm="auto" style="overflow-x: scroll" class="colNoPaddingLeft">
+        <ion-col style="overflow-x: scroll" class="colNoPaddingLeft">
           <table class="coolTable">
             <tr class="border-bottom">
               <th v-if="games">P</th>
@@ -65,6 +65,9 @@
               <th v-if="games">D</th>
               <th v-if="goals">Diff</th>
               <th v-if="goals">+/-</th>
+              <th v-if="goals">AVG</th>
+              <th v-if="goals">MAX</th>
+              <th v-if="goals">MIN</th>
             </tr>
             <tr v-for="list in ranking" :key="list">
               <td v-if="games">
@@ -77,6 +80,9 @@
               <td v-if="goals">
                 {{ list.goals_for + "/" + list.goals_against }}
               </td>
+              <td v-if="goals">{{ list.goals_avg }}</td>
+              <td v-if="goals">{{ list.goals_max }}</td>
+              <td v-if="goals">{{ list.goals_min }}</td>
             </tr>
           </table>
         </ion-col>

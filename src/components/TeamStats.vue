@@ -59,6 +59,9 @@
           <th>L</th>
           <th>D</th>
           <th>+/-</th>
+          <th>AVG</th>
+          <th>MAX</th>
+          <th>MIN</th>
         </tr>
         <tr>
           <td>{{ gameInfo.team1_stats.win }}</td>
@@ -71,6 +74,9 @@
               gameInfo.team1_stats.goals_against
             }}
           </td>
+          <td>{{ gameInfo.team1_stats.goals_avg }}</td>
+          <td>{{ gameInfo.team1_stats.goals_max }}</td>
+          <td>{{ gameInfo.team1_stats.goals_min }}</td>
         </tr>
       </table>
     </ion-col>
@@ -86,6 +92,9 @@
           <th>L</th>
           <th>D</th>
           <th>+/-</th>
+          <th>AVG</th>
+          <th>MAX</th>
+          <th>MIN</th>
         </tr>
         <tr>
           <td>{{ gameInfo.team2_stats.win }}</td>
@@ -98,6 +107,9 @@
               gameInfo.team2_stats.goals_against
             }}
           </td>
+          <td>{{ gameInfo.team2_stats.goals_avg }}</td>
+          <td>{{ gameInfo.team2_stats.goals_max }}</td>
+          <td>{{ gameInfo.team2_stats.goals_min }}</td>
         </tr>
       </table>
     </ion-col>
