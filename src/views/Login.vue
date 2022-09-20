@@ -34,7 +34,7 @@
       <div class="center-vertically">
         <ion-row class="centered-row">
           <ion-item>
-            <ion-label position="floating">Name</ion-label>
+            <ion-label position="floating">Username</ion-label>
             <ion-input
               v-model="username"
               type="text"
@@ -50,14 +50,25 @@
             <ion-label position="floating">Password</ion-label>
             <ion-input
               v-model="password"
-              type="password"
+              :type="show_password ? 'text' : 'password'"
               name="Password"
               clear-input
+              clear-on-edit="false"
               @keyup.enter="sendData"
             ></ion-input>
           </ion-item>
+          <ion-item lines="none" class="ion-margin-top">
+            <ion-checkbox
+              color="secondary"
+              slot="start"
+              v-model="show_password"
+              :modelValue="show_password"
+              @keyup.enter="show_password = !show_password"
+            />
+            <ion-label>Show password</ion-label>
+          </ion-item>
         </ion-row>
-        <ion-row class="centered-row">
+        <ion-row class="centered-row bottom-row">
           <ion-item lines="none">
             <ion-checkbox
               color="secondary"
@@ -68,8 +79,6 @@
             />
             <ion-label> Stay logged in</ion-label>
           </ion-item>
-        </ion-row>
-        <ion-row class="centered-row bottom-row">
           <ion-item lines="none">
             <ion-button
               @click="sendData"
@@ -112,6 +121,7 @@ import {
   toastController,
   IonIcon,
   IonCheckbox,
+  alertController,
 } from "@ionic/vue";
 
 import { defineComponent } from "vue";
@@ -148,13 +158,14 @@ export default defineComponent({
       light,
       username: "",
       password: "",
+      show_password: false,
       loggedin: false,
     };
   },
   methods: {
     sendData() {
       if (this.username == "" || this.password == "") {
-        showToast("Please fill out everything");
+        showToast("Please fill out everything!");
       } else {
         this.$store
             .dispatch("login", {
@@ -163,9 +174,12 @@ export default defineComponent({
               loggedin: this.loggedin,
             })
             .then((response) => {
-              this.greet(response);
+              this.greet(response[0]);
               this.$router.push("/tabs");
               this.clearInputs();
+              if (!response[1]) {
+                this.thereWasNoEmail();
+              }
             });
       }
     },
@@ -192,6 +206,54 @@ export default defineComponent({
       }
       this.light = !this.light;
       x.toggle("dark");
+    },
+    async thereWasNoEmail() {
+      const alert = await alertController
+          .create({
+            header: "Please enter your email!",
+            message:
+                        "For additional security and the ability to reset your password," +
+                        " you are required to enter your email. Thank you very much.",
+            buttons: [
+              {
+                text: "Save",
+                handler: (val) => {
+                  if (!this.validateEmail(val.email)) {
+                    showToast("Please enter a valid email!");
+                  } else {
+                    this.$store.dispatch("updateEmail", val.email).then((response) => {
+                      if (response) {
+                        showToast(response);
+                      }
+                      this.clearInputs();
+                      alert.dismiss();
+                    }).catch(() => {
+                    });
+                  }
+                  return false;
+                },
+              },
+            ],
+            inputs: [
+              {
+                name: "email",
+                type: "email",
+                placeholder: "test@example.com",
+              },
+            ],
+            backdropDismiss: false,
+          });
+
+      await alert.present();
+    },
+    validateEmail(email: string) {
+      const regexp = new RegExp(
+          // eslint-disable-next-line max-len
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      );
+      if (regexp.test(email)) {
+        return true;
+      } else return false;
     },
   },
   mounted() {

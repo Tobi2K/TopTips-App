@@ -25,12 +25,22 @@
     <ion-grid>
       <ion-row>
         <ion-col class="ion-text-start">
-          <ion-button fill="clear" color="dark" @click="slideLeft()" v-if="index > 0">
+          <ion-button
+            fill="clear"
+            color="dark"
+            @click="slideLeft()"
+            v-if="index > 0"
+          >
             <ion-icon slot="icon-only" :icon="caretBack"></ion-icon>
           </ion-button>
         </ion-col>
         <ion-col class="ion-text-end">
-          <ion-button fill="clear" color="dark" @click="slideRight()" v-if="index < games.length - 1">
+          <ion-button
+            fill="clear"
+            color="dark"
+            @click="slideRight()"
+            v-if="index < games.length - 1"
+          >
             <ion-icon slot="icon-only" :icon="caretForward"></ion-icon>
           </ion-button>
         </ion-col>
@@ -134,13 +144,25 @@
           <ion-label position="floating">
             Goals by {{ gameInfo.team1_name }}
           </ion-label>
-          <ion-input v-model="pointsTeam1" type="number"></ion-input>
+          <ion-input
+            v-model="pointsTeam1"
+            type="number"
+            inputmode="numeric"
+            placeholder="Your guess..."
+            min="0"
+          ></ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="floating">
             Goals by {{ gameInfo.team2_name }}
           </ion-label>
-          <ion-input v-model="pointsTeam2" type="number"></ion-input>
+          <ion-input
+            v-model="pointsTeam2"
+            type="number"
+            inputmode="numeric"
+            placeholder="Your guess..."
+            min="0"
+          ></ion-input>
         </ion-item>
         <ion-row>
           <ion-col class="ion-align-items-end">
@@ -344,6 +366,8 @@ export default defineComponent({
                 this.pointsTeam2 = val.score_team2;
                 this.points = val.points;
               } else if (this.isUpcoming()) {
+                this.pointsTeam1 = "-";
+                this.pointsTeam2 = "-";
                 this.points = undefined;
               } else {
                 this.pointsTeam1 = "-";
@@ -375,6 +399,8 @@ export default defineComponent({
                 this.pointsTeam2 = val.score_team2;
                 this.points = val.points;
               } else if (this.isUpcoming()) {
+                this.pointsTeam1 = "-";
+                this.pointsTeam2 = "-";
                 this.points = undefined;
               } else {
                 this.pointsTeam1 = "-";

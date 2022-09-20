@@ -46,17 +46,53 @@
         </ion-row>
         <ion-row class="centered-row">
           <ion-item>
-            <ion-label position="floating">Password</ion-label>
+            <ion-label position="floating">Email</ion-label>
             <ion-input
-              v-model="password"
-              type="password"
-              name="Password"
+              v-model="email"
+              type="email"
+              name="Email"
               clear-input
               @keyup.enter="sendData"
             ></ion-input>
           </ion-item>
         </ion-row>
         <ion-row class="centered-row">
+          <ion-item>
+            <ion-label position="floating">Password</ion-label>
+            <ion-input
+              v-model="password"
+              :type="show_password ? 'text' : 'password'"
+              name="Password"
+              clear-input
+              clear-on-edit=false
+              @keyup.enter="sendData"
+            ></ion-input>
+          </ion-item>
+        </ion-row>
+        <ion-row class="centered-row">
+          <ion-item>
+            <ion-label position="floating">Repeat Password</ion-label>
+            <ion-input
+              v-model="repeat_password"
+              :type="show_password ? 'text' : 'password'"
+              name="RepeatPassword"
+              clear-input
+              clear-on-edit=false
+              @keyup.enter="sendData"
+            ></ion-input>
+          </ion-item>
+          <ion-item lines="none" class="ion-margin-top">
+            <ion-checkbox
+              color="secondary"
+              slot="start"
+              v-model="show_password"
+              :modelValue="show_password"
+              @keyup.enter="show_password = !show_password"
+            />
+            <ion-label>Show password</ion-label>
+          </ion-item>
+        </ion-row>
+        <ion-row class="centered-row bottom-row">
           <ion-item lines="none">
             <ion-checkbox
               color="secondary"
@@ -67,8 +103,6 @@
             />
             <ion-label> Stay logged in</ion-label>
           </ion-item>
-        </ion-row>
-        <ion-row class="centered-row bottom-row">
           <ion-item lines="none" style="width: 100%">
             <ion-button
               @click="sendData"
@@ -147,18 +181,26 @@ export default defineComponent({
       sunny,
       light,
       username: "",
+      email: "",
       password: "",
+      repeat_password: "",
+      show_password: false,
       loggedin: false,
     };
   },
   methods: {
     async sendData() {
-      if (this.username == "" || this.password == "") {
+      if (this.username == "" || this.password == "" || this.repeat_password == "") {
         showToast("Please fill out everything!");
+      } else if (!this.validateEmail(this.email)) {
+        showToast("Please enter a valid email!");
+      } else if (this.password != this.repeat_password) {
+        showToast("Your passwords don't match!");
       } else {
         this.$store
             .dispatch("register", {
               username: this.username,
+              email: this.email,
               password: this.password,
               loggedin: this.loggedin,
             })
@@ -169,6 +211,15 @@ export default defineComponent({
             })
             .catch();
       }
+    },
+    validateEmail(email: string) {
+      const regexp = new RegExp(
+          // eslint-disable-next-line max-len
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      );
+      if (regexp.test(email)) {
+        return true;
+      } else return false;
     },
     clearInputs() {
       this.username = "";

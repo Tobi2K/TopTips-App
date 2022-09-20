@@ -140,7 +140,12 @@ export const store = createStore({
               if (user.loggedin) {
                 localStorage.setItem("JWT", response.data.access_token);
               }
-              resolve(response.data.name);
+
+              if (response.data.email) {
+                resolve([response.data.name, true]);
+              } else {
+                resolve([response.data.name, false]);
+              }
               commit("UPDATE_SHOW_GROUP", true);
               dispatch("UPDATE_USER_GROUPS");
             })
@@ -163,13 +168,14 @@ export const store = createStore({
     },
     register(
         { commit, dispatch },
-        user: { username: string; password: string; loggedin: boolean },
+        user: { username: string; email: string; password: string; loggedin: boolean },
     ) {
       commit("UPDATE_LOADING", true);
       return new Promise((resolve, reject) => {
         axios
             .post(process.env.VUE_APP_HOST + "/auth/register", {
               name: user.username,
+              email: user.email,
               password: user.password,
             })
             .then((response) => {
@@ -184,6 +190,43 @@ export const store = createStore({
               dispatch("UPDATE_USER_GROUPS");
               commit("UPDATE_CURRENT_GROUP_ID", -1);
               resolve(user.username);
+            })
+            .catch((error) => {
+              let errorText = "";
+              if (error.response) {
+                errorText = error.response.data.message;
+              } else {
+                errorText = error.message;
+              }
+              dispatch("handleError", {
+                error: error,
+                message: errorText,
+              });
+              reject(errorText);
+            })
+            .finally(() => {
+              commit("UPDATE_LOADING", false);
+            });
+      });
+    },
+    updateEmail(
+        { commit, dispatch, state },
+        email: string,
+    ) {
+      commit("UPDATE_LOADING", true);
+      return new Promise((resolve, reject) => {
+        axios
+            .post(
+                process.env.VUE_APP_HOST + "/auth/update",
+                {
+                  email: email,
+                },
+                {
+                  headers: { Authorization: `Bearer ${state.user.accessToken}` },
+                },
+            )
+            .then(() => {
+              resolve("Thanks");
             })
             .catch((error) => {
               let errorText = "";
