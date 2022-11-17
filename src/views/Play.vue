@@ -121,10 +121,18 @@ export default defineComponent({
   },
   mounted() {
     this.$store.dispatch("checkJWT");
+    if (this.showSelectGroup && this.userGroups.length == 1) {
+      this.selectedGroup(this.userGroups[0].group.id);
+    }
   },
   watch: {
     groupID(newValue) {
       if (newValue != 0) this.refreshAll();
+    },
+    userGroups(newValue) {
+      if (this.showSelectGroup && newValue.length == 1) {
+        this.selectedGroup(newValue[0].group.id);
+      }
     },
   },
   computed: mapState([
