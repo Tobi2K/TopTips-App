@@ -14,10 +14,10 @@
 <br>
 <p align="center">
   <a href="#readme">
-    <img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/Tobi2K/TopTips-App?style=for-the-badge">
+    <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/Tobi2K/TopTips-App/firebase-hosting-merge.yml?branch=main&style=for-the-badge">
   </a>
   <a href="#readme">
-    <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/Tobi2K/TopTips-App/Deploy%20to%20Firebase%20Hosting%20on%20merge?style=for-the-badge">
+    <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/Tobi2K/TopTips-App/workflows/firebase-hosting-merge.yml?style=for-the-badge">
   </a>
   <a href="#license">
     <img alt="License" src="https://img.shields.io/github/license/Tobi2K/TopTips-App?style=for-the-badge">
