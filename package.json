@@ -28,7 +28,7 @@
     "@ionic/vue": "^6.4.1",
     "@ionic/vue-router": "^6.4.1",
     "@soerenmartius/vue3-clipboard": "^0.1.2",
-    "axios": "^1.2.1",
+    "axios": "^1.2.2",
     "core-js": "^3.27.1",
     "esnext": "^3.3.1",
     "glob-parent": ">=5.1.2",
@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "@capacitor/cli": "^3.4.3",
-    "@types/node": "^18.11.11",
+    "@types/node": "^18.11.18",
     "@typescript-eslint/eslint-plugin": "^5.18.0",
     "@typescript-eslint/parser": "^5.18.0",
     "@vue/cli-plugin-babel": "~5.0.0",
