@@ -30,7 +30,9 @@ import { VueClipboard } from "@soerenmartius/vue3-clipboard";
 import "./registerServiceWorker";
 
 const app = createApp(App)
-    .use(IonicVue)
+    .use(IonicVue, {
+      mode: "md",
+    })
     .use(router)
     .use(store, key)
     .use(VueClipboard);
