@@ -128,7 +128,7 @@ export default defineComponent({
       this.$router.push("/tabs/group");
     },
     async createGroup() {
-      if (this.seasonData == []) {
+      if (!this.seasonData) {
         this.$store.dispatch("handleError", {
           error: null,
           message: "Something went wrong. Please try again later.",
