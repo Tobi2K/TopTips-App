@@ -104,7 +104,7 @@
                     v-if="item.guessed"
                     class="ion-text-end small-text"
                     :style="'color:' + item.team2_text"
-                    ><ion-icon :icon="checkmarkOutline" /> ({{ item.guess }})
+                    ><ion-icon name="checkmark-outline" /> ({{ item.guess }})
                   </ion-col>
                 </ion-row>
               </ion-card-content>
@@ -130,8 +130,6 @@ import {
 } from "@ionic/vue";
 import { defineComponent } from "vue";
 
-import { checkmarkOutline } from "ionicons/icons";
-
 import GuessModal from "@/components/GuessModal.vue";
 
 export default defineComponent({
@@ -146,11 +144,6 @@ export default defineComponent({
     },
   },
   emits: ["loaded"],
-  setup() {
-    return {
-      checkmarkOutline,
-    };
-  },
   components: {
     IonCol,
     IonRow,

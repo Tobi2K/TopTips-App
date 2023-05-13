@@ -11,7 +11,7 @@
           <ion-col>
             <ion-buttons class="ion-float-right">
               <ion-button @click="closeModal">
-                <ion-icon :icon="close" />
+                <ion-icon name="close" />
               </ion-button>
             </ion-buttons>
           </ion-col>
@@ -88,7 +88,7 @@
         </ion-col>
       </ion-row>
       <ion-row class="align-middle">
-        <small><ion-icon :icon="informationCircleOutline" />
+        <small><ion-icon name="information-circle-outline" />
         Leaderboards are updated daily at 04:00 AM CEST.</small>
       </ion-row>
     </ion-grid>
@@ -113,7 +113,6 @@ import {
   IonLabel,
   IonItem,
 } from "@ionic/vue";
-import { close, informationCircleOutline } from "ionicons/icons";
 import { defineComponent } from "vue";
 
 import { mapState } from "vuex";
@@ -150,8 +149,6 @@ export default defineComponent({
 
     return {
       closeModal,
-      close,
-      informationCircleOutline,
     };
   },
   data() {

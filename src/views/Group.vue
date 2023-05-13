@@ -46,14 +46,6 @@ import {
 
 import CustomHeader from "@/components/CustomHeader.vue";
 
-import {
-  arrowBackCircleOutline,
-  arrowForwardCircleOutline,
-  settingsOutline,
-  refresh,
-  copyOutline,
-} from "ionicons/icons";
-
 import { defineComponent } from "vue";
 
 import { useStore } from "@/store/store";
@@ -79,11 +71,6 @@ export default defineComponent({
 
     return {
       store,
-      arrowBackCircleOutline,
-      arrowForwardCircleOutline,
-      settingsOutline,
-      refresh,
-      copyOutline,
     };
   },
   data() {

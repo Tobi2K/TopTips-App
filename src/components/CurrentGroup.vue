@@ -9,7 +9,7 @@
           </ion-col>
           <ion-col>
             <ion-text @click="openGroupModal()" class="ion-float-right pointer">
-              <ion-icon :icon="pencilOutline" />
+              <ion-icon name="pencil-outline" />
             </ion-text>
           </ion-col>
         </ion-row>
@@ -27,7 +27,7 @@
               @click="copyPassphrase(groupData.passphrase)"
               class="ion-float-right pointer"
             >
-              <ion-icon :icon="copyOutline" />
+              <ion-icon name="copy-outline" />
             </ion-text>
           </ion-col>
         </ion-row>
@@ -74,8 +74,6 @@ import {
 } from "@ionic/vue";
 import { defineComponent } from "vue";
 
-import { copyOutline, pencilOutline } from "ionicons/icons";
-
 import moment from "moment";
 
 import { mapState } from "vuex";
@@ -88,8 +86,6 @@ export default defineComponent({
   setup() {
     return {
       moment,
-      copyOutline,
-      pencilOutline,
     };
   },
   components: {

@@ -25,7 +25,7 @@
               expand="full"
             >
               <p style="margin-right: 5px">Change Theme</p>
-              <ion-icon :icon="moon" />
+              <ion-icon name="moon" />
             </ion-button>
             <ion-button
               v-else
@@ -34,19 +34,19 @@
               expand="full"
             >
               <p style="margin-right: 5px">Change Theme</p>
-              <ion-icon :icon="sunny" />
+              <ion-icon name="sunny" />
             </ion-button>
           </ion-col>
           <ion-col size="6">
             <ion-button @click="presentEditUsernamePrompt()" expand="full">
               <p style="margin-right: 5px">Edit Username</p>
-              <ion-icon :icon="createOutline" />
+              <ion-icon name="create-outline" />
             </ion-button>
           </ion-col>
           <ion-col size="6">
             <ion-button color="danger" @click="logout" expand="full">
               <p style="margin-right: 5px">Logout</p>
-              <ion-icon :icon="logOutOutline" />
+              <ion-icon name="log-out-outline" />
             </ion-button>
           </ion-col>
         </ion-row>
@@ -163,14 +163,7 @@ import {
   IonPage,
 } from "@ionic/vue";
 import { defineComponent } from "vue";
-import {
-  logOutOutline,
-  close,
-  send,
-  moon,
-  sunny,
-  createOutline,
-} from "ionicons/icons";
+
 
 import { mapState } from "vuex";
 
@@ -203,14 +196,6 @@ export default defineComponent({
     async () => {
       await PushNotifications.requestPermissions();
       await PushNotifications.register();
-    };
-    return {
-      logOutOutline,
-      close,
-      send,
-      moon,
-      sunny,
-      createOutline,
     };
   },
   data() {

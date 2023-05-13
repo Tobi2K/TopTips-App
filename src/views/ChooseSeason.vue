@@ -58,14 +58,6 @@ import {
   IonButton,
 } from "@ionic/vue";
 
-import {
-  arrowBackCircleOutline,
-  arrowForwardCircleOutline,
-  settingsOutline,
-  refresh,
-  chevronDownCircleOutline,
-} from "ionicons/icons";
-
 import moment from "moment";
 
 import { defineComponent } from "vue";
@@ -94,11 +86,6 @@ export default defineComponent({
   },
   setup() {
     return {
-      arrowBackCircleOutline,
-      arrowForwardCircleOutline,
-      settingsOutline,
-      refresh,
-      chevronDownCircleOutline,
       moment,
     };
   },

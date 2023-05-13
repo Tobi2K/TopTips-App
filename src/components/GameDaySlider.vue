@@ -39,7 +39,7 @@
     v-if="this.ranking.length > 0 || this.activeGamedays.length > 0"
   >
     <ion-fab-button size="small" color="medium"
-      ><ion-icon :icon="caretUpOutline"
+      ><ion-icon name="caret-up-outline"
     /></ion-fab-button>
 
     <ion-fab-list side="top">
@@ -48,14 +48,14 @@
         @click="openRankingModal()"
         v-if="this.ranking.length > 0"
       >
-        <ion-icon :icon="podiumOutline" />
+        <ion-icon name="podium-outline" />
       </ion-fab-button>
       <ion-fab-button
         color="light"
         @click="getGameday()"
         v-if="this.activeGamedays.length > 0"
       >
-        <ion-icon :icon="todayOutline" />
+        <ion-icon name="today-outline" />
       </ion-fab-button>
     </ion-fab-list>
   </ion-fab>
@@ -86,7 +86,6 @@ import PlayGame from "@/components/PlayGame.vue";
 import { defineComponent } from "vue";
 import { mapState } from "vuex";
 
-import { todayOutline, podiumOutline, caretUpOutline } from "ionicons/icons";
 import RankingModal from "./RankingModal.vue";
 
 export default defineComponent({
@@ -111,9 +110,6 @@ export default defineComponent({
   setup() {
     return {
       modules: [Navigation, Virtual, Pagination],
-      todayOutline,
-      podiumOutline,
-      caretUpOutline,
     };
   },
   data() {

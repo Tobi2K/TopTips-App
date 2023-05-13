@@ -7,15 +7,15 @@
       </ion-refresher>
       <ion-fab vertical="bottom" horizontal="start" slot="fixed">
         <ion-fab-button size="small" color="medium">
-          <ion-icon :icon="caretUpOutline" />
+          <ion-icon name="caret-up-outline" />
         </ion-fab-button>
 
         <ion-fab-list side="top">
           <ion-fab-button color="light" @click="showPointsDesc()">
-            <ion-icon :icon="helpCircleOutline"></ion-icon>
+            <ion-icon name="help-circle-outline"></ion-icon>
           </ion-fab-button>
           <ion-fab-button color="light" @click="getRank()">
-            <ion-icon :icon="medalOutline" />
+            <ion-icon name="medal-outline" />
           </ion-fab-button>
         </ion-fab-list>
       </ion-fab>
@@ -40,14 +40,6 @@ import {
 import ScoreSection from "@/components/ScoreSection.vue";
 
 import CustomHeader from "@/components/CustomHeader.vue";
-
-import {
-  refresh,
-  settingsOutline,
-  helpCircleOutline,
-  medalOutline,
-  caretUpOutline,
-} from "ionicons/icons";
 
 import { defineComponent } from "vue";
 import { getUserRank, showToast } from "@/store/helper";
@@ -75,15 +67,6 @@ export default defineComponent({
           complete: () => void;
         };
       },
-    };
-  },
-  setup() {
-    return {
-      refresh,
-      settingsOutline,
-      helpCircleOutline,
-      medalOutline,
-      caretUpOutline,
     };
   },
   mounted() {

@@ -44,12 +44,6 @@ import {
   IonButton,
 } from "@ionic/vue";
 
-import {
-  settingsOutline,
-  refresh,
-  chevronDownCircleOutline,
-} from "ionicons/icons";
-
 import { defineComponent } from "vue";
 import { mapState } from "vuex";
 
@@ -73,13 +67,6 @@ export default defineComponent({
     IonButtons,
     IonButton,
     IonLabel,
-  },
-  setup() {
-    return {
-      settingsOutline,
-      refresh,
-      chevronDownCircleOutline,
-    };
   },
   methods: {
     cancel() {

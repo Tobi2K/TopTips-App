@@ -29,13 +29,13 @@
                   : group.group.name
               }}
               <ion-icon
-                :icon="peopleCircleOutline"
+                name="people-circle-outline"
                 style="margin-left: 5px; margin-right: 3px"
                 v-if="group.memberCount"
               />
               {{ group.memberCount }}
               <ion-icon
-                :icon="podiumOutline"
+                name="podium-outline"
                 style="margin-left: 5px; margin-right: 3px"
                 v-if="group.rank"
               />
@@ -64,16 +64,6 @@ import GameDaySlider from "@/components/GameDaySlider.vue";
 
 import CustomHeader from "@/components/CustomHeader.vue";
 
-import {
-  arrowBackCircleOutline,
-  arrowForwardCircleOutline,
-  settingsOutline,
-  refresh,
-  chevronDownCircleOutline,
-  peopleCircleOutline,
-  podiumOutline,
-} from "ionicons/icons";
-
 import { defineComponent } from "vue";
 import { useStore } from "@/store/store";
 import { mapState } from "vuex";
@@ -96,13 +86,6 @@ export default defineComponent({
 
     return {
       store,
-      arrowBackCircleOutline,
-      arrowForwardCircleOutline,
-      settingsOutline,
-      refresh,
-      chevronDownCircleOutline,
-      peopleCircleOutline,
-      podiumOutline,
     };
   },
   data() {

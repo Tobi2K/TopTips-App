@@ -17,13 +17,13 @@
   >
     <ion-col class="ion-text-center" size="5">
       <span v-for="i in gameInfo.team1_stats.history" :key="i">
-        <ion-icon v-if="i == 'W'" style="color: green" :icon="ellipse" />
-        <ion-icon v-if="i == 'L'" style="color: red" :icon="ellipse" />
-        <ion-icon v-if="i == 'D'" style="color: orange" :icon="ellipse" />
+        <ion-icon v-if="i == 'W'" style="color: green" name="ellipse" />
+        <ion-icon v-if="i == 'L'" style="color: red" name="ellipse" />
+        <ion-icon v-if="i == 'D'" style="color: orange" name="ellipse" />
       </span>
     </ion-col>
     <ion-col class="ion-text-center" size="2">
-      <ion-icon id="click-trigger" :icon="helpCircleOutline" />
+      <ion-icon id="click-trigger" name="help-circle-outline" />
       <ion-popover
         trigger="click-trigger"
         trigger-action="click"
@@ -45,9 +45,9 @@
     </ion-col>
     <ion-col class="ion-text-center" size="5">
       <span v-for="i in gameInfo.team2_stats.history" :key="i">
-        <ion-icon v-if="i == 'W'" style="color: green" :icon="ellipse" />
-        <ion-icon v-if="i == 'L'" style="color: red" :icon="ellipse" />
-        <ion-icon v-if="i == 'D'" style="color: orange" :icon="ellipse" />
+        <ion-icon v-if="i == 'W'" style="color: green" name="ellipse" />
+        <ion-icon v-if="i == 'L'" style="color: red" name="ellipse" />
+        <ion-icon v-if="i == 'D'" style="color: orange" name="ellipse" />
       </span>
     </ion-col>
   </ion-row>
@@ -130,7 +130,6 @@ import {
   IonPopover,
   IonButton,
 } from "@ionic/vue";
-import { ellipse, helpCircleOutline } from "ionicons/icons";
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -149,12 +148,6 @@ export default defineComponent({
   data() {
     return {
       showStats: false,
-    };
-  },
-  setup() {
-    return {
-      ellipse,
-      helpCircleOutline,
     };
   },
   methods: {

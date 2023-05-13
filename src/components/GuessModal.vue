@@ -9,11 +9,11 @@
           <ion-col>
             <ion-buttons class="ion-float-right">
               <ion-button @click="toggleName()">
-                <ion-icon v-if="showNames" :icon="imageOutline" />
-                <ion-icon v-else :icon="textOutline" />
+                <ion-icon v-if="showNames" name="image-outline" />
+                <ion-icon v-else name="text-outline" />
               </ion-button>
               <ion-button @click="closeModal">
-                <ion-icon :icon="close" />
+                <ion-icon name="close" />
               </ion-button>
             </ion-buttons>
           </ion-col>
@@ -31,7 +31,7 @@
             @click="slideLeft()"
             v-if="index > 0"
           >
-            <ion-icon slot="icon-only" :icon="caretBack"></ion-icon>
+            <ion-icon slot="icon-only" name="caret-back"></ion-icon>
           </ion-button>
         </ion-col>
         <ion-col class="ion-text-end">
@@ -41,7 +41,7 @@
             @click="slideRight()"
             v-if="index < games.length - 1"
           >
-            <ion-icon slot="icon-only" :icon="caretForward"></ion-icon>
+            <ion-icon slot="icon-only" name="caret-forward"></ion-icon>
           </ion-button>
         </ion-col>
       </ion-row>
@@ -171,7 +171,7 @@
               class="ion-float-right"
               @click="sendData()"
               ><p style="margin-right: 5px">Save</p>
-              <ion-icon :icon="send"
+              <ion-icon name="send"
             /></ion-button>
           </ion-col>
         </ion-row>
@@ -219,16 +219,6 @@ import {
   useBackButton,
 } from "@ionic/vue";
 
-import {
-  close,
-  send,
-  ellipse,
-  helpCircleOutline,
-  textOutline,
-  imageOutline,
-  caretBack,
-  caretForward,
-} from "ionicons/icons";
 import { defineComponent } from "vue";
 
 import GameGuesses from "@/components/GameGuesses.vue";
@@ -304,13 +294,6 @@ export default defineComponent({
       moment,
       closeModal,
       close,
-      send,
-      ellipse,
-      helpCircleOutline,
-      imageOutline,
-      textOutline,
-      caretBack,
-      caretForward,
     };
   },
   methods: {

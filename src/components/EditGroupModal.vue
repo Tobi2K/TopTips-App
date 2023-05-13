@@ -11,7 +11,7 @@
           <ion-col>
             <ion-buttons class="ion-float-right">
               <ion-button @click="closeModal">
-                <ion-icon :icon="close" />
+                <ion-icon name="close" />
               </ion-button>
             </ion-buttons>
           </ion-col>
@@ -30,7 +30,7 @@
             @click="presentEditGroupNamePrompt()"
           >
             <p style="margin-right: 5px">Edit Group Name</p>
-            <ion-icon :icon="pencilOutline" />
+            <ion-icon name="pencil-outline" />
           </ion-button>
         </ion-col>
         <ion-col size="12">
@@ -40,7 +40,7 @@
             @click="presentDeleteGroupPrompt()"
           >
             <p style="margin-right: 5px">Delete Group</p>
-            <ion-icon :icon="trashOutline" />
+            <ion-icon name="trash-outline" />
           </ion-button>
         </ion-col>
       </ion-row>
@@ -55,7 +55,7 @@
             @click="presentLeaveGroupPrompt()"
           >
             <p style="margin-right: 5px">Leave Group</p>
-            <ion-icon :icon="exitOutline" />
+            <ion-icon name="exit-outline" />
           </ion-button>
         </ion-col>
       </ion-row>
@@ -86,12 +86,6 @@ import {
   alertController,
 } from "@ionic/vue";
 import { defineComponent } from "vue";
-import {
-  pencilOutline,
-  trashOutline,
-  exitOutline,
-  close,
-} from "ionicons/icons";
 
 import { mapState } from "vuex";
 
@@ -121,9 +115,6 @@ export default defineComponent({
     });
     return {
       closeModal,
-      trashOutline,
-      pencilOutline,
-      exitOutline,
       close,
     };
   },
