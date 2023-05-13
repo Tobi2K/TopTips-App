@@ -27,9 +27,9 @@
             <ion-checkbox
               v-model="this.games"
               :checked="this.games"
-              slot="start"
-            ></ion-checkbox>
-            <ion-label>Games</ion-label>
+              label-placement="end"
+              justify="start"
+            >Games</ion-checkbox>
           </ion-item>
         </ion-col>
         <ion-col size="6">
@@ -37,9 +37,9 @@
             <ion-checkbox
               v-model="this.goals"
               :checked="this.goals"
-              slot="start"
-            ></ion-checkbox>
-            <ion-label>Goals</ion-label>
+              label-placement="end"
+              justify="start"
+            >Goals</ion-checkbox>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -110,7 +110,6 @@ import {
   IonIcon,
   useBackButton,
   IonCheckbox,
-  IonLabel,
   IonItem,
 } from "@ionic/vue";
 import { defineComponent } from "vue";
@@ -135,7 +134,6 @@ export default defineComponent({
     IonRow,
     IonIcon,
     IonCheckbox,
-    IonLabel,
     IonItem,
   },
   setup() {

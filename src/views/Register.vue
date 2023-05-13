@@ -34,8 +34,9 @@
       <div class="center-vertically">
         <ion-row class="centered-row">
           <ion-item>
-            <ion-label position="floating">Username</ion-label>
             <ion-input
+              label="Username"
+              label-placement="floating"
               v-model="username"
               type="text"
               name="Username"
@@ -46,8 +47,9 @@
         </ion-row>
         <ion-row class="centered-row">
           <ion-item>
-            <ion-label position="floating">Email</ion-label>
             <ion-input
+              label="Email"
+              label-placement="floating"
               v-model="email"
               type="email"
               name="Email"
@@ -58,8 +60,9 @@
         </ion-row>
         <ion-row class="centered-row">
           <ion-item>
-            <ion-label position="floating">Password</ion-label>
             <ion-input
+              label="Password"
+              label-placement="floating"
               v-model="password"
               :type="show_password ? 'text' : 'password'"
               name="Password"
@@ -71,8 +74,9 @@
         </ion-row>
         <ion-row class="centered-row">
           <ion-item>
-            <ion-label position="floating">Repeat Password</ion-label>
             <ion-input
+              label="Repeat Password"
+              label-placement="floating"
               v-model="repeat_password"
               :type="show_password ? 'text' : 'password'"
               name="RepeatPassword"
@@ -84,24 +88,25 @@
           <ion-item lines="none" class="ion-margin-top">
             <ion-checkbox
               color="secondary"
-              slot="start"
+              label-placement="end"
+              justify="start"
               v-model="show_password"
               :modelValue="show_password"
               @keyup.enter="show_password = !show_password"
-            />
-            <ion-label>Show password</ion-label>
+            >Show password </ion-checkbox>
           </ion-item>
         </ion-row>
         <ion-row class="centered-row bottom-row">
           <ion-item lines="none">
             <ion-checkbox
               color="secondary"
-              slot="start"
+              label-placement="end"
+              justify="start"
               v-model="loggedin"
               :modelValue="loggedin"
               @keyup.enter="loggedin = !loggedin"
-            />
-            <ion-label> Stay logged in</ion-label>
+            >Stay logged in</ion-checkbox>
+            <ion-label> </ion-label>
           </ion-item>
           <ion-item lines="none" style="width: 100%">
             <ion-button

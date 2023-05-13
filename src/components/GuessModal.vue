@@ -141,10 +141,9 @@
         </ion-row>
 
         <ion-item>
-          <ion-label position="floating">
-            Goals by {{ gameInfo.team1_name }}
-          </ion-label>
           <ion-input
+            :label="'Goals by' + gameInfo.team1_name"
+            label-placement="floating"
             v-model="pointsTeam1"
             type="number"
             inputmode="numeric"
@@ -153,10 +152,9 @@
           ></ion-input>
         </ion-item>
         <ion-item>
-          <ion-label position="floating">
-            Goals by {{ gameInfo.team2_name }}
-          </ion-label>
           <ion-input
+            :label="'Goals by' + gameInfo.team2_name"
+            label-placement="floating"
             v-model="pointsTeam2"
             type="number"
             inputmode="numeric"
@@ -214,7 +212,6 @@ import {
   IonRow,
   IonInput,
   IonItem,
-  IonLabel,
   IonIcon,
   useBackButton,
 } from "@ionic/vue";
@@ -256,7 +253,6 @@ export default defineComponent({
     IonRow,
     IonInput,
     IonItem,
-    IonLabel,
     IonIcon,
     GameGuesses,
     TeamStats,
