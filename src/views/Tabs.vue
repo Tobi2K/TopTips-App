@@ -4,17 +4,17 @@
       <ion-router-outlet></ion-router-outlet>
       <ion-tab-bar slot="bottom">
         <ion-tab-button tab="tab1" href="/tabs/play">
-          <ion-icon name="dice" />
+          <ion-icon :icon="dice" />
           <ion-label>Play</ion-label>
         </ion-tab-button>
 
         <ion-tab-button tab="tab2" href="/tabs/score">
-          <ion-icon name="trophy-outline" />
+          <ion-icon :icon="trophyOutline" />
           <ion-label>Score</ion-label>
         </ion-tab-button>
 
         <ion-tab-button tab="tab3" href="/tabs/group">
-          <ion-icon name="people-circle-outline" />
+          <ion-icon :icon="peopleCircleOutline" />
           <ion-label>Groups</ion-label>
         </ion-tab-button>
       </ion-tab-bar>
@@ -32,6 +32,7 @@ import {
   IonPage,
   IonRouterOutlet,
 } from "@ionic/vue";
+import { dice, trophyOutline, peopleCircleOutline } from "ionicons/icons";
 
 export default {
   name: "MainTabs",
@@ -43,6 +44,13 @@ export default {
     IonIcon,
     IonPage,
     IonRouterOutlet,
+  },
+  setup() {
+    return {
+      dice,
+      trophyOutline,
+      peopleCircleOutline,
+    };
   },
 };
 </script>

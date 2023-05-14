@@ -4,12 +4,12 @@
     <ion-row>
       <ion-col size="4">
         <ion-button @click="goLeft()" fill="clear" color="medium">
-          <ion-icon name="arrow-back" />
+          <ion-icon :icon="arrowBack" />
         </ion-button>
       </ion-col>
       <ion-col size="4" style="text-align: center">
         <ion-button @click="goCurrent()" fill="clear" color="medium">
-          <ion-icon name="today-outline" />
+          <ion-icon :icon="todayOutline" />
         </ion-button>
       </ion-col>
       <ion-col size="4">
@@ -19,7 +19,7 @@
           fill="clear"
           color="medium"
         >
-          <ion-icon name="arrow-forward" />
+          <ion-icon :icon="arrowForward" />
         </ion-button>
       </ion-col>
     </ion-row>
@@ -74,6 +74,8 @@ import { defineComponent } from "vue";
 
 import { IonButton, IonRow, IonCol, IonIcon } from "@ionic/vue";
 
+import { arrowBack, arrowForward, todayOutline } from "ionicons/icons";
+
 import { mapState } from "vuex";
 
 export default defineComponent({
@@ -83,6 +85,13 @@ export default defineComponent({
     IonRow,
     IonCol,
     IonIcon,
+  },
+  setup() {
+    return {
+      arrowBack,
+      arrowForward,
+      todayOutline,
+    };
   },
   emits: ["done"],
   methods: {

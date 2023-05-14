@@ -14,7 +14,7 @@
                 fill="clear"
                 @click="toggleTheme()"
               >
-                <ion-icon name="moon" />
+                <ion-icon :icon="moon" />
               </ion-button>
               <ion-button
                 class="ion-float-right"
@@ -23,7 +23,7 @@
                 color="dark"
                 @click="toggleTheme()"
               >
-                <ion-icon name="sunny" />
+                <ion-icon :icon="sunny" />
               </ion-button>
             </ion-col>
           </ion-row>
@@ -153,6 +153,8 @@ import {
   IonCheckbox,
 } from "@ionic/vue";
 
+import { moon, sunny } from "ionicons/icons";
+
 import { defineComponent } from "vue";
 import { showToast } from "@/store/helper";
 
@@ -173,6 +175,12 @@ export default defineComponent({
     IonHeader,
     IonIcon,
     IonCheckbox,
+  },
+  setup() {
+    return {
+      moon,
+      sunny,
+    };
   },
   data() {
     let light = true;

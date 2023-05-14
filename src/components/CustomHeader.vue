@@ -14,14 +14,14 @@
                       @click="refreshClicked"
                       class="ion-float-right"
                     >
-                      <ion-icon name="refresh" />
+                      <ion-icon :icon="refresh" />
                     </ion-button>
                     <ion-button
                       fill="clear"
                       @click="goToSettings"
                       class="ion-float-right"
                     >
-                      <ion-icon name="settings-outline" />
+                      <ion-icon :icon="settingsOutline" />
                     </ion-button>
                   </ion-buttons>
                 </ion-col>
@@ -57,6 +57,7 @@ import {
 } from "@ionic/vue";
 
 import { defineComponent } from "vue";
+import { refresh, settingsOutline } from "ionicons/icons";
 
 export default defineComponent({
   name: "CustomHeader",
@@ -77,6 +78,12 @@ export default defineComponent({
     IonButton,
     IonButtons,
     IonText,
+  },
+  setup() {
+    return {
+      refresh,
+      settingsOutline,
+    };
   },
   methods: {
     refreshClicked() {
