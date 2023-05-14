@@ -1,7 +1,7 @@
 <template>
   <ion-page>
     <custom-header title="Group Management" @refresh="refreshAll" />
-    <ion-content :fullscreen="true" id="mainSlide">
+    <ion-content :fullscreen="true" id="mainSlideGroup">
       <ion-list>
         <ion-item v-if="userGroups">
           <ion-label>Select Group</ion-label>
@@ -144,7 +144,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-#mainSlide::before {
+#mainSlideGroup::before {
   opacity: 0.5;
 }
 </style>

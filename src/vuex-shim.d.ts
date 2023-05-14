@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { Store } from "vuex";
+import VueRouter, { Route } from "@ionic/vue-router";
 
 declare module "@vue/runtime-core" {
   interface State {
@@ -47,6 +48,7 @@ declare module "@vue/runtime-core" {
   // provide typings for `this.$store`
   interface ComponentCustomProperties {
     $store: Store<State>;
+    $router: VueRouter;
   }
 }
 
