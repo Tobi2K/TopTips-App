@@ -142,7 +142,7 @@
 
         <ion-item>
           <ion-input
-            :label="'Goals by' + gameInfo.team1_name"
+            :label="'Goals by ' + gameInfo.team1_name"
             label-placement="floating"
             v-model="pointsTeam1"
             type="number"
@@ -153,7 +153,7 @@
         </ion-item>
         <ion-item>
           <ion-input
-            :label="'Goals by' + gameInfo.team2_name"
+            :label="'Goals by ' + gameInfo.team2_name"
             label-placement="floating"
             v-model="pointsTeam2"
             type="number"
