@@ -86,17 +86,15 @@
         >
         <div v-if="groupNoti">
           <ion-item v-for="group in userGroups" :key="group">
-            <ion-label>
-              <h2>{{ group.group.name }}</h2>
-            </ion-label>
             <ion-toggle
               @ionChange="
                 toggleStatus('group' + group.group.id, group.group.name)
               "
               :value="group.group.id"
               :checked="getStatus('group' + group.group.id)"
-              aria-label="Toggle Group Notificatons"
-            />
+            >
+            {{ group.group.name }}
+            </ion-toggle>
           </ion-item>
         </div>
         <ion-item-divider />
@@ -126,16 +124,13 @@
         <ion-list-header>Notifications for pending games.</ion-list-header>
         <div v-if="gameNoti">
           <ion-item v-for="season in userSeasons" :key="season">
-            <ion-label>
-              <h2>{{ season.name }}</h2>
-              <small>{{ season.competition.country }}</small>
-            </ion-label>
             <ion-toggle
               @ionChange="toggleStatus('season' + season.id, season.name)"
               :value="season.id"
               :checked="getStatus('season' + season.id)"
-              aria-label="Toggle Season Notificatons"
-            />
+            >
+              {{ season.name }} <small>({{ season.competition.country }})</small>
+            </ion-toggle>
           </ion-item>
         </div>
       </ion-list>
@@ -153,7 +148,6 @@ import {
   IonButton,
   IonCol,
   IonRow,
-  IonLabel,
   IonItem,
   IonIcon,
   IonList,
@@ -195,7 +189,6 @@ export default defineComponent({
     IonButton,
     IonCol,
     IonRow,
-    IonLabel,
     IonItem,
     IonIcon,
     IonList,
