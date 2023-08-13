@@ -11,6 +11,7 @@
             v-model="groupID"
             :key="userGroups"
             @ionChange="selectedGroup(groupID)"
+            aria-label="Select Group"
           >
             <ion-select-option
               v-for="group in userGroups"

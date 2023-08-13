@@ -1,5 +1,5 @@
 <template>
-  <ion-segment scrollable v-model="this.gameDay" style="height: 48px">
+  <ion-segment scrollable v-model="this.gameDay" style="height: 48px" class="horizontal-scroll">
     <ion-segment-button
       v-for="section in games.length"
       :key="section"
@@ -234,5 +234,13 @@ export default defineComponent({
 .swiper-pagination-bullet-active {
   color: #fff;
   background: #007aff;
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+  height: 2px;
+}
+
+.horizontal-scroll {
+  overflow-y: hidden;
 }
 </style>

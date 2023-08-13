@@ -163,6 +163,15 @@
           ></ion-input>
         </ion-item>
         <ion-row>
+          <ion-col class="ion-align-items-start">
+            <ion-button
+              color="medium"
+              size="small"
+              @click="generateGuess()"
+              >
+              <ion-icon :icon="dice"
+            /></ion-button>
+          </ion-col>
           <ion-col class="ion-align-items-end">
             <ion-button
               color="success"
@@ -225,6 +234,7 @@ import {
   imageOutline,
   caretBack,
   caretForward,
+  dice,
 } from "ionicons/icons";
 
 import { defineComponent } from "vue";
@@ -277,6 +287,27 @@ export default defineComponent({
 
     let timeString = moment(gameInfo.date).fromNow();
 
+    let minTeam1 = 20;
+    let maxTeam1 = 35;
+    let minTeam2 = 20;
+    let maxTeam2 = 35;
+
+    if (gameInfo.team1_stats) {
+      const stats = gameInfo.team1_stats;
+      if ((stats.win + stats.draw + stats.lose) > 5) {
+        minTeam1 = stats.goals_min - Math.round((parseInt(stats.goals_avg) - stats.goals_min) / 2);
+        maxTeam1 = stats.goals_max + Math.round((stats.goals_max - parseInt(stats.goals_avg)) / 2);
+      }
+    }
+
+    if (gameInfo.team2_stats) {
+      const stats = gameInfo.team2_stats;
+      if ((stats.win + stats.draw + stats.lose) > 5) {
+        minTeam2 = stats.goals_min - Math.round((parseInt(stats.goals_avg) - stats.goals_min) / 2);
+        maxTeam2 = stats.goals_max + Math.round((stats.goals_max - parseInt(stats.goals_avg)) / 2);
+      }
+    }
+
     timeString = timeString[0].toUpperCase() + timeString.substr(1);
     return {
       timeString,
@@ -286,6 +317,10 @@ export default defineComponent({
       index,
       gameInfo,
       showNames: false,
+      minTeam1,
+      maxTeam1,
+      minTeam2,
+      maxTeam2,
     };
   },
   setup() {
@@ -308,6 +343,7 @@ export default defineComponent({
       textOutline,
       caretBack,
       caretForward,
+      dice,
     };
   },
   methods: {
@@ -407,6 +443,12 @@ export default defineComponent({
             })
             .catch();
       }
+    },
+    generateGuess() {
+      this.pointsTeam1 = Math.floor(Math.random() * (this.maxTeam1 - this.minTeam1 + 1)) + this.minTeam1;
+      this.pointsTeam2 = Math.floor(Math.random() * (this.maxTeam2 - this.minTeam2 + 1)) + this.minTeam2;
+
+      showToast("Generated random guess. Remember to save!");
     },
   },
   mounted() {

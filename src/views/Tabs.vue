@@ -159,4 +159,20 @@ export default {
 .pointer {
   cursor: pointer;
 }
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #BDBDBD;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6E6E6E;
+}
 </style>
