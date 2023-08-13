@@ -95,6 +95,7 @@
               "
               :value="group.group.id"
               :checked="getStatus('group' + group.group.id)"
+              aria-label="Toggle Group Notificatons"
             />
           </ion-item>
         </div>
@@ -133,6 +134,7 @@
               @ionChange="toggleStatus('season' + season.id, season.name)"
               :value="season.id"
               :checked="getStatus('season' + season.id)"
+              aria-label="Toggle Season Notificatons"
             />
           </ion-item>
         </div>
@@ -204,15 +206,15 @@ export default defineComponent({
     async () => {
       await PushNotifications.requestPermissions();
       await PushNotifications.register();
+    };
 
-      return {
-        logOutOutline,
-        close,
-        send,
-        moon,
-        sunny,
-        createOutline,
-      };
+    return {
+      logOutOutline,
+      close,
+      send,
+      moon,
+      sunny,
+      createOutline,
     };
   },
   data() {
