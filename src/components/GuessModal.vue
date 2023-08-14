@@ -366,7 +366,6 @@ export default defineComponent({
               sectionID: this.sectionID, // 0-indexed
             })
             .then(() => {
-              modalController.dismiss();
               showToast("Saved guess successfully");
             })
             .catch();
