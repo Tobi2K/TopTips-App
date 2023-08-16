@@ -190,7 +190,7 @@
                 <small>
                   This generates a random score in the range
                   between <b>MIN - 5</b> and <b>MAX + 5</b>,
-                  where MIN and MAX are the lowest and highest amount of goals scored by the team, respectively.
+                  where MIN and MAX are the lowest and highest score by the team, respectively.
 
                   <br /><br />NOTE: All numbers in the given range are equally likely and the lower bound is at least 20
                   and the upper bound is at most 40.
