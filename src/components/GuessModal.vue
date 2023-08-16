@@ -171,6 +171,32 @@
               >
               <ion-icon :icon="dice"
             /></ion-button>
+            <ion-button
+              color="dark"
+              size="small"
+              id="show-generate"
+              fill="clear"
+              >
+              <ion-icon :icon="helpCircleOutline"
+            /></ion-button>
+            <ion-popover
+              trigger="show-generate"
+              trigger-action="click"
+              size="auto"
+              alignment="center"
+              show-backdrop="false"
+            >
+              <ion-content class="ion-padding">
+                <small>
+                  This generates a random score in the range
+                  between <b>MIN - 5</b> and <b>MAX + 5</b>,
+                  where MIN and MAX are the lowest and highest amount of goals scored by the team, respectively.
+
+                  <br /><br />NOTE: All numbers in the given range are equally likely and the lower bound is at least 20
+                  and the upper bound is at most 40.
+                </small>
+              </ion-content>
+            </ion-popover>
           </ion-col>
           <ion-col class="ion-align-items-end">
             <ion-button
@@ -295,16 +321,16 @@ export default defineComponent({
     if (gameInfo.team1_stats) {
       const stats = gameInfo.team1_stats;
       if ((stats.win + stats.draw + stats.lose) > 5) {
-        minTeam1 = stats.goals_min - Math.round((parseInt(stats.goals_avg) - stats.goals_min) / 2);
-        maxTeam1 = stats.goals_max + Math.round((stats.goals_max - parseInt(stats.goals_avg)) / 2);
+        minTeam1 = Math.max(stats.goals_min - 5, minTeam1);
+        maxTeam1 = Math.min(stats.goals_max + 5, 40);
       }
     }
 
     if (gameInfo.team2_stats) {
       const stats = gameInfo.team2_stats;
       if ((stats.win + stats.draw + stats.lose) > 5) {
-        minTeam2 = stats.goals_min - Math.round((parseInt(stats.goals_avg) - stats.goals_min) / 2);
-        maxTeam2 = stats.goals_max + Math.round((stats.goals_max - parseInt(stats.goals_avg)) / 2);
+        minTeam2 = Math.max(stats.goals_min - 5, minTeam2);
+        maxTeam2 = Math.min(stats.goals_max + 5, 40);
       }
     }
 
