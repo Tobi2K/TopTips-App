@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@capacitor-community/fcm": "^3.0.2",
-    "@capacitor/android": "^4.8.1",
+    "@capacitor/android": "^5.2.3",
     "@capacitor/app": "^4.1.1",
     "@capacitor/core": "^4.8.1",
     "@capacitor/haptics": "^4.1.0",
