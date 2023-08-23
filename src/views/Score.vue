@@ -104,13 +104,16 @@ export default defineComponent({
             cssClass: "points-alert",
             header: "How are points calculated?",
             message:
-            "You get 1 point for:<br>" +
-            "<ul>" +
-            "<li>Correct Winner</li>" +
-            "<li>Correct Goals (per Team)</li>" +
-            "<li>Correct Goal Difference</li>" +
-            "<li>Perfect Score</li>" +
-            "</ul>This means a total of 5 points can be achieved per game.",
+            "You get 1 point for: \n" +
+            "- Correct Winner\n" +
+            "- Correct Goals (per Team)\n" +
+            "- Correct Goal Difference\n" +
+            "- Perfect Score\n\n" +
+            "In total, a maximum of 5 points can be achieved per game. \n\n" +
+            "Additionally, to incentivize guessing draws, correctly predicting a tied game gains you a point" +
+            " and an exact prediction of a draw a further point. " +
+            "With this addition, a perfect draw earns 7 points, " +
+            "while a draw with the incorrect goal amount earns 3 points.",
             buttons: ["OK"],
           })
           .then((val) => {
@@ -171,5 +174,9 @@ h2 {
 <style>
 .points-alert .alert-head .alert-title {
   font-size: 18px !important;
+}
+
+.points-alert {
+  white-space: pre-wrap;
 }
 </style>
