@@ -43,7 +43,7 @@
           </ion-item>
         </ion-col>
       </ion-row>
-      <ion-row class="tiny-text align-middle ion-margin-bottom">
+      <ion-row class="tiny-text ion-margin-bottom">
         <ion-col size="auto" class="colNoPaddingRight">
           <table class="coolTable">
             <tr class="border-bottom">
