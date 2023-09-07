@@ -18,7 +18,7 @@
     "@capacitor-community/fcm": "^3.0.2",
     "@capacitor/android": "^4.8.1",
     "@capacitor/app": "^4.1.1",
-    "@capacitor/core": "^4.8.1",
+    "@capacitor/core": "^5.3.0",
     "@capacitor/haptics": "^4.1.0",
     "@capacitor/keyboard": "^4.1.1",
     "@capacitor/push-notifications": "^4.1.2",
