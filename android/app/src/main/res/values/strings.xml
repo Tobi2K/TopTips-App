@@ -6,6 +6,6 @@
     <string name="custom_url_scheme">app.kalmbach.dev</string>
     <string name="channel_name">Games</string>
     <string name="channel_description">Notifications for games on current date</string>
-    <string name="msg_subscribed">Benachrichtigungen funktionieren</string>
-    <string name="msg_subscribe_failed">Benachrichtigungen kaputt :( Sag Tobi Bescheid</string>
+    <string name="msg_subscribed">Notifications working</string>
+    <string name="msg_subscribe_failed">Notifications broken :(</string>
 </resources>

@@ -4,16 +4,21 @@ import static android.content.ContentValues.TAG;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.getcapacitor.BridgeActivity;
-import com.getcapacitor.Plugin;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import java.util.ArrayList;
+import java.io.File;
 
 public class MainActivity extends BridgeActivity {
     @Override
@@ -24,6 +29,27 @@ public class MainActivity extends BridgeActivity {
         FirebaseApp.initializeApp(this);
         createNotificationChannel();
         subscribeToGeneralTopic();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            boolean requestIt = false;
+            if (sharedPreferences.contains("noti_requested")) {
+                if (!sharedPreferences.getString("noti_requested", "none").equals("yes")) {
+                    requestIt = true;
+                }
+            } else {
+                requestIt = true;
+            }
+            if (requestIt) {
+                int permissionState = ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS);
+                // If the permission is not granted, request it.
+                if (permissionState == PackageManager.PERMISSION_DENIED) {
+                    ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 1);
+                }
+                editor.putString("noti_requested", "yes");
+            }
+            editor.apply();
+        }
     }
 
     private void subscribeToGeneralTopic() {
