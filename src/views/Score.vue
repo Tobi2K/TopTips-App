@@ -128,14 +128,15 @@ export default defineComponent({
           .then((response) => {
             alertController
                 .create({
+                  cssClass: "points-alert",
                   header: "You are #" + response.data.rank + " overall.",
                   message:
-                "This is your position compared to all other TopTips users.<br><br>" +
+                "This is your position compared to all other TopTips users. \n\n" +
                 "Total Points: " +
                 response.data.points +
-                "<br>You are part of " +
+                "\nYou are part of " +
                 response.data.groups +
-                "  group(s).",
+                " group(s).",
                   buttons: ["Dismiss"],
                 })
                 .then((alert) => alert.present());
