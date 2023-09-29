@@ -80,7 +80,6 @@ import {
   IonRow,
   IonItem,
   IonIcon,
-  useBackButton,
   IonList,
   IonListHeader,
   alertController,
@@ -116,9 +115,6 @@ export default defineComponent({
     const closeModal = () => {
       modalController.dismiss();
     };
-    useBackButton(10, () => {
-      modalController.dismiss();
-    });
     return {
       closeModal,
       trashOutline,

@@ -23,6 +23,7 @@
 </template>
 
 <script lang="ts">
+import { App } from "@capacitor/app";
 import {
   IonTabBar,
   IonTabButton,
@@ -31,8 +32,11 @@ import {
   IonIcon,
   IonPage,
   IonRouterOutlet,
+  alertController,
+  useBackButton,
 } from "@ionic/vue";
 import { dice, trophyOutline, peopleCircleOutline } from "ionicons/icons";
+import { useRouter } from "vue-router";
 
 export default {
   name: "MainTabs",
@@ -46,6 +50,36 @@ export default {
     IonRouterOutlet,
   },
   setup() {
+    const router = useRouter();
+    useBackButton(1, () => {
+      const currentRoute = router.currentRoute.value.path.split("/")[1];
+      const goBackSites = ["settings", "country", "competition", "season", "create"];
+      if ((goBackSites.indexOf(currentRoute) > -1)) {
+        router.back();
+      } else {
+        alertController.create({
+          header: "Exit app?",
+          buttons: [
+            {
+              text: "Cancel",
+              role: "cancel",
+              handler: () => {
+                return false;
+              },
+            },
+            {
+              text: "Yes",
+              role: "confirm",
+              handler: () => {
+                App.exitApp();
+              },
+            },
+          ],
+        }).then((alert) => {
+          alert.present();
+        });
+      }
+    });
     return {
       dice,
       trophyOutline,

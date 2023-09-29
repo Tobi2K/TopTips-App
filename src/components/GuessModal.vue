@@ -248,7 +248,6 @@ import {
   IonInput,
   IonItem,
   IonIcon,
-  useBackButton,
 } from "@ionic/vue";
 
 import {
@@ -353,10 +352,6 @@ export default defineComponent({
     const closeModal = () => {
       modalController.dismiss();
     };
-
-    useBackButton(10, () => {
-      modalController.dismiss();
-    });
 
     return {
       moment,

@@ -16,7 +16,7 @@
     <ion-content :fullscreen="true">
       <ion-list>
         <ion-list-header>Your selected season:</ion-list-header>
-        <ion-item>
+        <ion-item style="cursor: pointer;">
           <ion-label>
             <h2>{{ seasonData.name }}</h2>
             <h6>

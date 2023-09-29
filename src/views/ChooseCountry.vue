@@ -19,6 +19,7 @@
           v-for="country in countries"
           :key="country"
           @click="selectCountry(country.country)"
+          style="cursor: pointer;"
         >
           <ion-label>
             <h2>{{ country.country }}</h2>

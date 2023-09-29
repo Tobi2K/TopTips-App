@@ -19,6 +19,7 @@
           v-for="competition in competitions"
           :key="competition"
           @click="selectCompetition(competition.competition_id)"
+          style="cursor: pointer;"
         >
           <ion-label>
             <h2>{{ competition.name }}</h2>

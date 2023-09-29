@@ -21,6 +21,7 @@
           v-for="season in seasons"
           :key="season"
           @click="selectSeason(season.id)"
+          style="cursor: pointer;"
         >
           <ion-label>
             <h2>{{ season.name }}</h2>
