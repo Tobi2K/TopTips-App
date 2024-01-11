@@ -184,11 +184,12 @@ export default defineComponent({
     },
     async presentLeaveGroupPrompt() {
       const alert = await alertController.create({
+        cssClass: "points-alert",
         header: "Leave Group",
         message:
           "Are you sure you want to leave " +
           this.groupName +
-          "? <br> <br> THIS ACTION CANNOT BE UNDONE. YOUR GUESSES WILL BE DELETED!",
+          "? \n\n THIS ACTION CANNOT BE UNDONE. YOUR GUESSES WILL BE DELETED!",
         buttons: [
           {
             text: "Cancel",
@@ -207,11 +208,12 @@ export default defineComponent({
     },
     async presentDeleteGroupPrompt() {
       const alert = await alertController.create({
+        cssClass: "points-alert",
         header: "Delete Group",
         message:
           "Are you sure you want to delete " +
           this.groupName +
-          "? <br><br> THIS ACTION CANNOT BE UNDONE. ALL GUESSES WILL BE DELETED!",
+          "? \n\n THIS ACTION CANNOT BE UNDONE. ALL GUESSES WILL BE DELETED!",
         buttons: [
           {
             text: "Cancel",

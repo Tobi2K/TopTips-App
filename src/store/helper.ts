@@ -170,13 +170,26 @@ export async function changePassword(parameter: {
 
 /**
  * Resets the users password
- * @param {{ name: string }} parameter the new username
+ * @param {{ name: string }} parameter the username
  * @return {Promise<AxiosResponse<any, any>>} axios request promise
  */
 export async function resetPassword(parameter: {
   name: string;
 }): Promise<AxiosResponse<any, any>> {
   return axios.post(process.env.VUE_APP_HOST + "/auth/forgot", parameter, {
+    headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
+  });
+}
+
+/**
+ * Deletes the users account
+ * @param {{ password: string }} parameter the account password
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function deleteAccount(parameter: {
+  password: string;
+}): Promise<AxiosResponse<any, any>> {
+  return axios.post(process.env.VUE_APP_HOST + "/auth/delete", parameter, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
   });
 }

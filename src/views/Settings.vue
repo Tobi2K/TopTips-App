@@ -55,6 +55,20 @@
               <ion-icon :icon="logOutOutline" />
             </ion-button>
           </ion-col>
+          <ion-col size="12">
+            <ion-button
+              v-if="!showDeleteButton"
+              fill="clear"
+              color="danger"
+              size="small"
+              @click="showDeleteButton = true">
+              <p style="margin-right: 5px">Show Delete Account Button</p>
+            </ion-button>
+            <ion-button v-if="showDeleteButton" color="danger" @click="deleteAccount" expand="full">
+              <p style="margin-right: 5px">Delete Account</p>
+              <ion-icon :icon="trashOutline" />
+            </ion-button>
+          </ion-col>
         </ion-row>
       </ion-list>
       <ion-list>
@@ -181,6 +195,7 @@ import {
   sunny,
   createOutline,
   lockOpenOutline,
+  trashOutline,
 } from "ionicons/icons";
 
 import { mapState } from "vuex";
@@ -223,6 +238,7 @@ export default defineComponent({
       sunny,
       createOutline,
       lockOpenOutline,
+      trashOutline,
     };
   },
   data() {
@@ -239,6 +255,9 @@ export default defineComponent({
       repeatPass: "",
       gameNoti: false,
       groupNoti: false,
+      showDeleteButton: false,
+      consequences: false,
+      deletePassword: "",
     };
   },
   methods: {
@@ -358,6 +377,85 @@ export default defineComponent({
         ],
       });
       return alert.present();
+    },
+    async deleteAccount() {
+      const alert = await alertController.create({
+        cssClass: "points-alert",
+        header: "Are you sure you want to delete your account?",
+        message: "THIS ACTION CANNOT BE UNDONE. YOUR GUESSES, GROUPS AND SETTINGS WILL BE DELETED!",
+        inputs: [
+          {
+            label: "Yes, I understand the consequences.",
+            type: "checkbox",
+            checked: this.consequences,
+            value: this.consequences,
+            name: "consequences",
+            id: "consequencesID",
+          },
+        ],
+        buttons: [
+          {
+            text: "Cancel",
+            role: "cancel",
+            cssClass: "secondary",
+          },
+          {
+            text: "Yes, delete",
+            handler: (value) => {
+              if (value.length == 0) {
+                this.generateAlert("Please check the checkbox.");
+                return false;
+              }
+              this.reallyDeleteAccount();
+            },
+          },
+        ],
+      });
+      return alert.present();
+    },
+    async reallyDeleteAccount() {
+      const alert = await alertController.create({
+        header: "Please enter your password to continue.",
+        message: "THIS ACTION CANNOT BE UNDONE. YOUR GUESSES, GROUPS AND SETTINGS WILL BE DELETED!",
+        inputs: [
+          {
+            name: "password",
+            id: "passwordID",
+            value: this.deletePassword,
+            placeholder: "Your password",
+          },
+        ],
+        buttons: [
+          {
+            text: "Cancel",
+            role: "cancel",
+            cssClass: "secondary",
+          },
+          {
+            text: "DELETE ACCOUNT",
+            handler: (value) => {
+              this.deletePassword = value.password;
+              this.sendDeleteAccount(value.password);
+            },
+          },
+        ],
+      });
+      return alert.present();
+    },
+    sendDeleteAccount(password: string) {
+      if (password != "") {
+        this.$store.dispatch("deleteAccount", password).then(() => {
+          this.$router.push("/");
+        });
+      } else {
+        this.$store.dispatch("handleError", {
+          error: null,
+          message: "There was an error deleting your account!",
+        });
+      }
+      this.deletePassword = "";
+      this.consequences = false;
+      this.showDeleteButton = false;
     },
     toggleTheme() {
       const x = document.getElementsByTagName("body")[0].classList;

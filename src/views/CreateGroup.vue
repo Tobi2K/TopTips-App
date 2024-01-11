@@ -131,11 +131,12 @@ export default defineComponent({
             .then((response) => {
               alertController
                   .create({
+                    cssClass: "points-alert",
                     header: this.groupName + " was created!",
                     subHeader: "Passphrase: " + response,
                     message:
                   "Others can join using the passphrase." +
-                  "<br><br>" +
+                  "\n\n" +
                   "The passphrase can also be found in the group tab later.",
                     buttons: [
                       {

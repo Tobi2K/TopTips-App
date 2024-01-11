@@ -39,8 +39,9 @@ const app = createApp(App)
 
 const newMajor = (android: boolean) => {
   alertController.create({
+    cssClass: "points-alert",
     header: "Update Required!",
-    message: "There is an important update available.<br>" +
+    message: "There is an important update available.\n" +
         "Correct functionality cannot be ensured, therefore you must" +
         (android ? " update " : " reload ") +
         "in order to proceed." +

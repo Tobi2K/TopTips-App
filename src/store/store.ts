@@ -637,6 +637,31 @@ export const store = createStore({
             });
       });
     },
+    deleteAccount({ commit, dispatch }, password: string) {
+      commit("UPDATE_LOADING", true);
+      return new Promise((resolve) => {
+        helper
+            .deleteAccount({ password: password })
+            .then(() => {
+              resolve("Done");
+            })
+            .catch((e) => {
+              let errorText = "Failed to delete account!";
+              if (e.response) {
+                errorText = e.response.data.message;
+              } else {
+                errorText = e.message;
+              }
+              dispatch("handleError", {
+                error: e,
+                message: errorText,
+              });
+            })
+            .finally(() => {
+              commit("UPDATE_LOADING", false);
+            });
+      });
+    },
     refreshCompetitions({ commit, dispatch }, country) {
       commit("UPDATE_LOADING", true);
       helper
