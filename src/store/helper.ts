@@ -156,6 +156,19 @@ export async function setUserName(parameter: {
 }
 
 /**
+ * Resets the users password
+ * @param {{ passphrase: string }} parameter the new username
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function resetPassword(parameter: {
+  name: string;
+}): Promise<AxiosResponse<any, any>> {
+  return axios.post(process.env.VUE_APP_HOST + "/auth/forgot", parameter, {
+    headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
+  });
+}
+
+/**
  * Gets all seasons for a competition
  * @param {string} path needs to be /competition/seasons/ + yourCompetition
  * @return {Promise<AxiosResponse<any, any>>} axios request promise

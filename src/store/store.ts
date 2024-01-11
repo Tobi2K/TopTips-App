@@ -586,6 +586,31 @@ export const store = createStore({
             });
       });
     },
+    resetPassword({ commit, dispatch }, name: string) {
+      commit("UPDATE_LOADING", true);
+      return new Promise((resolve) => {
+        helper
+            .resetPassword({ name: name })
+            .then(() => {
+              resolve("Done");
+            })
+            .catch((e) => {
+              let errorText = "Failed to reset password!";
+              if (e.response) {
+                errorText = e.response.data.message;
+              } else {
+                errorText = e.message;
+              }
+              dispatch("handleError", {
+                error: e,
+                message: errorText,
+              });
+            })
+            .finally(() => {
+              commit("UPDATE_LOADING", false);
+            });
+      });
+    },
     refreshCompetitions({ commit, dispatch }, country) {
       commit("UPDATE_LOADING", true);
       helper

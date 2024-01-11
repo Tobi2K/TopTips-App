@@ -100,6 +100,15 @@
               >Register</ion-button
             >
           </ion-item>
+          <ion-item lines="none">
+            <ion-button
+              fill="none"
+              size="small"
+              style="width: 100%; --color: var(--ion-color-primary)"
+              @click="forgotPassword"
+              >Forgot Password?</ion-button
+            >
+          </ion-item>
         </ion-row>
       </div>
     </ion-content>
@@ -187,6 +196,45 @@ export default defineComponent({
               }
             });
       }
+    },
+    async resetPassword(name: string) {
+      if (name != "") {
+        this.$store.dispatch("resetPassword", name);
+      } else {
+        this.$store.dispatch("handleError", {
+          error: null,
+          message: "There was an error setting your username!",
+        });
+      }
+    },
+    async forgotPassword() {
+      const alert = await alertController.create({
+        header: "Reset Password",
+        message: "",
+        inputs: [
+          {
+            name: "username",
+            id: "usernameID",
+            value: this.username,
+            placeholder: "Your Username",
+          },
+        ],
+        buttons: [
+          {
+            text: "Cancel",
+            role: "cancel",
+            cssClass: "secondary",
+          },
+          {
+            text: "Reset Password",
+            handler: (value) => {
+              this.username = value.username;
+              this.resetPassword(value.username);
+            },
+          },
+        ],
+      });
+      return alert.present();
     },
     clearInputs() {
       this.username = "";
