@@ -422,6 +422,7 @@ export default defineComponent({
             name: "password",
             id: "passwordID",
             value: this.deletePassword,
+            type: "password",
             placeholder: "Your password",
           },
         ],

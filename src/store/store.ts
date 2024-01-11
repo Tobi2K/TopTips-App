@@ -643,6 +643,7 @@ export const store = createStore({
         helper
             .deleteAccount({ password: password })
             .then(() => {
+              dispatch("LOGOUT");
               resolve("Done");
             })
             .catch((e) => {
