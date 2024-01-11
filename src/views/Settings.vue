@@ -142,7 +142,7 @@
       </ion-list>
       <p style="text-align: center; margin-top: 100px;">
         <small>
-          If you have any suggestions or complaints, feel free to contact me at
+          If you have any suggestions, questions or complaints, feel free to contact me at
           <a href="mailto:tobias@kalmbach.dev">tobias@kalmbach.dev</a>.
         </small>
       </p>

@@ -25,6 +25,13 @@
               >
                 <ion-icon :icon="sunny" />
               </ion-button>
+              <ion-button
+                class="ion-float-right"
+                fill="clear"
+                @click="showHelpAlert()"
+              >
+                <ion-icon :icon="helpCircleOutline" />
+              </ion-button>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -137,7 +144,7 @@ import {
 import { defineComponent } from "vue";
 import { showToast } from "@/store/helper";
 // @ts-ignore
-import { moon, sunny } from "ionicons/icons";
+import { moon, sunny, helpCircleOutline } from "ionicons/icons";
 
 export default defineComponent({
   name: "LoginView",
@@ -160,6 +167,7 @@ export default defineComponent({
     return {
       moon,
       sunny,
+      helpCircleOutline,
     };
   },
   data() {
@@ -210,7 +218,8 @@ export default defineComponent({
     async presentForgotPasswordPrompt() {
       const alert = await alertController.create({
         header: "Reset Password",
-        message: "",
+        message: "Please enter your username. You will receive a new password at the email you set. " +
+          "If you don't have an email address set, please contact me at tobias@kalmbach.dev",
         inputs: [
           {
             name: "username",
@@ -231,6 +240,22 @@ export default defineComponent({
               this.username = value.username;
               this.resetPassword(value.username);
             },
+          },
+        ],
+      });
+      return alert.present();
+    },
+    async showHelpAlert() {
+      const alert = await alertController.create({
+        cssClass: "points-alert",
+        header: "Hi there, welcome to TopTips! ",
+        message: "Log in or register to use the app. \n\n" +
+        "If you have any suggestions, questions or complaints, feel free to contact me at tobias@kalmbach.dev.",
+        buttons: [
+          {
+            text: "Close",
+            role: "cancel",
+            cssClass: "secondary",
           },
         ],
       });
@@ -355,5 +380,13 @@ ion-item {
   width: 100%;
   top: 40%;
   transform: translateY(-50%);
+}
+
+.points-alert .alert-head .alert-title {
+  font-size: 18px !important;
+}
+
+.points-alert {
+  white-space: pre-wrap;
 }
 </style>
