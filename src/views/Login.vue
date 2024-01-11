@@ -105,7 +105,7 @@
               fill="none"
               size="small"
               style="width: 100%; --color: var(--ion-color-primary)"
-              @click="forgotPassword"
+              @click="presentForgotPasswordPrompt"
               >Forgot Password?</ion-button
             >
           </ion-item>
@@ -207,7 +207,7 @@ export default defineComponent({
         });
       }
     },
-    async forgotPassword() {
+    async presentForgotPasswordPrompt() {
       const alert = await alertController.create({
         header: "Reset Password",
         message: "",

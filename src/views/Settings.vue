@@ -37,13 +37,19 @@
               <ion-icon :icon="sunny" />
             </ion-button>
           </ion-col>
-          <ion-col size="6">
+          <ion-col size="12">
             <ion-button @click="presentEditUsernamePrompt()" expand="full">
               <p style="margin-right: 5px">Edit Username</p>
               <ion-icon :icon="createOutline" />
             </ion-button>
           </ion-col>
-          <ion-col size="6">
+          <ion-col size="12">
+            <ion-button @click="presentChangePasswordPrompt()" expand="full">
+              <p style="margin-right: 5px">Change Password</p>
+              <ion-icon :icon="lockOpenOutline" />
+            </ion-button>
+          </ion-col>
+          <ion-col size="12">
             <ion-button color="danger" @click="logout" expand="full">
               <p style="margin-right: 5px">Logout</p>
               <ion-icon :icon="logOutOutline" />
@@ -134,6 +140,13 @@
           </ion-item>
         </div>
       </ion-list>
+      <p style="text-align: center; margin-top: 100px;">
+        <small>
+          If you have any suggestions or complaints, feel free to contact me at
+          <a href="mailto:tobias@kalmbach.dev">tobias@kalmbach.dev</a>.
+        </small>
+      </p>
+
     </ion-content>
   </ion-page>
 </template>
@@ -167,6 +180,7 @@ import {
   moon,
   sunny,
   createOutline,
+  lockOpenOutline,
 } from "ionicons/icons";
 
 import { mapState } from "vuex";
@@ -208,6 +222,7 @@ export default defineComponent({
       moon,
       sunny,
       createOutline,
+      lockOpenOutline,
     };
   },
   data() {
@@ -219,6 +234,9 @@ export default defineComponent({
     return {
       light,
       username: "",
+      oldPass: "",
+      newPass: "",
+      repeatPass: "",
       gameNoti: false,
       groupNoti: false,
     };
@@ -259,6 +277,82 @@ export default defineComponent({
             handler: (value) => {
               this.username = value.username;
               this.sendName(value.username);
+            },
+          },
+        ],
+      });
+      return alert.present();
+    },
+    sendChangePassword(oldPass: string, newPass: string, repeatPass: string) {
+      if (oldPass == "" || newPass == "" || repeatPass == "") {
+        this.$store.dispatch("handleError", {
+          error: null,
+          message: "Please fill in everything!",
+        });
+        return false;
+      }
+      if (newPass == repeatPass) {
+        this.$store.dispatch("changePassword", { "oldPass": oldPass, "newPass": newPass }).then(() => {
+          this.$router.push("/");
+        });
+      } else {
+        this.$store.dispatch("handleError", {
+          error: null,
+          message: "There was an error setting your password!",
+        });
+        return false;
+      }
+    },
+    async presentChangePasswordPrompt() {
+      this.oldPass = "";
+      this.newPass = "";
+      this.repeatPass = "";
+      const alert = await alertController.create({
+        header: "Change Password",
+        message: "You will be logged out.",
+        inputs: [
+          {
+            name: "oldPass",
+            id: "oldPassID",
+            type: "password",
+            value: this.oldPass,
+            placeholder: "Your Old Password",
+          },
+          {
+            name: "newPass",
+            id: "newPassID",
+            type: "password",
+            value: this.newPass,
+            placeholder: "Your New Password",
+          },
+          {
+            name: "repeatPass",
+            id: "repeatPassID",
+            type: "password",
+            value: this.repeatPass,
+            placeholder: "Repeat Your New Password",
+          },
+        ],
+        buttons: [
+          {
+            text: "Cancel",
+            role: "cancel",
+            cssClass: "secondary",
+          },
+          {
+            text: "Save Password",
+            id: "SavePasswordID",
+            handler: (value) => {
+              if (value.newPass != value.repeatPass) {
+                this.$store.dispatch("handleError", {
+                  error: null,
+                  message: "Your passwords do not match!",
+                });
+                return false;
+              }
+              this.oldPass = value.oldPass;
+              this.newPass = value.newPass;
+              return this.sendChangePassword(value.oldPass, value.newPass, value.repeatPass);
             },
           },
         ],

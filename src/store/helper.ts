@@ -156,8 +156,21 @@ export async function setUserName(parameter: {
 }
 
 /**
+ * Updates the users password
+ * @param {{ oldPass: string, newPass: string }} parameter the old and new password
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function changePassword(parameter: {
+  oldPassword: string, newPassword: string;
+}): Promise<AxiosResponse<any, any>> {
+  return axios.post(process.env.VUE_APP_HOST + "/auth/updatePass", parameter, {
+    headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
+  });
+}
+
+/**
  * Resets the users password
- * @param {{ passphrase: string }} parameter the new username
+ * @param {{ name: string }} parameter the new username
  * @return {Promise<AxiosResponse<any, any>>} axios request promise
  */
 export async function resetPassword(parameter: {

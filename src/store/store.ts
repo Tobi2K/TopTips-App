@@ -570,7 +570,33 @@ export const store = createStore({
               resolve("Done");
             })
             .catch((e) => {
-              let errorText = "Failed to log in";
+              let errorText = "Failed to change name";
+              if (e.response) {
+                errorText = e.response.data.message;
+              } else {
+                errorText = e.message;
+              }
+              dispatch("handleError", {
+                error: e,
+                message: errorText,
+              });
+            })
+            .finally(() => {
+              commit("UPDATE_LOADING", false);
+            });
+      });
+    },
+    changePassword({ commit, dispatch }, passwords: {oldPass: string, newPass: string}) {
+      commit("UPDATE_LOADING", true);
+      return new Promise((resolve) => {
+        helper
+            .changePassword({ oldPassword: passwords.oldPass, newPassword: passwords.newPass })
+            .then(() => {
+              dispatch("LOGOUT");
+              resolve("Done");
+            })
+            .catch((e) => {
+              let errorText = "Failed to change password";
               if (e.response) {
                 errorText = e.response.data.message;
               } else {
