@@ -7,42 +7,86 @@
     />
     <custom-header v-else title="Tips" @refresh="refreshAll" />
     <ion-content :fullscreen="true" id="mainSlide">
-      <ion-grid v-if="showSelectGroup" class="ion-padding" style="max-width: 600px">
-        <ion-row class="align-middle">
-          <h3 v-if="userGroups.length > 0" class="text-center">Your groups:</h3>
-          <h3 v-else class="text-center">
-            You aren't part of any groups. Head over to the 'Groups' tab to
-            create one.
-          </h3>
-        </ion-row>
-        <ion-row class="ion-align-items-center">
-          <ion-col v-for="group in userGroups" :key="group">
-            <ion-button
-              :value="group.group.id"
-              color="medium"
-              @click="selectedGroup(group.group.id)"
-              expand="block"
-            >
-              {{
-                group.group.name.length > 10
-                  ? group.group.name.substr(0, 10) + "\u2026"
-                  : group.group.name
-              }}
-              <ion-icon
-                :icon="peopleCircleOutline"
-                style="margin-left: 5px; margin-right: 3px"
-                v-if="group.memberCount"
-              />
-              {{ group.memberCount }}
-              <ion-icon
-                :icon="podiumOutline"
-                style="margin-left: 5px; margin-right: 3px"
-                v-if="group.rank"
-              />
-              {{ group.rank }}
-            </ion-button>
-          </ion-col>
-        </ion-row>
+      <ion-grid
+        v-if="showSelectGroup"
+        class="ion-padding"
+        style="max-width: 600px"
+      >
+        <div v-if="activeGroups.length + pastGroups.length > 0">
+          <ion-row v-if="activeGroups.length > 0" class="align-middle">
+            <h3 class="text-center">Your active groups:</h3>
+          </ion-row>
+          <ion-row
+            v-if="activeGroups.length > 0"
+            class="ion-align-items-center"
+          >
+            <ion-col v-for="group in activeGroups" :key="group">
+              <ion-button
+                :value="group.group.id"
+                color="medium"
+                @click="selectedGroup(group.group.id)"
+                expand="block"
+              >
+                {{
+                  group.group.name.length > 10
+                    ? group.group.name.substr(0, 10) + "\u2026"
+                    : group.group.name
+                }}
+                <ion-icon
+                  :icon="peopleCircleOutline"
+                  style="margin-left: 5px; margin-right: 3px"
+                  v-if="group.memberCount"
+                />
+                {{ group.memberCount }}
+                <ion-icon
+                  :icon="podiumOutline"
+                  style="margin-left: 5px; margin-right: 3px"
+                  v-if="group.rank"
+                />
+                {{ group.rank }}
+              </ion-button>
+            </ion-col>
+          </ion-row>
+          <ion-row v-if="pastGroups.length > 0" class="align-middle">
+            <h3 class="text-center">Your past groups:</h3>
+          </ion-row>
+          <ion-row v-if="pastGroups.length > 0" class="ion-align-items-center">
+            <ion-col v-for="group in pastGroups" :key="group">
+              <ion-button
+                :value="group.group.id"
+                color="medium"
+                @click="selectedGroup(group.group.id)"
+                expand="block"
+              >
+                {{
+                  group.group.name.length > 10
+                    ? group.group.name.substr(0, 10) + "\u2026"
+                    : group.group.name
+                }}
+                <ion-icon
+                  :icon="peopleCircleOutline"
+                  style="margin-left: 5px; margin-right: 3px"
+                  v-if="group.memberCount"
+                />
+                {{ group.memberCount }}
+                <ion-icon
+                  :icon="podiumOutline"
+                  style="margin-left: 5px; margin-right: 3px"
+                  v-if="group.rank"
+                />
+                {{ group.rank }}
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </div>
+        <div v-else>
+          <ion-row class="align-middle">
+            <h3 class="text-center">
+              You aren't part of any groups. Head over to the 'Groups' tab to
+              create one.
+            </h3>
+          </ion-row>
+        </div>
       </ion-grid>
       <game-day-slider v-else :games="allGames" :key="allGames" />
     </ion-content>
@@ -73,6 +117,8 @@ import { defineComponent } from "vue";
 import { useStore } from "@/store/store";
 import { mapState } from "vuex";
 
+import moment from "moment";
+
 export default defineComponent({
   name: "PlayView",
   components: {
@@ -93,11 +139,23 @@ export default defineComponent({
       store,
       peopleCircleOutline,
       podiumOutline,
+      moment,
     };
   },
   data() {
+    const tmpUserGroups = this.$store.state.userGroups;
+
+    const activeGroups = tmpUserGroups.filter((el: { group: { season: { end_date: moment.MomentInput; }; }; }) => {
+      return this.moment().isSameOrBefore(this.moment(el.group.season.end_date));
+    });
+    const pastGroups = tmpUserGroups.filter((el: { group: { season: { end_date: moment.MomentInput; }; }; }) => {
+      return !this.moment().isSameOrBefore(this.moment(el.group.season.end_date));
+    });
+
     return {
       groupID: this.$store.state.currentGroupID,
+      activeGroups,
+      pastGroups,
     };
   },
   methods: {
@@ -120,6 +178,12 @@ export default defineComponent({
       if (newValue != 0) this.refreshAll();
     },
     userGroups(newValue) {
+      this.activeGroups = newValue.filter((el: { group: { season: { end_date: moment.MomentInput; }; }; }) => {
+        return this.moment().isSameOrBefore(this.moment(el.group.season.end_date));
+      });
+      this.pastGroups = newValue.filter((el: { group: { season: { end_date: moment.MomentInput; }; }; }) => {
+        return !this.moment().isSameOrBefore(this.moment(el.group.season.end_date));
+      });
       if (this.showSelectGroup && newValue.length == 1) {
         this.selectedGroup(newValue[0].group.id);
       }
