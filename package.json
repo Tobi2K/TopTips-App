@@ -17,7 +17,7 @@
   "dependencies": {
     "@capacitor-community/fcm": "^3.0.2",
     "@capacitor/android": "^4.8.1",
-    "@capacitor/app": "^4.1.1",
+    "@capacitor/app": "^5.0.7",
     "@capacitor/core": "^4.8.1",
     "@capacitor/haptics": "^4.1.0",
     "@capacitor/keyboard": "^4.1.1",
