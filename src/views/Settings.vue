@@ -158,6 +158,9 @@
         <small>
           If you have any suggestions, questions or complaints, feel free to contact me at
           <a href="mailto:tobias@kalmbach.dev">tobias@kalmbach.dev</a>.
+          <br />
+          <a href="https://kalmbach.dev/privacy.html">Privacy Policy</a> |
+          <a href="https://kalmbach.dev/imprint.html">Imprint</a>
         </small>
       </p>
 
