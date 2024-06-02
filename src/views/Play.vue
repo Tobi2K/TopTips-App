@@ -146,10 +146,10 @@ export default defineComponent({
     const tmpUserGroups = this.$store.state.userGroups;
 
     const activeGroups = tmpUserGroups.filter((el: { group: { season: { end_date: moment.MomentInput; }; }; }) => {
-      return this.moment().isSameOrBefore(this.moment(el.group.season.end_date));
+      return this.moment().isSameOrBefore(this.moment(el.group.season.end_date).add(7, "days"));
     });
     const pastGroups = tmpUserGroups.filter((el: { group: { season: { end_date: moment.MomentInput; }; }; }) => {
-      return !this.moment().isSameOrBefore(this.moment(el.group.season.end_date));
+      return !this.moment().isSameOrBefore(this.moment(el.group.season.end_date).add(7, "days"));
     });
 
     return {
