@@ -146,10 +146,10 @@ export default defineComponent({
     const tmpUserGroups = this.$store.state.userGroups;
 
     const activeGroups = tmpUserGroups.filter((el: { group: { season: { end_date: moment.MomentInput; }; }; }) => {
-      return this.moment().isSameOrBefore(this.moment(el.group.season.end_date).add(7, "days"));
+      return this.moment().isSameOrBefore(this.moment(el.group.season.end_date).add(7, "d"));
     });
     const pastGroups = tmpUserGroups.filter((el: { group: { season: { end_date: moment.MomentInput; }; }; }) => {
-      return !this.moment().isSameOrBefore(this.moment(el.group.season.end_date).add(7, "days"));
+      return !this.moment().isSameOrBefore(this.moment(el.group.season.end_date).add(7, "d"));
     });
 
     return {
@@ -179,10 +179,10 @@ export default defineComponent({
     },
     userGroups(newValue) {
       this.activeGroups = newValue.filter((el: { group: { season: { end_date: moment.MomentInput; }; }; }) => {
-        return this.moment().isSameOrBefore(this.moment(el.group.season.end_date));
+        return this.moment().isSameOrBefore(this.moment(el.group.season.end_date).add(7, "d"));
       });
       this.pastGroups = newValue.filter((el: { group: { season: { end_date: moment.MomentInput; }; }; }) => {
-        return !this.moment().isSameOrBefore(this.moment(el.group.season.end_date));
+        return !this.moment().isSameOrBefore(this.moment(el.group.season.end_date).add(7, "d"));
       });
       if (this.showSelectGroup && newValue.length == 1) {
         this.selectedGroup(newValue[0].group.id);
