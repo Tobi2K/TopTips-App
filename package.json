@@ -26,7 +26,7 @@
     "@ionic/cli": "^7.2.0",
     "@ionic/core": "^8.2.2",
     "@ionic/vue": "^8.2.2",
-    "@ionic/vue-router": "^8.2.0",
+    "@ionic/vue-router": "^8.2.2",
     "@soerenmartius/vue3-clipboard": "^0.1.2",
     "axios": "^1.7.2",
     "core-js": "^3.37.1",
@@ -44,7 +44,7 @@
     "swiper": "^8.4.7",
     "vue": "^3.4.30",
     "vue-clipboard3": "^2.0.0",
-    "vue-router": "^4.3.3",
+    "vue-router": "^4.4.0",
     "vuex": "^4.1.0",
     "yargs-parser": ">=21.1.1"
   },
@@ -65,7 +65,7 @@
     "eslint": "^8.57.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-vue": "^9.26.0",
-    "typescript": "^5.4.5",
+    "typescript": "^5.5.2",
     "vue-loader-v16": "npm:vue-loader@^16.1.0"
   }
 }
