@@ -24,7 +24,7 @@
     "@capacitor/push-notifications": "^4.1.2",
     "@capacitor/status-bar": "^4.1.1",
     "@ionic/cli": "^7.2.0",
-    "@ionic/core": "^8.2.2",
+    "@ionic/core": "^8.2.5",
     "@ionic/vue": "^8.2.2",
     "@ionic/vue-router": "^8.2.2",
     "@soerenmartius/vue3-clipboard": "^0.1.2",
@@ -64,7 +64,7 @@
     "@vue/test-utils": "^2.4.6",
     "eslint": "^8.57.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-vue": "^9.26.0",
+    "eslint-plugin-vue": "^9.27.0",
     "typescript": "^5.5.2",
     "vue-loader-v16": "npm:vue-loader@^16.1.0"
   }
