@@ -24,9 +24,9 @@
     "@capacitor/push-notifications": "^4.1.2",
     "@capacitor/status-bar": "^4.1.1",
     "@ionic/cli": "^7.2.0",
-    "@ionic/core": "^8.2.5",
-    "@ionic/vue": "^8.2.5",
-    "@ionic/vue-router": "^8.2.5",
+    "@ionic/core": "^8.2.6",
+    "@ionic/vue": "^8.2.6",
+    "@ionic/vue-router": "^8.2.6",
     "@soerenmartius/vue3-clipboard": "^0.1.2",
     "axios": "^1.7.2",
     "core-js": "^3.37.1",
@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "@capacitor/cli": "^4.8.1",
-    "@types/node": "^20.14.9",
+    "@types/node": "^20.14.12",
     "@typescript-eslint/eslint-plugin": "^7.15.0",
     "@typescript-eslint/parser": "^7.15.0",
     "@vue/cli-plugin-babel": "~5.0.8",
@@ -65,7 +65,7 @@
     "eslint": "^8.57.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-vue": "^9.27.0",
-    "typescript": "^5.5.3",
+    "typescript": "^5.5.4",
     "vue-loader-v16": "npm:vue-loader@^16.1.0"
   }
 }
