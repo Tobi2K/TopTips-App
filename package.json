@@ -28,7 +28,7 @@
     "@ionic/vue": "^8.2.5",
     "@ionic/vue-router": "^8.2.5",
     "@soerenmartius/vue3-clipboard": "^0.1.2",
-    "axios": "^1.7.2",
+    "axios": "^1.7.4",
     "core-js": "^3.37.1",
     "esnext": "^3.3.1",
     "glob-parent": ">=6.0.2",
