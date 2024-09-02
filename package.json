@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "@capacitor/cli": "^4.8.1",
-    "@types/node": "^20.16.3",
+    "@types/node": "^22.5.0",
     "@typescript-eslint/eslint-plugin": "^8.2.0",
     "@typescript-eslint/parser": "^8.2.0",
     "@vue/cli-plugin-babel": "~5.0.8",
