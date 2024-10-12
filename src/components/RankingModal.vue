@@ -6,7 +6,7 @@
           <ion-col>
             <ion-title class="align-middle">{{
               groupData?.season.name
-            }}</ion-title>
+              }}</ion-title>
           </ion-col>
           <ion-col>
             <ion-buttons class="ion-float-right">
@@ -24,72 +24,72 @@
       <ion-row class="tiny-text ion-margin-bottom">
         <ion-col size="6">
           <ion-item>
-            <ion-checkbox
-              v-model="this.games"
-              :checked="this.games"
-              label-placement="end"
-              justify="start"
-            >Games</ion-checkbox>
+            <ion-checkbox v-model="this.games" :checked="this.games" label-placement="end"
+              justify="start">Games</ion-checkbox>
           </ion-item>
         </ion-col>
         <ion-col size="6">
           <ion-item>
-            <ion-checkbox
-              v-model="this.goals"
-              :checked="this.goals"
-              label-placement="end"
-              justify="start"
-            >Goals</ion-checkbox>
+            <ion-checkbox v-model="this.goals" :checked="this.goals" label-placement="end"
+              justify="start">Goals</ion-checkbox>
           </ion-item>
         </ion-col>
       </ion-row>
       <ion-row class="tiny-text ion-margin-bottom">
         <ion-col size="auto" class="colNoPaddingRight">
           <table class="coolTable">
-            <tr class="border-bottom">
-              <th>#</th>
-              <th class="text-left">Team</th>
-            </tr>
-            <tr v-for="list in ranking" :key="list">
-              <td>{{ list.position }}</td>
-              <td class="text-left">{{ list.name }}</td>
-            </tr>
+            <thead>
+              <tr class="border-bottom">
+                <th>#</th>
+                <th class="text-left">Team</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="list in ranking" :key="list">
+                <td>{{ list.position }}</td>
+                <td class="text-left">{{ list.name }}</td>
+              </tr>
+            </tbody>
           </table>
         </ion-col>
         <ion-col style="overflow-x: scroll" class="colNoPaddingLeft">
           <table class="coolTable">
-            <tr class="border-bottom">
-              <th v-if="games">P</th>
-              <th v-if="games">W</th>
-              <th v-if="games">L</th>
-              <th v-if="games">D</th>
-              <th v-if="goals">Diff</th>
-              <th v-if="goals">+/-</th>
-              <th v-if="goals">AVG</th>
-              <th v-if="goals">MAX</th>
-              <th v-if="goals">MIN</th>
-            </tr>
-            <tr v-for="list in ranking" :key="list">
-              <td v-if="games">
-                {{ list.win * 2 + list.draw }}:{{ list.lose * 2 + list.draw }}
-              </td>
-              <td v-if="games">{{ list.win }}</td>
-              <td v-if="games">{{ list.lose }}</td>
-              <td v-if="games">{{ list.draw }}</td>
-              <td v-if="goals">{{ list.goals_for - list.goals_against }}</td>
-              <td v-if="goals">
-                {{ list.goals_for + "/" + list.goals_against }}
-              </td>
-              <td v-if="goals">{{ list.goals_avg }}</td>
-              <td v-if="goals">{{ list.goals_max }}</td>
-              <td v-if="goals">{{ list.goals_min }}</td>
-            </tr>
+            <thead>
+              <tr class="border-bottom">
+                <th v-if="games">P</th>
+                <th v-if="games">W</th>
+                <th v-if="games">L</th>
+                <th v-if="games">D</th>
+                <th v-if="goals">Diff</th>
+                <th v-if="goals">+/-</th>
+                <th v-if="goals">AVG</th>
+                <th v-if="goals">MAX</th>
+                <th v-if="goals">MIN</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="list in ranking" :key="list">
+                <td v-if="games">
+                  {{ list.win * 2 + list.draw }}:{{ list.lose * 2 + list.draw }}
+                </td>
+                <td v-if="games">{{ list.win }}</td>
+                <td v-if="games">{{ list.lose }}</td>
+                <td v-if="games">{{ list.draw }}</td>
+                <td v-if="goals">{{ list.goals_for - list.goals_against }}</td>
+                <td v-if="goals">
+                  {{ list.goals_for + "/" + list.goals_against }}
+                </td>
+                <td v-if="goals">{{ list.goals_avg }}</td>
+                <td v-if="goals">{{ list.goals_max }}</td>
+                <td v-if="goals">{{ list.goals_min }}</td>
+              </tr>
+            </tbody>
           </table>
         </ion-col>
       </ion-row>
       <ion-row class="align-middle">
         <small><ion-icon :icon="informationCircleOutline" />
-        Leaderboards are updated daily at 04:00 AM CEST.</small>
+          Leaderboards are updated daily at 04:00 AM CEST.</small>
       </ion-row>
     </ion-grid>
   </ion-content>
@@ -161,6 +161,7 @@ export default defineComponent({
 table {
   font-size: 120%;
 }
+
 th,
 td {
   text-align: center;

@@ -1,6 +1,6 @@
 {
   "name": "top-tips-app",
-  "version": "2.9.3",
+  "version": "2.9.4",
   "private": true,
   "description": "Lightweight app for a handball guessing game",
   "scripts": {
@@ -54,17 +54,19 @@
     "@typescript-eslint/eslint-plugin": "^8.5.0",
     "@typescript-eslint/parser": "^8.5.0",
     "@vue/cli-plugin-babel": "~5.0.8",
-    "@vue/cli-plugin-eslint": "~5.0.8",
     "@vue/cli-plugin-pwa": "~5.0.8",
     "@vue/cli-plugin-router": "~5.0.8",
     "@vue/cli-plugin-typescript": "~5.0.8",
     "@vue/cli-service": "~5.0.8",
     "@vue/compiler-sfc": "^3.5.6",
-    "@vue/eslint-config-typescript": "13.0.0",
+    "@vue/eslint-config-typescript": "14.0.1",
     "@vue/test-utils": "^2.4.6",
-    "eslint": "^8.57.1",
+    "eslint": "^9.11.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-vue": "^9.28.0",
+    "eslint-webpack-plugin": "^4.2.0",
+    "eslint-plugin-vue": "^9.29.0",
     "typescript": "^5.6.2",
     "vue-loader-v16": "npm:vue-loader@^16.1.0"
   }

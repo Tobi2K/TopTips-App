@@ -248,6 +248,7 @@ import {
   IonInput,
   IonItem,
   IonIcon,
+  IonPopover,
 } from "@ionic/vue";
 
 import {
@@ -300,6 +301,7 @@ export default defineComponent({
     IonInput,
     IonItem,
     IonIcon,
+    IonPopover,
     GameGuesses,
     TeamStats,
   },

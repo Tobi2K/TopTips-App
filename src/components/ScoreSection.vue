@@ -13,12 +13,7 @@
         </ion-button>
       </ion-col>
       <ion-col size="4">
-        <ion-button
-          @click="goRight()"
-          class="ion-float-right"
-          fill="clear"
-          color="medium"
-        >
+        <ion-button @click="goRight()" class="ion-float-right" fill="clear" color="medium">
           <ion-icon :icon="arrowForward" />
         </ion-button>
       </ion-col>
@@ -26,42 +21,50 @@
     <ion-row>
       <ion-col size="auto" class="colNoPaddingRight">
         <table class="coolTable ion-float-right">
-          <tr>
-            <th>
-              {{ pointsForGroup[0][0] }}
-            </th>
-          </tr>
-          <tr v-for="list in pointsForGroup.slice(1)" :key="list">
-            <td>{{ list[0] }}</td>
-          </tr>
+          <thead>
+            <tr>
+              <th>
+                {{ pointsForGroup[0][0] }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="list in pointsForGroup.slice(1)" :key="list">
+              <td>{{ list[0] }}</td>
+            </tr>
+          </tbody>
         </table>
       </ion-col>
       <ion-col size="auto" class="colNoPaddingLeft">
         <table class="coolTable ion-float-right">
-          <tr>
-            <th>
-              {{ pointsForGroup[0][1] }}
-            </th>
-          </tr>
-          <tr v-for="list in pointsForGroup.slice(1)" :key="list">
-            <td>{{ list[1] }}</td>
-          </tr>
+          <thead>
+            <tr>
+              <th>
+                {{ pointsForGroup[0][1] }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="list in pointsForGroup.slice(1)" :key="list">
+              <td>{{ list[1] }}</td>
+            </tr>
+          </tbody>
         </table>
       </ion-col>
       <ion-col style="overflow-x: scroll" class="colNoPaddingLeft">
         <table class="coolTable">
-          <tr>
-            <th
-              v-for="(title, index) in pointsForGroup[0].slice(2)"
-              :key="title"
-              :id="'title-' + index"
-            >
-              {{ title }}
-            </th>
-          </tr>
-          <tr v-for="list in pointsForGroup.slice(1)" :key="list">
-            <td v-for="item in list.slice(2)" :key="item">{{ item }}</td>
-          </tr>
+          <thead>
+            <tr>
+              <th v-for="(title, index) in pointsForGroup[0].slice(2)" :key="title" :id="'title-' + index">
+                {{ title }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="list in pointsForGroup.slice(1)" :key="list">
+              <td v-for="item in list.slice(2)" :key="item">{{ item }}</td>
+            </tr>
+          </tbody>
         </table>
       </ion-col>
     </ion-row>
@@ -107,7 +110,7 @@ export default defineComponent({
     },
     goRight() {
       const element = document.getElementById(
-          "title-" + (this.pointsForGroup[0].length - 3),
+        "title-" + (this.pointsForGroup[0].length - 3),
       );
       if (element != null) {
         element.scrollIntoView({
@@ -119,7 +122,7 @@ export default defineComponent({
     },
     goCurrent() {
       const element = document.getElementById(
-          "title-" + (this.$store.state.currentGameday - 1),
+        "title-" + (this.$store.state.currentGameday - 1),
       );
       if (element != null) {
         element.scrollIntoView({
@@ -132,21 +135,21 @@ export default defineComponent({
   },
   mounted() {
     this.$store
-        .dispatch("refreshScores")
-        .then(() => {
-          this.$emit("done");
-          const element = document.getElementById(
-              "title-" + (this.$store.state.currentGameday - 1),
-          );
-          if (element != null) {
-            element.scrollIntoView({
-              behavior: "smooth",
-              block: "center",
-              inline: "start",
-            });
-          }
-        })
-        .catch();
+      .dispatch("refreshScores")
+      .then(() => {
+        this.$emit("done");
+        const element = document.getElementById(
+          "title-" + (this.$store.state.currentGameday - 1),
+        );
+        if (element != null) {
+          element.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+            inline: "start",
+          });
+        }
+      })
+      .catch();
   },
   computed: mapState(["pointsForGroup", "groupData"]),
 });
@@ -156,6 +159,7 @@ export default defineComponent({
 table {
   font-size: 120%;
 }
+
 th,
 td {
   text-align: center;
