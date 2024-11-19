@@ -50,8 +50,8 @@
   },
   "devDependencies": {
     "@capacitor/cli": "^4.8.1",
-    "@types/node": "^22.5.5",
-    "@typescript-eslint/eslint-plugin": "^8.5.0",
+    "@types/node": "^22.9.0",
+    "@typescript-eslint/eslint-plugin": "^8.14.0",
     "@typescript-eslint/parser": "^8.9.0",
     "@vue/cli-plugin-babel": "~5.0.8",
     "@vue/cli-plugin-pwa": "~5.0.8",
