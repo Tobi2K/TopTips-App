@@ -269,6 +269,16 @@ export async function requestUserSeasons(): Promise<AxiosResponse<any, any>> {
 }
 
 /**
+ * Gets all email subscriptions for the user
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function requestUserSubscriptions(): Promise<AxiosResponse<any, any>> {
+  return axios.get(process.env.VUE_APP_HOST + "/email/subscribed", {
+    headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
+  });
+}
+
+/**
  * Gets user data
  * @return {Promise<AxiosResponse<any, any>>} axios request promise
  */
@@ -296,6 +306,30 @@ export async function getVersion(): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + "/version", {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
   });
+}
+
+/**
+ * Subscribes a user to email notifications
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function subscribeEmail(
+  parameter: { seasonID: string, isToday: boolean },
+): Promise<AxiosResponse<any, any>> {
+return axios.post(process.env.VUE_APP_HOST + "/email/subscribe", parameter, {
+  headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
+});
+}
+
+/**
+ * Subscribes a user to email notifications
+ * @return {Promise<AxiosResponse<any, any>>} axios request promise
+ */
+export async function unsubscribeEmail(
+  parameter: { seasonID: string, isToday: boolean },
+): Promise<AxiosResponse<any, any>> {
+return axios.post(process.env.VUE_APP_HOST + "/email/unsubscribe", parameter, {
+  headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
+});
 }
 
 /**

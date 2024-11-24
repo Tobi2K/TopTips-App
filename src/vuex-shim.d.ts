@@ -19,6 +19,7 @@ declare module "@vue/runtime-core" {
     competitions: Competition[];
     seasons: Season[];
     userSeasons: Season[];
+    userSubscriptions: Season[];
     newGroupSeason: {
       name: string;
       year: number;
@@ -68,6 +69,7 @@ export interface State {
   competitions: Competition[];
   seasons: Season[];
   userSeasons: Season[];
+  userSubscriptions: [];
   newGroupSeason: {
     name: string;
     year: number;
@@ -124,6 +126,14 @@ export interface Season {
   important: number;
   current_gameday: number;
   competition: Competition;
+}
+
+export interface EmailNotify {
+  id: number;
+  user_id: string;
+  season_id: string;
+  day_of: boolean;
+  day_before: boolean;
 }
 
 export interface Group {

@@ -72,10 +72,10 @@
         </ion-row>
       </ion-list>
       <ion-list>
-        <h3>Notification Settings</h3>
+        <h3>Device Notification Settings</h3>
         <p>
           These settings are device-wide. Even when logging out, notifications
-          are still received.
+          are still received. 
         </p>
         <ion-row>
           <ion-col>
@@ -102,7 +102,7 @@
         </ion-row>
         <ion-list-header
           >Notifications for group information (e.g. point
-          distribution).</ion-list-header
+          distribution or perfect games).</ion-list-header
         >
         <div v-if="groupNoti">
           <ion-item v-for="group in userGroups" :key="group">
@@ -141,7 +141,7 @@
             </ion-button>
           </ion-col>
         </ion-row>
-        <ion-list-header>Notifications for pending games.</ion-list-header>
+        <ion-list-header>Notifications for pending games (at 12 PM CEST).</ion-list-header>
         <div v-if="gameNoti">
           <ion-item v-for="season in userSeasons" :key="season">
             <ion-toggle
@@ -154,6 +154,60 @@
           </ion-item>
         </div>
       </ion-list>
+
+      <ion-list>
+        <h3>Email Notification Settings</h3>
+        <p>
+          You will receive a notification (at 12:15 PM CEST) via the email used to register. Please add <a href="mailto:toptips@kalmbach.dev">toptips@kalmbach.dev</a> to your email contacts for optimal delivery.
+        </p>
+        <ion-row>
+          <ion-col>
+            <h6>Game Notifications</h6>
+          </ion-col>
+          <ion-col>
+            <ion-button
+              class="ion-float-right"
+              v-if="emailNoti"
+              fill="clear"
+              @click="emailNoti = !emailNoti"
+            >
+              Hide
+            </ion-button>
+            <ion-button
+              class="ion-float-right"
+              v-else
+              fill="clear"
+              @click="emailNoti = !emailNoti"
+            >
+              Show
+            </ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-list-header>Notifications for pending games.</ion-list-header>
+        <div v-if="emailNoti">
+          <div v-for="subscription in userSubscriptions" :key="subscription">
+            <ion-item>
+              <ion-toggle
+                @ionChange="subscribeEmail(subscription, true)"
+                :value="subscription.day_of"
+                :checked="subscription.day_of"
+              >
+                Day-Of Notifications for {{ subscription.season.name }} <small>({{ subscription.season.competition.country }})</small>
+              </ion-toggle>
+              </ion-item>
+              <ion-item>
+              <ion-toggle
+                @ionChange="subscribeEmail(subscription, false)"
+                :value="subscription.day_before"
+                :checked="subscription.day_before"
+              >
+                Day-Before Notifications for {{ subscription.season.name }} <small>({{ subscription.season.competition.country }})</small> 
+              </ion-toggle>
+            </ion-item>
+          </div>
+        </div>
+      </ion-list>
+      
       <p style="text-align: center; margin-top: 100px;">
         <small>
           If you have any suggestions, questions or complaints, feel free to contact me at
@@ -257,6 +311,7 @@ export default defineComponent({
       newPass: "",
       repeatPass: "",
       gameNoti: false,
+      emailNoti: false,
       groupNoti: false,
       showDeleteButton: false,
       consequences: false,
@@ -499,6 +554,23 @@ export default defineComponent({
       const escapedID = id.replaceAll(":", "");
       return localStorage.getItem(escapedID) == "true";
     },
+    subscribeEmail(subscription: { day_of: boolean; season: { id: any; }; day_before: boolean; }, dayOf: boolean) {
+      if (dayOf) {
+        subscription.day_of = !subscription.day_of
+        if (subscription.day_of) {
+          this.$store.dispatch("subscribeEmail", {"seasonID": subscription.season.id, "isToday": dayOf});
+        } else {
+          this.$store.dispatch("unsubscribeEmail", {"seasonID": subscription.season.id, "isToday": dayOf});
+        }
+      } else {
+        subscription.day_before = !subscription.day_before
+        if (subscription.day_before) {
+          this.$store.dispatch("subscribeEmail", {"seasonID": subscription.season.id, "isToday": dayOf});
+        } else {
+          this.$store.dispatch("unsubscribeEmail", {"seasonID": subscription.season.id, "isToday": dayOf});
+        }
+      }
+    },
     generateAlert(message: string) {
       showToast(message);
     },
@@ -507,8 +579,9 @@ export default defineComponent({
     this.$store.dispatch("checkJWT");
     this.username = this.$store.state.user.username;
     this.$store.dispatch("getUserSeasons");
+    this.$store.dispatch("getUserSubscriptions");
   },
-  computed: mapState(["userSeasons", "userGroups"]),
+  computed: mapState(["userSeasons", "userGroups", "userSubscriptions"]),
 });
 </script>
 

@@ -23,6 +23,7 @@ export const store = createStore({
     competitions: [],
     seasons: [],
     userSeasons: [],
+    userSubscriptions: [],
     newGroupSeason: {},
     groupData: null,
     userGroups: [],
@@ -61,6 +62,9 @@ export const store = createStore({
     },
     UPDATE_USER_SEASONS(state, userSeasons) {
       state.userSeasons = userSeasons;
+    },
+    UPDATE_USER_SUBSCRIPTIONS(state, userSubscriptions) {
+      state.userSubscriptions = userSubscriptions;
     },
     UPDATE_NEW_GROUP_SEASON(state, newGroupSeason) {
       state.newGroupSeason = newGroupSeason;
@@ -827,6 +831,63 @@ export const store = createStore({
             dispatch("handleError", {
               error: e,
               message: "Failed to get your current seasons.",
+            });
+          })
+          .finally(() => {
+            commit("UPDATE_LOADING", false);
+          });
+    },
+    getUserSubscriptions({ commit, dispatch }) {
+      commit("UPDATE_LOADING", true);
+      helper
+          .requestUserSubscriptions()
+          .then((response) => {
+            console.log(response.data);
+            
+            commit("UPDATE_USER_SUBSCRIPTIONS", response.data);
+          })
+          .catch((e) => {
+            dispatch("handleError", {
+              error: e,
+              message: "Failed to get your subscriptions.",
+            });
+          })
+          .finally(() => {
+            commit("UPDATE_LOADING", false);
+          });
+    },
+    subscribeEmail({ commit, dispatch }, parameter: { seasonID: string, isToday: boolean }) {
+      commit("UPDATE_LOADING", true);
+      helper
+          .subscribeEmail(parameter)
+          .then((response) => {
+            console.log(response.data);
+            
+            commit("UPDATE_USER_SUBSCRIPTIONS", response.data);
+          })
+          .catch((e) => {
+            dispatch("handleError", {
+              error: e,
+              message: "Failed to add your subscriptions.",
+            });
+          })
+          .finally(() => {
+            commit("UPDATE_LOADING", false);
+          });
+    },
+    unsubscribeEmail({ commit, dispatch }, parameter: { seasonID: string, isToday: boolean }) {
+      commit("UPDATE_LOADING", true);
+      helper
+          .unsubscribeEmail(parameter)
+          .then((response) => {
+            console.log(response.data);
+            
+            commit("UPDATE_USER_SUBSCRIPTIONS", response.data);
+          })
+          .catch((e) => {
+            dispatch("handleError", {
+              error: e,
+              message: "Failed to add your subscriptions.",
             });
           })
           .finally(() => {
