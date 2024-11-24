@@ -841,9 +841,7 @@ export const store = createStore({
       commit("UPDATE_LOADING", true);
       helper
           .requestUserSubscriptions()
-          .then((response) => {
-            console.log(response.data);
-            
+          .then((response) => {            
             commit("UPDATE_USER_SUBSCRIPTIONS", response.data);
           })
           .catch((e) => {
