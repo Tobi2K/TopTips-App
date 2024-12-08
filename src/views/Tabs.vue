@@ -176,7 +176,7 @@ export default {
 .toast {
   --width: 60%;
   --border-radius: 20px;
-  margin-top: -20%;
+  margin-top: -10%;
   text-align: center;
   --background: rgb(248, 177, 149);
   --background: linear-gradient(

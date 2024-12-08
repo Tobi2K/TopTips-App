@@ -173,6 +173,7 @@ export default defineComponent({
           games: games,
           sectionID: this.sectionID, // 0-indexed
         },
+        cssClass: ["bigmodal"],
       });
       await guessModal.present();
     },
@@ -212,5 +213,15 @@ ion-grid {
 text {
   font-family: monospace;
   text-anchor: middle;
+}
+</style>
+
+<style>
+@media (min-height: 900px) and (min-width: 900px) {
+.bigmodal {
+  --width: 850px !important;
+  --height: 850px !important;
+}
+
 }
 </style>
