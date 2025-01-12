@@ -38,9 +38,10 @@
     slot="fixed"
     v-if="this.ranking.length > 0 || this.activeGamedays.length > 0"
   >
-    <ion-fab-button size="small" color="medium"
-      ><ion-icon :icon="caretUpOutline"
-    /></ion-fab-button>
+    <ion-badge v-if="this.activeGamedays.length > 0" style="left: -5px; z-index: 3; position: absolute; padding: 0;"><ion-icon style="font-size: 170%" :icon="alertCircleOutline"/></ion-badge>
+    <ion-fab-button size="small" color="medium">
+      <ion-icon :icon="caretUpOutline"/>
+    </ion-fab-button>
 
     <ion-fab-list side="top">
       <ion-fab-button
@@ -51,7 +52,7 @@
         <ion-icon :icon="podiumOutline" />
       </ion-fab-button>
       <ion-fab-button
-        color="light"
+        color="danger"
         @click="getGameday()"
         v-if="this.activeGamedays.length > 0"
       >
@@ -74,6 +75,7 @@ import {
   alertController,
   modalController,
   IonFabList,
+  IonBadge,
 } from "@ionic/vue";
 
 // Import Swiper styles
@@ -86,7 +88,7 @@ import PlayGame from "@/components/PlayGame.vue";
 import { defineComponent } from "vue";
 import { mapState } from "vuex";
 
-import { todayOutline, podiumOutline, caretUpOutline } from "ionicons/icons";
+import { todayOutline, podiumOutline, caretUpOutline, alertCircleOutline } from "ionicons/icons";
 
 import RankingModal from "./RankingModal.vue";
 
@@ -108,6 +110,7 @@ export default defineComponent({
     IonFabButton,
     IonIcon,
     IonFabList,
+    IonBadge,
   },
   setup() {
     return {
@@ -115,6 +118,7 @@ export default defineComponent({
       todayOutline,
       podiumOutline,
       caretUpOutline,
+      alertCircleOutline,
     };
   },
   data() {
@@ -242,5 +246,15 @@ export default defineComponent({
 
 .horizontal-scroll {
   overflow-y: hidden;
+}
+
+ion-badge {
+  --background: rgba(255, 255, 255, 0) !important;
+  --color: red !important;
+}
+
+ion-badge ion-icon {
+  background: rgba(255, 255, 255, 0.7) !important;
+  border-radius: 50%;
 }
 </style>

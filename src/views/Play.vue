@@ -172,6 +172,9 @@ export default defineComponent({
     if (this.showSelectGroup && this.userGroups.length == 1) {
       this.selectedGroup(this.userGroups[0].group.id);
     }
+    if (this.showSelectGroup && this.activeGroups.length == 1) {
+      this.selectedGroup(this.activeGroups[0].group.id);
+    }
   },
   watch: {
     groupID(newValue) {
@@ -186,6 +189,9 @@ export default defineComponent({
       });
       if (this.showSelectGroup && newValue.length == 1) {
         this.selectedGroup(newValue[0].group.id);
+      }
+      if (this.showSelectGroup && this.activeGroups.length == 1) {
+        this.selectedGroup(this.activeGroups[0].group.id);
       }
     },
   },
