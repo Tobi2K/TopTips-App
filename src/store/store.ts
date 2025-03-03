@@ -859,8 +859,6 @@ export const store = createStore({
       helper
           .subscribeEmail(parameter)
           .then((response) => {
-            console.log(response.data);
-            
             commit("UPDATE_USER_SUBSCRIPTIONS", response.data);
           })
           .catch((e) => {
@@ -878,8 +876,6 @@ export const store = createStore({
       helper
           .unsubscribeEmail(parameter)
           .then((response) => {
-            console.log(response.data);
-            
             commit("UPDATE_USER_SUBSCRIPTIONS", response.data);
           })
           .catch((e) => {
