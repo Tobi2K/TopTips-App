@@ -219,7 +219,7 @@ export default defineComponent({
       const alert = await alertController.create({
         header: "Reset Password",
         message: "Please enter your username. You will receive a new password at the email you set. " +
-          "If you don't have an email address set, please contact me at tobias@kalmbach.dev",
+          "If you don't have an email address set, please contact me at toptips@kalmbach.dev",
         inputs: [
           {
             name: "username",
@@ -250,7 +250,7 @@ export default defineComponent({
         cssClass: "points-alert",
         header: "Hi there, welcome to TopTips! ",
         message: "Log in or register to use the app. \n\n" +
-        "If you have any suggestions, questions or complaints, feel free to contact me at tobias@kalmbach.dev.",
+        "If you have any suggestions, questions or complaints, feel free to contact me at toptips@kalmbach.dev.",
         buttons: [
           {
             text: "Close",

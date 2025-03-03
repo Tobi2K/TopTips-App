@@ -89,7 +89,7 @@
       </ion-row>
       <ion-row class="align-middle">
         <small><ion-icon :icon="informationCircleOutline" />
-          Leaderboards are updated daily at 04:00 AM CEST.</small>
+          Leaderboards are updated daily at 04:00 AM, Berlin Time.</small>
       </ion-row>
     </ion-grid>
   </ion-content>

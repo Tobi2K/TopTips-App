@@ -8,12 +8,12 @@
       #{{ gameInfo.team2_stats.position }}
     </ion-col>
   </ion-row>
-  <ion-row class="align-middle" v-if="gameInfo.team1_stats.history && gameInfo.team2_stats.history">
+  <ion-row class="align-middle" v-if="gameInfo.team1_stats.history.result && gameInfo.team2_stats.history.result">
     <ion-col class="ion-text-center" size="5">
-      <span v-for="i in gameInfo.team1_stats.history" :key="i">
-        <ion-icon v-if="i == 'W'" style="color: green" :icon="ellipse" />
-        <ion-icon v-if="i == 'L'" style="color: red" :icon="ellipse" />
-        <ion-icon v-if="i == 'D'" style="color: orange" :icon="ellipse" />
+      <span v-for="i in gameInfo.team1_stats.history.result" :key="i">
+        <ion-icon v-if="i == 'W'" style="color: green" :icon="checkmarkCircle" />
+        <ion-icon v-if="i == 'L'" style="color: red" :icon="closeCircle" />
+        <ion-icon v-if="i == 'D'" style="color: orange" :icon="removeCircle" />
       </span>
     </ion-col>
     <ion-col class="ion-text-center" size="2">
@@ -23,24 +23,39 @@
           <small>
             5 most recent games (from left to right)
             <ul>
-              <li>Win: Green</li>
-              <li>Loss: Red</li>
-              <li>Draw: Orange</li>
+              <li>Win: Green <ion-icon :icon="checkmarkCircleOutline" /></li>
+              <li>Loss: Red <ion-icon :icon="closeCircleOutline" /></li>
+              <li>Draw: Orange <ion-icon :icon="removeCircleOutline" /></li>
             </ul>
           </small>
         </ion-content>
       </ion-popover>
     </ion-col>
     <ion-col class="ion-text-center" size="5">
-      <span v-for="i in gameInfo.team2_stats.history" :key="i">
-        <ion-icon v-if="i == 'W'" style="color: green" :icon="ellipse" />
-        <ion-icon v-if="i == 'L'" style="color: red" :icon="ellipse" />
-        <ion-icon v-if="i == 'D'" style="color: orange" :icon="ellipse" />
+      <span v-for="i in gameInfo.team2_stats.history.result" :key="i">
+        <ion-icon v-if="i == 'W'" style="color: green" :icon="checkmarkCircle" />
+        <ion-icon v-if="i == 'L'" style="color: red" :icon="closeCircle" />
+        <ion-icon v-if="i == 'D'" style="color: orange" :icon="removeCircle" />
       </span>
     </ion-col>
   </ion-row>
+
+  <ion-row v-if="showStats">
+    <ion-col class="ion-text-center">
+      <ion-button fill="clear" size="small" @click="setMoreStats(false)">Hide</ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row v-if="!showStats">
+    <ion-col class="ion-text-center">
+      <ion-button fill="clear" size="small" @click="setMoreStats(true)">More stats</ion-button>
+    </ion-col>
+  </ion-row>
+
   <ion-row class="tiny-text ion-margin-bottom" v-if="showStats">
-    <ion-col size="5" style="overflow-x: scroll" class="colNoPaddingRight">
+    <ion-col size="12" class="ion-text-center">
+      <h6>General Stats</h6>
+    </ion-col>
+    <ion-col size="6" style="overflow-x: scroll; border-right: 1px solid black;" class="colNoPaddingRight">
       <table class="coolTable mx-auto">
         <thead>
           <tr class="border-bottom">
@@ -72,12 +87,7 @@
         </tbody>
       </table>
     </ion-col>
-    <ion-col class="ion-text-center" size="2">
-      <ion-button fill="clear" size="small" @click="setMoreStats(false)" expand="block">
-        Hide
-      </ion-button>
-    </ion-col>
-    <ion-col size="5" style="overflow-x: scroll" class="colNoPaddingLeft">
+    <ion-col size="6" style="overflow-x: scroll; border-left: 1px solid black;" class="colNoPaddingLeft">
       <table class="coolTable mx-auto">
         <thead>
           <tr class="border-bottom">
@@ -110,9 +120,100 @@
       </table>
     </ion-col>
   </ion-row>
-  <ion-row v-else>
-    <ion-col class="ion-text-center">
-      <ion-button fill="clear" size="small" @click="setMoreStats(true)">More stats</ion-button>
+  <ion-row v-if="showStats">
+    <ion-col v-if="showEvenMoreStats" class="ion-text-center">
+      <ion-button fill="clear" size="small" @click="setEvenMoreStats(false)">Hide extended stats</ion-button>
+    </ion-col>
+    <ion-col v-if="!showEvenMoreStats" class="ion-text-center">
+      <ion-button fill="clear" size="small" @click="setEvenMoreStats(true)">Even more stats</ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row class="tiny-text ion-margin-bottom" v-if="showEvenMoreStats">
+    <ion-col size="12" class="ion-text-center">
+      <h6>Past Results</h6>
+    </ion-col>
+    <ion-col size="6" style="overflow-x: scroll; border-right: 1px solid black;" class="colNoPaddingRight">
+      <table class="coolTable mx-auto">
+        <thead>
+          <tr class="border-bottom">
+            <th v-for="i in Array.from({ length: gameInfo.team1_stats.history.scores_home_team.length }, (_, index) => index)" :key="i">
+              <ion-icon v-if="gameInfo.team1_stats.history.result[i] == 'W'" style="color: green" :icon="checkmarkCircle" />
+              <ion-icon v-if="gameInfo.team1_stats.history.result[i] == 'L'" style="color: red" :icon="closeCircle" />
+              <ion-icon v-if="gameInfo.team1_stats.history.result[i] == 'D'" style="color: orange" :icon="removeCircle" />
+              {{ gameInfo.team1_stats.history.scores_home_team[i] }} - {{ gameInfo.team1_stats.history.scores_away_team[i] }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td v-for="name in gameInfo.team1_stats.history.other_team_name" :key="name">vs. {{ name }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </ion-col>
+    <ion-col size="6" style="overflow-x: scroll; border-left: 1px solid black;" class="colNoPaddingLeft">
+      <table class="coolTable mx-auto">
+        <thead>
+          <tr class="border-bottom">
+            <th v-for="i in Array.from({ length: gameInfo.team2_stats.history.scores_home_team.length }, (_, index) => index)" :key="i">
+              <ion-icon v-if="gameInfo.team2_stats.history.result[i] == 'W'" style="color: green" :icon="checkmarkCircle" />
+              <ion-icon v-if="gameInfo.team2_stats.history.result[i] == 'L'" style="color: red" :icon="closeCircle" />
+              <ion-icon v-if="gameInfo.team2_stats.history.result[i] == 'D'" style="color: orange" :icon="removeCircle" />
+              {{ gameInfo.team2_stats.history.scores_home_team[i] }} - {{ gameInfo.team2_stats.history.scores_away_team[i] }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td v-for="name in gameInfo.team2_stats.history.other_team_name" :key="name">vs. {{ name }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="tiny-text ion-margin-bottom" v-if="showEvenMoreStats">
+    <ion-col size="12" class="ion-text-center">
+      <h6>Head to Head</h6>
+      Only showing results from competitions that have been used (by anyone) in TopTips.
+      <br>
+    </ion-col>
+    <ion-col size="12" class="ion-text-center">
+      <table class="coolTable mx-auto">
+        <tbody>
+          <tr>
+            <td>Games played:</td>
+            <td>{{ gameInfo.home_team_won + gameInfo.away_team_won + gameInfo.draw_count }}</td>
+          </tr>
+          <tr>
+            <td>Wins {{ gameInfo.team1_name }}:</td>
+            <td>{{ gameInfo.home_team_won }}</td>
+          </tr>
+          <tr>
+            <td>Wins {{ gameInfo.team2_name }}:</td>
+            <td>{{ gameInfo.away_team_won }}</td>
+          </tr>
+          <tr>
+            <td>Draws:</td>
+            <td>{{ gameInfo.draw_count }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="tiny-text ion-margin-bottom" v-if="showEvenMoreStats" v-for="game in gameInfo.head_to_head" :key="game" style="border-bottom: 1px solid grey;">
+    <ion-col size="12" class="ion-text-center">
+      {{ this.moment(game.game.date).format("DD MMM, YYYY") }}
+    </ion-col>
+    <ion-col size="5" class="ion-text-center" style="font-size: 120%;">
+      <b v-if="game.team1_won">{{ game.game.team1.name }}</b><span v-else>{{ game.game.team1.name }}</span>
+    </ion-col>
+    <ion-col size="2" class="ion-text-center" style="font-size: 120%;">
+      {{ game.game.score_team1 }} - {{ game.game.score_team2 }}
+    </ion-col>
+    <ion-col size="5" class="ion-text-center" style="font-size: 120%;">
+      <b v-if="game.team2_won">{{ game.game.team2.name }}</b><span v-else>{{ game.game.team2.name }}</span>
     </ion-col>
   </ion-row>
 </template>
@@ -126,8 +227,10 @@ import {
   IonPopover,
   IonButton,
 } from "@ionic/vue";
-import { ellipse, helpCircleOutline } from "ionicons/icons";
+import { ellipse, helpCircleOutline, closeCircle, checkmarkCircle, removeCircle, closeCircleOutline, checkmarkCircleOutline, removeCircleOutline } from "ionicons/icons";
 import { defineComponent } from "vue";
+
+import moment from "moment";
 
 export default defineComponent({
   name: "TeamStats",
@@ -145,17 +248,33 @@ export default defineComponent({
   data() {
     return {
       showStats: false,
+      showEvenMoreStats: false,
     };
   },
   setup() {
     return {
       ellipse,
       helpCircleOutline,
+      closeCircle,
+      checkmarkCircle,
+      removeCircle,
+      closeCircleOutline,
+      checkmarkCircleOutline,
+      removeCircleOutline,
+      moment,
     };
   },
   methods: {
-    setMoreStats(bool) {
+    setMoreStats(bool) {      
       this.showStats = bool;
+      if (!bool) {
+        this.showEvenMoreStats = false
+      }
+    },
+    setEvenMoreStats(bool) {      
+      console.log(this.gameInfo);
+      
+      this.showEvenMoreStats = bool;
     },
   },
 });

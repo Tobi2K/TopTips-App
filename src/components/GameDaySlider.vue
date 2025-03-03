@@ -38,8 +38,8 @@
     slot="fixed"
     v-if="this.ranking.length > 0 || this.activeGamedays.length > 0"
   >
-    <ion-badge v-if="this.activeGamedays.length > 0" style="left: -5px; z-index: 3; position: absolute; padding: 0;"><ion-icon style="font-size: 170%" :icon="alertCircleOutline"/></ion-badge>
-    <ion-fab-button size="small" color="medium">
+    <ion-badge v-if="this.activeGamedays.length > 0 && showBadge" style="left: -5px; z-index: 3; position: absolute; padding: 0;"><ion-icon style="font-size: 170%" :icon="alertCircleOutline"/></ion-badge>
+    <ion-fab-button size="small" color="medium" @click="showBadge = false">
       <ion-icon :icon="caretUpOutline"/>
     </ion-fab-button>
 
@@ -127,6 +127,7 @@ export default defineComponent({
       // gameDay is 1-indexed!
       gameDay: this.$store.state.currentGameday,
       loaded: false,
+      showBadge: true,
     };
   },
   methods: {

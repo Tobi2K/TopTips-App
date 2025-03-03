@@ -346,3 +346,20 @@ export async function showToast(toastMessage: string) {
         value.present();
       });
 }
+
+/**
+ * Generates a danger toast to be shown at the bottom of the screen
+ * @param {string} toastMessage the message to be displayed
+ */
+export async function showDangerToast(toastMessage: string) {
+  toastController
+      .create({
+        message: toastMessage,
+        duration: 2000,
+        color: "danger",
+      })
+      .then((value) => {
+        value.present();
+      });
+}
+

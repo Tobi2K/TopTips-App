@@ -271,7 +271,7 @@ import TeamStats from "@/components/TeamStats.vue";
 import moment from "moment";
 
 import { mapState } from "vuex";
-import { showToast } from "@/store/helper";
+import { showToast, showDangerToast } from "@/store/helper";
 export default defineComponent({
   name: "GuessModal",
   props: {
@@ -377,9 +377,13 @@ export default defineComponent({
         this.pointsTeam1 == undefined ||
         this.pointsTeam2 == undefined
       ) {
-        showToast("Please fill out everything (≥0).");
+        showDangerToast("Please fill out everything (≥0).");
       } else if (new Date(this.gameInfo.date) < new Date()) {
-        showToast("You are too late :(");
+        showDangerToast("You are too late :(");
+      } else if (!/^[0-9]+$/.test(this.pointsTeam1) || !/^[0-9]+$/.test(this.pointsTeam2)) {
+        showDangerToast("Only use numbers!");
+      } else if (this.pointsTeam1 > 2147483647 || this.pointsTeam2 > 2147483647) {
+        showDangerToast("That number is too large! Use something smaller.")
       } else {
         this.$store
             .dispatch("addGuess", {

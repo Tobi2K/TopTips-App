@@ -141,7 +141,7 @@
             </ion-button>
           </ion-col>
         </ion-row>
-        <ion-list-header>Notifications for pending games (at 12 PM CEST).</ion-list-header>
+        <ion-list-header>Notifications for pending games (at 12 PM, Berlin Time).</ion-list-header>
         <div v-if="gameNoti">
           <ion-item v-for="season in userSeasons" :key="season">
             <ion-toggle
@@ -158,7 +158,7 @@
       <ion-list>
         <h3>Email Notification Settings</h3>
         <p>
-          You will receive a notification (at 12:15 PM CEST) via the email used to register. Please add <a href="mailto:toptips@kalmbach.dev">toptips@kalmbach.dev</a> to your email contacts for optimal delivery.
+          You will receive a notification (at 12:15 PM, Berlin Time) via the email used to register. Please add <a href="mailto:toptips@kalmbach.dev">toptips@kalmbach.dev</a> to your email contacts for optimal delivery.
         </p>
         <ion-row>
           <ion-col>
@@ -211,7 +211,7 @@
       <p style="text-align: center; margin-top: 100px;">
         <small>
           If you have any suggestions, questions or complaints, feel free to contact me at
-          <a href="mailto:tobias@kalmbach.dev">tobias@kalmbach.dev</a>.
+          <a href="mailto:toptips@kalmbach.dev">toptips@kalmbach.dev</a>.
           <br />
           <a href="https://kalmbach.dev/privacy.html">Privacy Policy</a> |
           <a href="https://kalmbach.dev/imprint.html">Imprint</a>
