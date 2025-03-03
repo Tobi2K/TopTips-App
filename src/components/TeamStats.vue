@@ -271,9 +271,7 @@ export default defineComponent({
         this.showEvenMoreStats = false
       }
     },
-    setEvenMoreStats(bool) {      
-      console.log(this.gameInfo);
-      
+    setEvenMoreStats(bool) {
       this.showEvenMoreStats = bool;
     },
   },
