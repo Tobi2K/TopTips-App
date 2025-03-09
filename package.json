@@ -29,7 +29,7 @@
     "@ionic/vue-router": "^8.4.3",
     "@soerenmartius/vue3-clipboard": "^0.1.2",
     "axios": "^1.8.2",
-    "core-js": "^3.40.0",
+    "core-js": "^3.41.0",
     "esnext": "^3.3.1",
     "glob-parent": ">=6.0.2",
     "lodash": ">=4.17.21",
@@ -62,12 +62,12 @@
     "@vue/eslint-config-typescript": "14.4.0",
     "@vue/test-utils": "^2.4.6",
     "eslint": "^9.20.1",
-    "eslint-config-prettier": "^10.0.1",
+    "eslint-config-prettier": "^10.0.2",
     "eslint-plugin-prettier": "^5.2.3",
     "eslint-config-google": "^0.14.0",
     "eslint-webpack-plugin": "^5.0.0",
     "eslint-plugin-vue": "^9.32.0",
-    "typescript": "^5.7.3",
+    "typescript": "^5.8.2",
     "vue-loader-v16": "npm:vue-loader@^16.1.0"
   }
 }
