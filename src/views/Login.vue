@@ -333,18 +333,42 @@ export default defineComponent({
         return true;
       } else return false;
     },
+    checkNetwork(networkPresent: boolean, code: string) {
+      if (networkPresent) {        
+        this.$store.dispatch("checkStatus").then((response) => {
+          if (response) {
+            this.greet(response);
+            this.$router.push("/tabs");
+          }
+          this.clearInputs();
+        });
+      } else {
+        alertController.create({
+          cssClass: "points-alert",
+          header: "No Internet Connection",
+          message: "It seems you are not connected to the internet!\nPlease check your internet connection or try again later. \n\nIf the problem persists, write a message with the error code `" + code + "` to toptips@kalmbach.dev.",
+          buttons: [
+            {
+              text: "Retry",
+              role: "confirm",
+              handler: () => {
+                this.$store.dispatch("checkNetwork").then((networkAndCode) => {
+                  this.checkNetwork(networkAndCode.value, networkAndCode.code)
+                })
+              }
+            }
+          ]
+        }).then((alert) => alert.present())
+      }
+    }
   },
   mounted() {
     if (localStorage.getItem("dark") == "t") {
       document.getElementsByTagName("body")[0].classList.add("dark");
     }
-    this.$store.dispatch("checkStatus").then((response) => {
-      if (response) {
-        this.greet(response);
-        this.$router.push("/tabs");
-      }
-      this.clearInputs();
-    });
+    this.$store.dispatch("checkNetwork").then((networkAndCode) => {
+      this.checkNetwork(networkAndCode.value, networkAndCode.code)
+    })
   },
 });
 </script>
