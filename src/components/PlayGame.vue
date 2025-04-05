@@ -11,7 +11,7 @@
           style="padding: 0"
         >
           <ion-grid>
-            <ion-card style="background: transparent" class="pointer">
+            <ion-card style="background: transparent; margin-top: 4px; margin-bottom: 8px; margin-left: 0px; margin-right: 0px;" class="pointer">
               <ion-card-content
                 class="ion-no-padding text-light"
                 @click="openModal(index, this.games.games)"
@@ -29,6 +29,14 @@
                     {{ item.game_desc }}
                   </ion-card-title>
                 </ion-card-header>
+                <ion-row>
+                  <ion-col class="ion-no-padding" :style="
+                      'color:' +
+                      (item.team1_text == item.team2_text
+                        ? item.team1_text
+                        : '#FFFFFF')
+                    "><span class="date-heading line-left line-right"><span>{{ item.date_string }}</span></span></ion-col>
+                </ion-row>
                 <ion-row class="align-middle border-bottom">
                   <ion-col
                     size="6"
@@ -36,20 +44,20 @@
                     style="font-size: 80%"
                   >
                     <span :style="'color:' + item.team1_text">{{
-                      item.team1_name
+                      item.team1_short_name
                     }}</span>
                   </ion-col>
                   <ion-col size="4" class="align-middle">
                     <svg
                       width='100%'
                       height='100%'
-                      viewBox="0 0 100 100"
+                      viewBox="0 0 100 70"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <text
                         font-size="2.5em"
                         x="50"
-                        y="53"
+                        y="38"
                         :fill="item.team1_text"
                         textLength="75"
                         dominant-baseline="middle"
@@ -67,19 +75,23 @@
                         ? item.team1_text
                         : '#FFFFFF')
                     "
-                    >{{ item.game_string }}</ion-col
+                    >
+                    <span v-if="item.game_string == '-' && item.guessed"><ion-icon :icon="checkmarkOutline" /></span>
+                    <span v-else-if="item.game_string == '-' && moment(item.date).isSame(moment().endOf('day'), 'day')">!</span>
+                    <span v-else>{{ item.game_string }}</span>
+                    </ion-col
                   >
                   <ion-col size="4" class="align-middle">
                     <svg
                       width='100%'
-                      height='100%'
-                      viewBox="0 0 100 100"
+                      height='50%'
+                      viewBox="0 0 100 70"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <text
                         font-size="2.5em"
                         x="50"
-                        y="53"
+                        y="38"
                         :fill="item.team2_text"
                         textLength="75"
                         dominant-baseline="middle"
@@ -90,22 +102,22 @@
                   </ion-col>
                   <ion-col size="6" class="ion-text-start medium-text">
                     <small :style="'color:' + item.team2_text">{{
-                      item.team2_name
+                      item.team2_short_name
                     }}</small>
                   </ion-col>
                 </ion-row>
                 <ion-row>
-                  <ion-col
+                  <!-- <ion-col
                     class="ion-text-start small-text"
                     :style="'color:' + item.team1_text"
                     >Date: {{ item.date_string }}</ion-col
-                  >
-                  <ion-col
+                  > -->
+                  <!-- <ion-col
                     v-if="item.guessed"
                     class="ion-text-end small-text"
                     :style="'color:' + item.team2_text"
                     ><ion-icon :icon="checkmarkOutline" /> ({{ item.guess }})
-                  </ion-col>
+                  </ion-col> -->
                 </ion-row>
               </ion-card-content>
             </ion-card>
@@ -134,6 +146,8 @@ import { checkmarkOutline } from "ionicons/icons";
 
 import GuessModal from "@/components/GuessModal.vue";
 
+import moment from "moment";
+
 export default defineComponent({
   name: "PlayGame",
   props: {
@@ -146,8 +160,9 @@ export default defineComponent({
     },
   },
   emits: ["loaded"],
-  setup() {
+  setup() {    
     return {
+      moment,
       checkmarkOutline,
     };
   },
@@ -214,6 +229,30 @@ text {
   font-family: monospace;
   text-anchor: middle;
 }
+
+.date-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 70%;
+}
+.date-heading span {
+  margin: 0 15px;
+}
+.date-heading:before,
+.date-heading:after {
+  background: #717171;
+  height: 1px;
+  flex: 1;
+  content: '';
+}
+.date-heading.left:after {
+  background: none;
+}
+.date-heading.right:before {
+  background: none;
+}
+
 </style>
 
 <style>

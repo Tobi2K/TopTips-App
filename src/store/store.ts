@@ -5,6 +5,7 @@ import axios from "axios";
 import { InjectionKey } from "vue";
 import { createStore, Store, useStore as baseUseStore } from "vuex";
 import * as helper from "./helper";
+import { alertController } from "@ionic/core";
 
 // define injection key
 export const key: InjectionKey<Store<State>> = Symbol();
@@ -137,6 +138,7 @@ export const store = createStore({
             resolve(response.data.name);
             commit("UPDATE_SHOW_GROUP", true);
             dispatch("UPDATE_USER_GROUPS");
+            dispatch("checkVersion");
           })
           .catch()
           .finally(() => {
@@ -172,6 +174,7 @@ export const store = createStore({
             }
             commit("UPDATE_SHOW_GROUP", true);
             dispatch("UPDATE_USER_GROUPS");
+            dispatch("checkVersion");
           })
           .catch((error) => {
             let errorText = "";
@@ -212,6 +215,7 @@ export const store = createStore({
             }
             commit("UPDATE_SHOW_GROUP", true);
             dispatch("UPDATE_USER_GROUPS");
+            dispatch("checkVersion");
             commit("UPDATE_CURRENT_GROUP_ID", -1);
             resolve(user.username);
           })
@@ -232,6 +236,52 @@ export const store = createStore({
             commit("UPDATE_LOADING", false);
           });
       });
+    },
+    checkVersion( {commit, dispatch, state } ) {
+      axios
+        .post(
+          process.env.VUE_APP_HOST + "/patches",
+          {
+            appVersion: require("../../package.json").version,
+          },
+          {
+            headers: { Authorization: `Bearer ${state.user.accessToken}` },
+          },
+        )
+        .then((response) => {
+          if (response.data && response.data.length > 0) {
+            let alertString = ""
+            for (let i = 0; i < response.data.length; i++) {
+              const element = response.data[i];
+              alertString += "<b>Version " + element.version + "</b><br/>"
+              alertString += element.changes + "<br/><br/>"
+            }
+  
+            alertController.create({
+              header: "Patch Notes",
+              message: alertString,
+              buttons: [
+                {
+                  text: "Okay",
+                  role: "submit"
+                }
+              ]
+            }).then((val) => val.present())
+          }
+
+        })
+        .catch((error) => {
+          let errorText = "";
+          if (error.response) {
+            errorText = error.response.data.message;
+          } else {
+            errorText = error.message;
+          }
+          dispatch("handleError", {
+            error: error,
+            message: errorText,
+          });
+        });
     },
     updateEmail(
       { commit, dispatch, state },

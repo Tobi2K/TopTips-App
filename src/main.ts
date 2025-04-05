@@ -31,6 +31,7 @@ import "./registerServiceWorker";
 
 const app = createApp(App)
     .use(IonicVue, {
+      innerHTMLTemplatesEnabled: true,
       mode: "md",
     })
     .use(router)
