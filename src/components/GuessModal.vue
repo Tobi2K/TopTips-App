@@ -12,7 +12,7 @@
                 <ion-icon v-if="showNames" :icon="imageOutline" />
                 <ion-icon v-else :icon="textOutline" />
               </ion-button>
-              <ion-button @click="closeModal">
+              <ion-button @click="checkUnsaved(closeModal)">
                 <ion-icon :icon="close" />
               </ion-button>
             </ion-buttons>
@@ -28,7 +28,7 @@
           <ion-button
             fill="clear"
             color="dark"
-            @click="slideLeft()"
+            @click="checkUnsaved(slideLeft)"
             v-if="index > 0"
           >
             <ion-icon slot="icon-only" :icon="caretBack"></ion-icon>
@@ -38,7 +38,7 @@
           <ion-button
             fill="clear"
             color="dark"
-            @click="slideRight()"
+            @click="checkUnsaved(slideRight)"
             v-if="index < games.length - 1"
           >
             <ion-icon slot="icon-only" :icon="caretForward"></ion-icon>
@@ -241,6 +241,7 @@ import {
   IonToolbar,
   IonButtons,
   IonButton,
+  alertController,
   modalController,
   IonGrid,
   IonCol,
@@ -308,6 +309,8 @@ export default defineComponent({
   data() {
     let pointsTeam1;
     let pointsTeam2;
+    let savedPointsTeam1;
+    let savedPointsTeam2;
     let points;
     const index = this.gameIndex;
     const gameInfo = this.games[index];
@@ -340,6 +343,8 @@ export default defineComponent({
       timeString,
       pointsTeam1,
       pointsTeam2,
+      savedPointsTeam1,
+      savedPointsTeam2,
       points,
       index,
       gameInfo,
@@ -348,6 +353,7 @@ export default defineComponent({
       maxTeam1,
       minTeam2,
       maxTeam2,
+      saved: true,
     };
   },
   setup() {
@@ -394,6 +400,8 @@ export default defineComponent({
             })
             .then(() => {
               showToast("Saved guess successfully");
+              this.savedPointsTeam1 = this.pointsTeam1;
+              this.savedPointsTeam2 = this.pointsTeam2;
             })
             .catch();
       }
@@ -417,24 +425,7 @@ export default defineComponent({
 
         this.index = tempIndex;
 
-        this.$store
-            .dispatch("getUserGuess", this.gameInfo.id)
-            .then((val) => {
-              if (val != "") {
-                this.pointsTeam1 = val.score_team1;
-                this.pointsTeam2 = val.score_team2;
-                this.points = val.points;
-              } else if (this.isUpcoming()) {
-                this.pointsTeam1 = "-";
-                this.pointsTeam2 = "-";
-                this.points = undefined;
-              } else {
-                this.pointsTeam1 = "-";
-                this.pointsTeam2 = "-";
-                this.points = undefined;
-              }
-            })
-            .catch();
+        this.getUserGuess()
       }
     },
     slideLeft() {
@@ -450,50 +441,82 @@ export default defineComponent({
 
         this.index = tempIndex;
 
-        this.$store
-            .dispatch("getUserGuess", this.gameInfo.id)
-            .then((val) => {
-              if (val != "") {
-                this.pointsTeam1 = val.score_team1;
-                this.pointsTeam2 = val.score_team2;
-                this.points = val.points;
-              } else if (this.isUpcoming()) {
-                this.pointsTeam1 = "-";
-                this.pointsTeam2 = "-";
-                this.points = undefined;
-              } else {
-                this.pointsTeam1 = "-";
-                this.pointsTeam2 = "-";
-                this.points = undefined;
-              }
-            })
-            .catch();
+        this.getUserGuess()
       }
     },
     generateGuess() {
       this.pointsTeam1 = Math.floor(Math.random() * (this.maxTeam1 - this.minTeam1 + 1)) + this.minTeam1;
       this.pointsTeam2 = Math.floor(Math.random() * (this.maxTeam2 - this.minTeam2 + 1)) + this.minTeam2;
 
-      showToast("Generated random guess. Remember to save!");
+      showToast("Generated random guess. Saving guess...");
+      this.sendData()
     },
+    checkUnsaved(doThis) {
+      if (this.pointsTeam1 == this.savedPointsTeam1 && this.pointsTeam2 == this.savedPointsTeam2) {
+        doThis()
+      } else {
+        alertController
+          .create({
+            cssClass: "points-alert",
+            header: "Unsaved changes!",
+            message:
+          "It seems you have unsaved guesses. Make sure to save them! \n<small><small>If this is false and the notice persists, contact <a href='mailto:toptips@kalmbach.dev'>toptips@kalmbach.dev</a></small></small>",
+            buttons: [
+              {
+                text: "Take me back",
+                role: "cancel",
+              },
+              {
+                text: "Don't save",
+                handler: () => {
+                  doThis();
+                },
+              },
+            ],
+          })
+          .then((val) => val.present());
+      }
+    },
+    getUserGuess() {
+      this.$store
+            .dispatch("getUserGuess", this.gameInfo.id)
+            .then((val) => {
+              if (val != "") {
+                this.pointsTeam1 = val.score_team1;
+                this.savedPointsTeam1 = val.score_team1;
+                this.pointsTeam2 = val.score_team2;
+                this.savedPointsTeam2 = val.score_team2;
+                this.points = val.points;
+              } else if (this.isUpcoming()) {
+                this.pointsTeam1 = "-";
+                this.savedPointsTeam1 = "-";
+                this.pointsTeam2 = "-";
+                this.savedPointsTeam2 = "-";
+                this.points = undefined;
+              } else {
+                this.pointsTeam1 = "-";
+                this.savedPointsTeam1 = "-";
+                this.pointsTeam2 = "-";
+                this.savedPointsTeam2 = "-";
+                this.points = undefined;
+              }
+            })
+            .catch();
+    }
   },
   mounted() {
-    this.$store
-        .dispatch("getUserGuess", this.gameInfo.id)
-        .then((val) => {
-          if (val != "") {
-            this.pointsTeam1 = val.score_team1;
-            this.pointsTeam2 = val.score_team2;
-            this.points = val.points;
-          } else if (this.isUpcoming()) {
-            this.points = undefined;
-          } else {
-            this.pointsTeam1 = "-";
-            this.pointsTeam2 = "-";
-            this.points = undefined;
-          }
-        })
-        .catch();
+    this.getUserGuess()
+  },
+  watch: {
+    pointsTeam1() {
+      console.log("Team 1");
+      
+      this.saved = false
+    },
+    pointsTeam2() {
+      console.log("Team 2");
+      this.saved = false
+    },
   },
   computed: mapState(["groupData"]),
 });

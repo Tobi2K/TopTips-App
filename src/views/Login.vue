@@ -217,9 +217,10 @@ export default defineComponent({
     },
     async presentForgotPasswordPrompt() {
       const alert = await alertController.create({
+        cssClass: "points-alert",
         header: "Reset Password",
         message: "Please enter your username. You will receive a new password at the email you set. " +
-          "If you don't have an email address set, please contact me at toptips@kalmbach.dev",
+          "If you don't have an email address set, please contact me at <a href='mailto:toptips@kalmbach.dev'>toptips@kalmbach.dev</a>",
         inputs: [
           {
             name: "username",
@@ -250,7 +251,7 @@ export default defineComponent({
         cssClass: "points-alert",
         header: "Hi there, welcome to TopTips! ",
         message: "Log in or register to use the app. \n\n" +
-        "If you have any suggestions, questions or complaints, feel free to contact me at toptips@kalmbach.dev.",
+        "If you have any suggestions, questions or complaints, feel free to contact me at <a href='mailto:toptips@kalmbach.dev'>toptips@kalmbach.dev</a>.",
         buttons: [
           {
             text: "Close",
@@ -346,7 +347,7 @@ export default defineComponent({
         alertController.create({
           cssClass: "points-alert",
           header: "No Internet Connection",
-          message: "It seems you are not connected to the internet!\nPlease check your internet connection or try again later. \n\nIf the problem persists, write a message with the error code `" + code + "` to toptips@kalmbach.dev.",
+          message: "It seems you are not connected to the internet!\nPlease check your internet connection or try again later. \n\nIf the problem persists, write a message with the error code `" + code + "` to <a href='mailto:toptips@kalmbach.dev'>toptips@kalmbach.dev</a>.",
           buttons: [
             {
               text: "Retry",

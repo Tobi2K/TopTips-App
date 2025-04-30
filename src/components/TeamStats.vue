@@ -55,7 +55,7 @@
     <ion-col size="12" class="ion-text-center">
       <h6>General Stats</h6>
     </ion-col>
-    <ion-col size="6" style="overflow-x: scroll; border-right: 1px solid black;" class="colNoPaddingRight">
+    <ion-col size="6" style="overflow-x: scroll; border-right: 1px solid #939393;" class="colNoPaddingRight">
       <table class="coolTable mx-auto">
         <thead>
           <tr class="border-bottom">
@@ -87,7 +87,7 @@
         </tbody>
       </table>
     </ion-col>
-    <ion-col size="6" style="overflow-x: scroll; border-left: 1px solid black;" class="colNoPaddingLeft">
+    <ion-col size="6" style="overflow-x: scroll; border-left: 1px solid #939393;" class="colNoPaddingLeft">
       <table class="coolTable mx-auto">
         <thead>
           <tr class="border-bottom">
@@ -132,7 +132,7 @@
     <ion-col size="12" class="ion-text-center">
       <h6>Past Results</h6>
     </ion-col>
-    <ion-col size="6" style="overflow-x: scroll; border-right: 1px solid black;" class="colNoPaddingRight">
+    <ion-col size="6" style="overflow-x: scroll; border-right: 1px solid #939393;" class="colNoPaddingRight">
       <table class="coolTable mx-auto">
         <thead>
           <tr class="border-bottom">
@@ -151,7 +151,7 @@
         </tbody>
       </table>
     </ion-col>
-    <ion-col size="6" style="overflow-x: scroll; border-left: 1px solid black;" class="colNoPaddingLeft">
+    <ion-col size="6" style="overflow-x: scroll; border-left: 1px solid #939393;" class="colNoPaddingLeft">
       <table class="coolTable mx-auto">
         <thead>
           <tr class="border-bottom">
