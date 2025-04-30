@@ -26,7 +26,7 @@
     "@ionic/cli": "^7.2.1",
     "@ionic/core": "^8.5.1",
     "@ionic/vue": "^8.5.1",
-    "@ionic/vue-router": "^8.5.1",
+    "@ionic/vue-router": "^8.5.5",
     "@soerenmartius/vue3-clipboard": "^0.1.2",
     "axios": "^1.8.4",
     "core-js": "^3.41.0",
