@@ -154,6 +154,7 @@ export default defineComponent({
         data.datasets.push({
           label: element[0],
           data: result,
+          borderColor: colors[i - 1],
           backgroundColor: colors[i - 1],
         });
       }
