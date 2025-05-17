@@ -448,8 +448,7 @@ export default defineComponent({
       this.pointsTeam1 = Math.floor(Math.random() * (this.maxTeam1 - this.minTeam1 + 1)) + this.minTeam1;
       this.pointsTeam2 = Math.floor(Math.random() * (this.maxTeam2 - this.minTeam2 + 1)) + this.minTeam2;
 
-      showToast("Generated random guess. Saving guess...");
-      this.sendData()
+      showToast("Generated random guess. Remember to save!");
     },
     checkUnsaved(doThis) {
       if (this.pointsTeam1 == this.savedPointsTeam1 && this.pointsTeam2 == this.savedPointsTeam2) {
@@ -509,12 +508,9 @@ export default defineComponent({
   },
   watch: {
     pointsTeam1() {
-      console.log("Team 1");
-      
       this.saved = false
     },
     pointsTeam2() {
-      console.log("Team 2");
       this.saved = false
     },
   },

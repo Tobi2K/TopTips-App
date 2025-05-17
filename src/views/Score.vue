@@ -19,7 +19,8 @@
           </ion-fab-button>
         </ion-fab-list>
       </ion-fab>
-      <score-section @done="endRefresh" :key="refreshGame" />
+      <score-section @done="endRefresh" :key="refreshTable" />
+      <score-chart @done="endRefresh" :key="refreshChart" />
     </ion-content>
   </ion-page>
 </template>
@@ -38,6 +39,7 @@ import {
 } from "@ionic/vue";
 
 import ScoreSection from "@/components/ScoreSection.vue";
+import ScoreChart from "@/components/ScoreChart.vue";
 
 import CustomHeader from "@/components/CustomHeader.vue";
 
@@ -56,6 +58,7 @@ export default defineComponent({
     IonContent,
     IonPage,
     ScoreSection,
+    ScoreChart,
     IonRefresher,
     IonRefresherContent,
     CustomHeader,
@@ -73,7 +76,8 @@ export default defineComponent({
   },
   data() {
     return {
-      refreshGame: false,
+      refreshTable: false,
+      refreshChart: false,
       fullList: true,
       target: null as unknown as {
         target: {
@@ -87,7 +91,8 @@ export default defineComponent({
   },
   methods: {
     refreshAll() {
-      this.refreshGame = !this.refreshGame;
+      this.refreshTable = !this.refreshTable;
+      this.refreshChart = !this.refreshChart;
     },
     doRefresh(event: { target: { complete: () => void } }) {
       this.refreshAll();

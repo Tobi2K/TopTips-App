@@ -101,20 +101,19 @@ export const store = createStore({
         axios
           .get("https://api.kalmbach.dev")
           .then(() => {
-            resolve({ 'value': true, 'code': "" })
+            resolve({ value: true, code: "" });
           })
           .catch((error) => {
             if (error.code) {
-              resolve({ 'value': false, 'code': error.code })
+              resolve({ value: false, code: error.code });
             } else {
-              resolve({ 'value': false, 'code': 'N/A' })
+              resolve({ value: false, code: "N/A" });
             }
-
           })
           .finally(() => {
             commit("UPDATE_LOADING", false);
           });
-      })
+      });
     },
     checkStatus({ commit, dispatch }) {
       const token = localStorage.getItem("JWT");
@@ -140,7 +139,15 @@ export const store = createStore({
             dispatch("UPDATE_USER_GROUPS");
             dispatch("checkVersion");
           })
-          .catch()
+          .catch((error) => {
+            if (error.response) {
+              if (error.response.status == 401) {
+                router.push("/");
+                dispatch("LOGOUT");
+                return false;
+              } else return true;
+            } else return true;
+          })
           .finally(() => {
             commit("UPDATE_LOADING", false);
           });
@@ -148,7 +155,7 @@ export const store = createStore({
     },
     login(
       { commit, dispatch },
-      user: { name: string; password: string; loggedin: boolean },
+      user: { name: string; password: string; loggedin: boolean }
     ) {
       commit("UPDATE_LOADING", true);
       return new Promise((resolve) => {
@@ -195,7 +202,12 @@ export const store = createStore({
     },
     register(
       { commit, dispatch },
-      user: { username: string; email: string; password: string; loggedin: boolean },
+      user: {
+        username: string;
+        email: string;
+        password: string;
+        loggedin: boolean;
+      }
     ) {
       commit("UPDATE_LOADING", true);
       return new Promise((resolve, reject) => {
@@ -237,7 +249,7 @@ export const store = createStore({
           });
       });
     },
-    checkVersion( {commit, dispatch, state } ) {
+    checkVersion({ commit, dispatch, state }) {
       axios
         .post(
           process.env.VUE_APP_HOST + "/patches",
@@ -246,29 +258,30 @@ export const store = createStore({
           },
           {
             headers: { Authorization: `Bearer ${state.user.accessToken}` },
-          },
+          }
         )
         .then((response) => {
           if (response.data && response.data.length > 0) {
-            let alertString = ""
+            let alertString = "";
             for (let i = 0; i < response.data.length; i++) {
               const element = response.data[i];
-              alertString += "<b>Version " + element.version + "</b><br/>"
-              alertString += element.changes + "<br/><br/>"
+              alertString += "<b>Version " + element.version + "</b><br/>";
+              alertString += element.changes + "<br/><br/>";
             }
-  
-            alertController.create({
-              header: "Patch Notes",
-              message: alertString,
-              buttons: [
-                {
-                  text: "Okay",
-                  role: "submit"
-                }
-              ]
-            }).then((val) => val.present())
-          }
 
+            alertController
+              .create({
+                header: "Patch Notes",
+                message: alertString,
+                buttons: [
+                  {
+                    text: "Okay",
+                    role: "submit",
+                  },
+                ],
+              })
+              .then((val) => val.present());
+          }
         })
         .catch((error) => {
           let errorText = "";
@@ -283,10 +296,7 @@ export const store = createStore({
           });
         });
     },
-    updateEmail(
-      { commit, dispatch, state },
-      email: string,
-    ) {
+    updateEmail({ commit, dispatch, state }, email: string) {
       commit("UPDATE_LOADING", true);
       return new Promise((resolve, reject) => {
         axios
@@ -297,7 +307,7 @@ export const store = createStore({
             },
             {
               headers: { Authorization: `Bearer ${state.user.accessToken}` },
-            },
+            }
           )
           .then(() => {
             resolve("Thanks");
@@ -482,7 +492,7 @@ export const store = createStore({
             },
             {
               headers: { Authorization: `Bearer ${state.user.accessToken}` },
-            },
+            }
           )
           .then((response) => {
             commit("UPDATE_CURRENT_GROUP_ID", response.data.id);
@@ -577,7 +587,7 @@ export const store = createStore({
       commit("UPDATE_LOADING", true);
       helper
         .requestGroupGuesses(
-          "/guess/all/" + gameID + "/" + state.currentGroupID,
+          "/guess/all/" + gameID + "/" + state.currentGroupID
         )
         .then((response) => {
           commit("UPDATE_GUESSES_FOR_OPEN_GAME", response.data);
@@ -607,7 +617,7 @@ export const store = createStore({
             },
             {
               headers: { Authorization: `Bearer ${state.user.accessToken}` },
-            },
+            }
           )
           .then(() => {
             const section = details.sectionID;
@@ -660,11 +670,17 @@ export const store = createStore({
           });
       });
     },
-    changePassword({ commit, dispatch }, passwords: { oldPass: string, newPass: string }) {
+    changePassword(
+      { commit, dispatch },
+      passwords: { oldPass: string; newPass: string }
+    ) {
       commit("UPDATE_LOADING", true);
       return new Promise((resolve) => {
         helper
-          .changePassword({ oldPassword: passwords.oldPass, newPassword: passwords.newPass })
+          .changePassword({
+            oldPassword: passwords.oldPass,
+            newPassword: passwords.newPass,
+          })
           .then(() => {
             dispatch("LOGOUT");
             resolve("Done");
@@ -924,7 +940,10 @@ export const store = createStore({
           commit("UPDATE_LOADING", false);
         });
     },
-    subscribeEmail({ commit, dispatch }, parameter: { seasonID: string, isToday: boolean }) {
+    subscribeEmail(
+      { commit, dispatch },
+      parameter: { seasonID: string; isToday: boolean }
+    ) {
       commit("UPDATE_LOADING", true);
       helper
         .subscribeEmail(parameter)
@@ -941,7 +960,10 @@ export const store = createStore({
           commit("UPDATE_LOADING", false);
         });
     },
-    unsubscribeEmail({ commit, dispatch }, parameter: { seasonID: string, isToday: boolean }) {
+    unsubscribeEmail(
+      { commit, dispatch },
+      parameter: { seasonID: string; isToday: boolean }
+    ) {
       commit("UPDATE_LOADING", true);
       helper
         .unsubscribeEmail(parameter)
