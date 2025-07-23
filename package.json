@@ -28,7 +28,7 @@
     "@ionic/vue": "^8.6.2",
     "@ionic/vue-router": "^8.6.2",
     "@soerenmartius/vue3-clipboard": "^0.1.2",
-    "axios": "^1.10.0",
+    "axios": "^1.11.0",
     "chart.js": "^4.5.0",
     "core-js": "^3.44.0",
     "esnext": "^3.3.1",
