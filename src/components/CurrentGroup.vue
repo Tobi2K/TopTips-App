@@ -48,7 +48,7 @@
           {{ this.moment(groupData.season.end_date).format("DD MMM, YYYY") }}
         </p>
         <p style="color: red;" v-if="groupData.season.important == 0">
-          {{ groupData.season.name }} is not actively synced as there is not enough interest! Let me know at <a href="mailto:toptips@kalmbach.dev">toptips@kalmbach.dev</a> if you want to play this season.
+          {{ groupData.season.name }} is not actively synced as there is not enough interest! Let me know at <a href="mailto:admin@toptips.page">admin@toptips.page</a> if you want to play this season.
         </p>
       </ion-label>
     </ion-item>

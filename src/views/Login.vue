@@ -220,7 +220,7 @@ export default defineComponent({
         cssClass: "points-alert",
         header: "Reset Password",
         message: "Please enter your username. You will receive a new password at the email you set. " +
-          "If you don't have an email address set, please contact me at <a href='mailto:toptips@kalmbach.dev'>toptips@kalmbach.dev</a>",
+          "If you don't have an email address set, please contact me at <a href='mailto:admin@toptips.page'>admin@toptips.pagev</a>",
         inputs: [
           {
             name: "username",
@@ -251,7 +251,7 @@ export default defineComponent({
         cssClass: "points-alert",
         header: "Hi there, welcome to TopTips! ",
         message: "Log in or register to use the app. \n\n" +
-        "If you have any suggestions, questions or complaints, feel free to contact me at <a href='mailto:toptips@kalmbach.dev'>toptips@kalmbach.dev</a>.",
+        "If you have any suggestions, questions or complaints, feel free to contact me at <a href='mailto:admin@toptips.page'>admin@toptips.page</a>.",
         buttons: [
           {
             text: "Close",
@@ -347,7 +347,7 @@ export default defineComponent({
         alertController.create({
           cssClass: "points-alert",
           header: "No Internet Connection",
-          message: "It seems you are not connected to the internet!\nPlease check your internet connection or try again later. \n\nIf the problem persists, write a message with the error code `" + code + "` to <a href='mailto:toptips@kalmbach.dev'>toptips@kalmbach.dev</a>.",
+          message: "It seems you are not connected to the internet!\nPlease check your internet connection or try again later. \n\nIf the problem persists, write a message with the error code `" + code + "` to <a href='mailto:admin@toptips.page'>admin@toptips.page</a>.",
           buttons: [
             {
               text: "Retry",

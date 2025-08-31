@@ -10,6 +10,10 @@ import { IonApp, IonRouterOutlet, IonLoading } from "@ionic/vue";
 import { defineComponent } from "vue";
 import { mapState } from "vuex";
 import { store } from "./store/store";
+import { EdgeToEdge } from '@capawesome/capacitor-android-edge-to-edge-support';
+
+
+EdgeToEdge.setBackgroundColor({ color: '#00000000' });
 
 export default defineComponent({
   name: "App",

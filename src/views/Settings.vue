@@ -158,7 +158,7 @@
       <ion-list>
         <h3>Email Notification Settings</h3>
         <p>
-          You will receive a notification (at 12:15 PM, Berlin Time) via the email used to register. Please add <a href="mailto:toptips@kalmbach.dev">toptips@kalmbach.dev</a> to your email contacts for optimal delivery.
+          You will receive a notification (at 12:15 PM, Berlin Time) via the email used to register. Please add <a href="mailto:admin@toptips.page">admin@toptips.page</a> to your email contacts for optimal delivery.
         </p>
         <ion-row>
           <ion-col>
@@ -211,7 +211,7 @@
       <p style="text-align: center; margin-top: 100px;">
         <small>
           If you have any suggestions, questions or complaints, feel free to contact me at
-          <a href="mailto:toptips@kalmbach.dev">toptips@kalmbach.dev</a>.
+          <a href="mailto:admin@toptips.page">admin@toptips.page</a>.
           <br />
           <a href="https://kalmbach.dev/privacy.html">Privacy Policy</a> |
           <a href="https://kalmbach.dev/imprint.html">Imprint</a>

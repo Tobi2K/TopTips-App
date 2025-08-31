@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="http://app.kalmbach.dev"><img src="./public/assets/icon/rounded_icon.png" alt="Top Tips" width="200"></a>
+  <a href="http://toptips.page"><img src="./public/assets/icon/rounded_icon.png" alt="Top Tips" width="200"></a>
   <br>
   Top Tips
   <br>
@@ -22,8 +22,8 @@
   <a href="#license">
     <img alt="License" src="https://img.shields.io/github/license/Tobi2K/TopTips-App?style=for-the-badge">
   </a>
-  <a href="https://app.kalmbach.dev">
-    <img alt="Website" src="https://img.shields.io/website?down_message=offline&style=for-the-badge&up_message=online&url=https%3A%2F%2Fapp.kalmbach.dev">
+  <a href="https://toptips.page">
+    <img alt="Website" src="https://img.shields.io/website?down_message=offline&style=for-the-badge&up_message=online&url=https%3A%2F%2Ftoptips.page">
   </a>
 </p>
 <p align="center">
@@ -104,7 +104,7 @@ A guide for generating an app bundle or an apk can be found [here](https://devel
 
 ## Usage
 
-Feel free to try out the app yourself. You can find it on [Google Play](https://play.google.com/store/apps/details?id=app.kalmbach.dev) or use the [web version](https://app.kalmbach.dev).
+Feel free to try out the app yourself. You can find it on [Google Play](https://play.google.com/store/apps/details?id=app.kalmbach.dev) or use the [web version](https://toptips.page).
 
 Opening the web version in a compatible mobile browser will show a prompt to install a PWA version to your device.
 
@@ -124,4 +124,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 > [kalmbach.dev](https://www.kalmbach.dev) &nbsp;&middot;&nbsp;
 > GitHub [@Tobi2K](https://github.com/Tobi2K) &nbsp;&middot;&nbsp;
-> Email [t.kalmbach35@gmail.com](mailto:t.kalmbach35@gmail.com)
+> Email [tobias@kalmbach.dev](mailto:tobias@kalmbach.dev)

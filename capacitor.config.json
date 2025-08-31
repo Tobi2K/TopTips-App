@@ -2,6 +2,9 @@
   "plugins": {
     "PushNotifications": {
       "presentationOptions": ["badge", "sound", "alert"]
+    },
+    "EdgeToEdge": {
+      "backgroundColor": "#00000000"
     }
   }
 }

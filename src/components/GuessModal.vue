@@ -459,7 +459,7 @@ export default defineComponent({
             cssClass: "points-alert",
             header: "Unsaved changes!",
             message:
-          "It seems you have unsaved guesses. Make sure to save them! \n<small><small>If this is false and the notice persists, contact <a href='mailto:toptips@kalmbach.dev'>toptips@kalmbach.dev</a></small></small>",
+          "It seems you have unsaved guesses. Make sure to save them! \n<small><small>If this is false and the notice persists, contact <a href='mailto:admin@toptips.page'>admin@toptips.page</a></small></small>",
             buttons: [
               {
                 text: "Take me back",
