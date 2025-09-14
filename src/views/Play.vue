@@ -4,8 +4,9 @@
       v-if="groupData"
       :title="'Guessing in ' + groupData.name"
       @refresh="refreshAll"
+      @changeView="changeView"
     />
-    <custom-header v-else title="Tips" @refresh="refreshAll" />
+    <custom-header v-else title="Tips" @refresh="refreshAll" @changeView="changeView" />
     <ion-content :fullscreen="true" id="mainSlide">
       <ion-grid
         v-if="showSelectGroup"
@@ -160,6 +161,10 @@ export default defineComponent({
   },
   methods: {
     async refreshAll() {
+      this.$store.dispatch("UPDATE_ALL_GAMES");
+    },
+    async changeView() {
+      await this.$store.dispatch("TOGGLE_SORT_BY_MONTH");
       this.$store.dispatch("UPDATE_ALL_GAMES");
     },
     selectedGroup(groupID: number) {

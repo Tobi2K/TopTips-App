@@ -32,6 +32,7 @@ export const store = createStore({
     allGames: [],
     showSelectGroup: true,
     loading: false,
+    sortByMonth: false,
     activeGamedays: [],
     ranking: [],
   },
@@ -87,6 +88,9 @@ export const store = createStore({
     },
     UPDATE_LOADING(state, bool) {
       state.loading = bool;
+    },
+    UPDATE_SORT_BY_MONTH(state, bool) {
+      state.sortByMonth = bool;
     },
     UPDATE_ACTIVE_GAMEDAYS(state, days) {
       state.activeGamedays = days;
@@ -348,8 +352,12 @@ export const store = createStore({
         return null;
       } else {
         commit("UPDATE_LOADING", true);
+        let path = "/game/all/format/" + state.currentGroupID;
+        if (state.sortByMonth) {
+          path = "/game/all/timeline/" + state.currentGroupID;
+        }
         helper
-          .getAllGames("/game/all/format/" + state.currentGroupID)
+          .getAllGames(path)
           .then((response) => {
             commit("UPDATE_ALL_GAMES", response.data);
           })
@@ -373,6 +381,7 @@ export const store = createStore({
               message: "Failed to update games.",
             });
           });
+        dispatch("refreshCurrentGameday")
       }
     },
     UPDATE_CURRENT_GROUP_ID({ commit, dispatch }, groupID: string) {
@@ -516,8 +525,12 @@ export const store = createStore({
       });
     },
     refreshCurrentGameday({ commit, state }) {
+      let path = "/competition/current/" + state.currentGroupID;
+      if (state.sortByMonth) {
+        path = "/competition/current/month/" + state.currentGroupID;
+      }
       helper
-        .getCurrentGameday("/competition/current/" + state.currentGroupID)
+        .getCurrentGameday(path)
         .then((response) => {
           commit("UPDATE_CURRENT_GAMEDAY", response.data);
         })
@@ -1020,6 +1033,9 @@ export const store = createStore({
     },
     UPDATE_LOADING({ commit }, bool) {
       commit("UPDATE_LOADING", bool);
+    },
+    TOGGLE_SORT_BY_MONTH({ state, commit }) {
+      commit("UPDATE_SORT_BY_MONTH", state.sortByMonth ? false : true);
     },
   },
 });

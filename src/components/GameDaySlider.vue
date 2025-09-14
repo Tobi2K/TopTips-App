@@ -6,7 +6,8 @@
       :value="section"
       :id="'segment-' + section"
     >
-      <small>Gameday {{ section }}</small>
+      <small v-if="games[section - 1]">{{ games[section - 1].sectionTitle }}</small>
+      <small v-else>Gameday</small>
     </ion-segment-button>
   </ion-segment>
   <div style="height: calc(100% - 48px); overflow-y: scroll">

@@ -11,6 +11,14 @@
                   <ion-buttons class="align-middle ion-float-right items-end">
                     <ion-button
                       fill="clear"
+                      @click="changeView"
+                      class="ion-float-right"
+                    >
+                      <ion-icon v-if="sortByMonth" :icon="apps" />
+                      <ion-icon v-else :icon="calendar" />
+                    </ion-button>
+                    <ion-button
+                      fill="clear"
                       @click="refreshClicked"
                       class="ion-float-right"
                     >
@@ -57,7 +65,9 @@ import {
 } from "@ionic/vue";
 
 import { defineComponent } from "vue";
-import { refresh, settingsOutline } from "ionicons/icons";
+import { refresh, settingsOutline, calendar, apps } from "ionicons/icons";
+import { useStore } from "@/store/store";
+import { mapState } from "vuex";
 
 export default defineComponent({
   name: "CustomHeader",
@@ -67,7 +77,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["refresh"],
+  emits: ["refresh", "changeView"],
   components: {
     IonHeader,
     IonToolbar,
@@ -83,16 +93,24 @@ export default defineComponent({
     return {
       refresh,
       settingsOutline,
+      calendar,
+      apps
     };
   },
   methods: {
     refreshClicked() {
       this.$emit("refresh");
     },
+    changeView() {
+      this.$emit("changeView");
+    },
     goToSettings() {
       this.$router.push("/settings");
     },
   },
+  computed: mapState([
+    "sortByMonth",
+  ]),
 });
 </script>
 

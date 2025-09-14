@@ -24,7 +24,7 @@
                 "
                 :id="'game' + item.id"
               >
-                <ion-card-header v-if="games.special">
+                <ion-card-header v-if="item.game_desc">
                   <ion-card-title :style="'color:' + item.team1_text">
                     {{ item.game_desc }}
                   </ion-card-title>
@@ -160,7 +160,7 @@ export default defineComponent({
     },
   },
   emits: ["loaded"],
-  setup() {    
+  setup() {
     return {
       moment,
       checkmarkOutline,

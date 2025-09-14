@@ -152,7 +152,7 @@ export interface Group {
 
 export interface GameDay {
   games: FormattedGame[];
-  special: boolean;
+  sectionTitles: string[];
 }
 
 export interface FormattedGame {
