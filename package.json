@@ -1,6 +1,6 @@
 {
   "name": "top-tips-app",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "private": true,
   "description": "Lightweight app for a handball guessing game",
   "scripts": {
