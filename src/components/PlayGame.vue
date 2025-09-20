@@ -67,7 +67,7 @@
                     </svg>
                   </ion-col>
                   <ion-col
-                    class="ion-text-center"
+                    class="ion-text-center small-text-on-mobile"
                     size="4"
                     :style="
                       'color:' +
@@ -260,6 +260,12 @@ text {
 .bigmodal {
   --width: 850px !important;
   --height: 850px !important;
+}
+}
+
+@media (max-width: 400px) {
+.small-text-on-mobile {
+  font-size: small;
 }
 
 }

@@ -9,7 +9,7 @@
               <ion-row style="height: 50%">
                 <ion-col>
                   <ion-buttons class="align-middle ion-float-right items-end">
-                    <ion-button
+                    <ion-button v-if="playTab"
                       fill="clear"
                       @click="changeView"
                       class="ion-float-right"
@@ -75,6 +75,10 @@ export default defineComponent({
     title: {
       type: String,
       required: true,
+    },
+    playTab: {
+      type: Boolean,
+      default: false,
     },
   },
   emits: ["refresh", "changeView"],

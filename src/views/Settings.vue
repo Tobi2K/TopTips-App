@@ -183,8 +183,8 @@
             </ion-button>
           </ion-col>
         </ion-row>
-        <ion-list-header>Notifications for pending games.</ion-list-header>
         <div v-if="emailNoti">
+          <ion-list-header lines="full">Notifications on the day of the game.</ion-list-header>
           <div v-for="subscription in userSubscriptions" :key="subscription">
             <ion-item>
               <ion-toggle
@@ -192,16 +192,19 @@
                 :value="subscription.day_of"
                 :checked="subscription.day_of"
               >
-                Day-Of Notifications for {{ subscription.season.name }} <small>({{ subscription.season.competition.country }})</small>
+                {{ subscription.season.name }} <small>({{ subscription.season.competition.country }})</small>
               </ion-toggle>
               </ion-item>
+          </div>
+          <ion-list-header lines="full" style="margin-top: 20px;">Notifications on the day before the game.</ion-list-header>
+          <div v-for="subscription in userSubscriptions" :key="subscription">
               <ion-item>
               <ion-toggle
                 @ionChange="subscribeEmail(subscription, false)"
                 :value="subscription.day_before"
                 :checked="subscription.day_before"
               >
-                Day-Before Notifications for {{ subscription.season.name }} <small>({{ subscription.season.competition.country }})</small> 
+                {{ subscription.season.name }} <small>({{ subscription.season.competition.country }})</small> 
               </ion-toggle>
             </ion-item>
           </div>

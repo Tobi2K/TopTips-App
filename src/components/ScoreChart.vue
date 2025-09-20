@@ -130,10 +130,25 @@ export default defineComponent({
 
       return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
     },
+    findLastNonZeroIndex(list: any[]): number {
+      list = list.slice(2)
+      for (let i = list.length - 1; i >= 0; i--) {
+        if (list[i] !== 0) {
+          return i;
+        }
+      }
+      return list.length; // No non-zero value found
+    },
     loadData() {
       this.loaded = false;
+      const firstNonZero = this.pointsForGroup.slice(1).map(this.findLastNonZeroIndex);
+      let end = this.pointsForGroup[0].length
+
+      if (!firstNonZero.includes(-1)) {
+        end = Math.max(...firstNonZero) + 3; // +3 to account for slicing and zero-based index
+      }
       const data = {
-        labels: this.pointsForGroup[0].slice(2),
+        labels: this.pointsForGroup[0].slice(2, end),
         datasets: [] as any[],
       };
       const colors = this.generateDistinctColors(this.pointsForGroup.length - 1);
