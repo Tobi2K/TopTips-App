@@ -313,6 +313,7 @@ export async function getVersion(): Promise<AxiosResponse<any, any>> {
 
 /**
  * Subscribes a user to email notifications
+ * @param {{seasonID: string, isToday: boolean}} parameter ID of the season and whether to subscribe to on the same day
  * @return {Promise<AxiosResponse<any, any>>} axios request promise
  */
 export async function subscribeEmail(parameter: {
@@ -326,7 +327,7 @@ export async function subscribeEmail(parameter: {
 
 /**
  * Subscribes a user to email notifications
- * @param {{seasonID: string, isToday: boolean}} parameter ID of the season and whether to subscribe to on the same day
+ * @param {{seasonID: string, isToday: boolean}} parameter ID of the season and if to unsubscribe to on the same day
  * @return {Promise<AxiosResponse<any, any>>} axios request promise
  */
 export async function unsubscribeEmail(parameter: {

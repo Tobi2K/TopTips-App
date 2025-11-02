@@ -498,14 +498,14 @@ export default defineComponent({
     },
     subscribeEmail(subscription: { day_of: boolean; season: { id: any; }; day_before: boolean; }, dayOf: boolean) {
       if (dayOf) {
-        subscription.day_of = !subscription.day_of
+        subscription.day_of = !subscription.day_of;
         if (subscription.day_of) {
           this.$store.dispatch("subscribeEmail", { "seasonID": subscription.season.id, "isToday": dayOf });
         } else {
           this.$store.dispatch("unsubscribeEmail", { "seasonID": subscription.season.id, "isToday": dayOf });
         }
       } else {
-        subscription.day_before = !subscription.day_before
+        subscription.day_before = !subscription.day_before;
         if (subscription.day_before) {
           this.$store.dispatch("subscribeEmail", { "seasonID": subscription.season.id, "isToday": dayOf });
         } else {

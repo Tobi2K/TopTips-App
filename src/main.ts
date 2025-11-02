@@ -53,9 +53,9 @@ const newMajor = (android: boolean) => {
         "Correct functionality cannot be ensured, therefore you must" +
         (android ? " update " : " reload ") +
         "in order to proceed." +
-        (android
-          ? ""
-          : " You might have to full-reload (Ctrl + F5) if you're using a browser. " +
+        (android ?
+          "" :
+          " You might have to full-reload (Ctrl + F5) if you're using a browser. " +
           "If you have a home screen shortcut on iPhone, remove it and re-add it by going to https://toptips.page."),
       buttons: [
         {

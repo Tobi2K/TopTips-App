@@ -153,7 +153,7 @@ export default defineComponent({
     },
     hslToRgb(h: number, s: number, l: number): [number, number, number] {
       let r: number;
-      let g: number; 
+      let g: number;
       let b: number;
 
       if (s === 0) {
