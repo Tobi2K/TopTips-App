@@ -41,7 +41,7 @@
                   <ion-col
                     size="6"
                     class="ion-text-end medium-text"
-                    style="font-size: 80%"
+                    style="font-size: 75%"
                   >
                     <span :style="'color:' + item.team1_text">{{
                       item.team1_short_name
@@ -100,10 +100,11 @@
                       </text>
                     </svg>
                   </ion-col>
-                  <ion-col size="6" class="ion-text-start medium-text">
-                    <small :style="'color:' + item.team2_text">{{
+                  <ion-col size="6" class="ion-text-start medium-text"
+                    style="font-size: 75%">
+                    <span :style="'color:' + item.team2_text">{{
                       item.team2_short_name
-                    }}</small>
+                    }}</span>
                   </ion-col>
                 </ion-row>
                 <ion-row>

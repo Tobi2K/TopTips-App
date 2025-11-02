@@ -1,12 +1,16 @@
 <template>
+  <div class="ion-text-center">
+    <ion-button fill="outline" @click="flipPlacements()" size="small" color="medium">
+      <ion-icon v-if="!showPlacements" slot="start" :icon="trophyOutline"></ion-icon>
+      <div v-if="!showPlacements">Show Placements</div>
+      <ion-icon v-if="showPlacements" slot="start" :icon="statsChartOutline"></ion-icon>
+      <div v-if="showPlacements">Show Score</div>
+    </ion-button>
+  </div>
   <div style="overflow: scroll">
-    <div style="min-width: 1000px;">
-    <Line
-      v-if="loaded"
-      id="my-chart-id"
-      :options="chartOptions"
-      :data="chartData"
-    />
+    <div style="min-width: 1000px;" v-if="loaded">
+      <Line v-if="!showPlacements" id="my-chart-id" :options="chartOptions" :data="chartData" />
+      <Line v-else id="my-chart-id" :options="chartOptionsPlacement" :data="chartDataPlacement" />
     </div>
   </div>
 </template>
@@ -16,7 +20,7 @@ import { defineComponent } from "vue";
 
 import { IonButton, IonRow, IonCol, IonIcon } from "@ionic/vue";
 
-import { arrowBack, arrowForward, todayOutline } from "ionicons/icons";
+import { statsChartOutline, trophyOutline } from "ionicons/icons";
 
 import { mapState } from "vuex";
 
@@ -50,13 +54,33 @@ export default defineComponent({
     IonIcon,
     Line,
   },
+  setup() {
+    return {
+      statsChartOutline,
+      trophyOutline,
+    };
+  },
   data() {
     return {
       loaded: false,
+      showPlacements: false,
       chartData: {},
+      chartDataPlacement: {},
       chartOptions: {
         responsive: true,
         maintainAspectRatio: true
+      },
+      chartOptionsPlacement: {
+        responsive: true,
+        maintainAspectRatio: true,
+        scales: {
+          y: {
+            reverse: true,
+            ticks: {
+              stepSize: 1
+            }
+          }
+        }
       },
     };
   },
@@ -139,6 +163,61 @@ export default defineComponent({
       }
       return list.length; // No non-zero value found
     },
+    flipPlacements() {
+      this.showPlacements = !this.showPlacements;
+    },
+    convertScoresToPlacements(scores: number[][]): number[][] {
+      const numColumns = scores[0].length;
+      const placements: number[][] = scores.map(() => []);
+
+      // For each column (gameday)
+      for (let col = 0; col < numColumns; col++) {
+        // Get all scores for this column with their row indices
+        const columnScores = scores.map((row, idx) => ({
+          score: row[col],
+          rowIndex: idx
+        }));
+
+        // Sort by score descending (highest score = 1st place)
+        columnScores.sort((a, b) => b.score - a.score);
+
+        // Assign placements with tie handling
+        let currentPlacement = 1;
+        for (let i = 0; i < columnScores.length; i++) {
+          const item = columnScores[i];
+
+          // Check if this score ties with the previous one
+          if (i > 0 && columnScores[i - 1].score === item.score) {
+            // Same placement as previous
+            placements[item.rowIndex][col] = placements[columnScores[i - 1].rowIndex][col];
+          } else {
+            // New placement
+            placements[item.rowIndex][col] = currentPlacement;
+          }
+
+          currentPlacement++;
+        }
+      }
+
+      return placements;
+    },
+    getPlacements(datasets: any[]) {
+      const labels = datasets.map(dataset => dataset.label);
+      const borderColors = datasets.map(dataset => dataset.borderColor);
+      const backgroundColors = datasets.map(dataset => dataset.backgroundColor);
+      const scoreData = datasets.map(dataset => dataset.data);
+
+      const placementData = this.convertScoresToPlacements(scoreData);
+
+      const datasetsConverted = placementData.map((data, index) => ({
+        label: labels[index],
+        data: data,
+        borderColor: borderColors[index],
+        backgroundColor: backgroundColors[index],
+      }));
+
+      return datasetsConverted;
+    },
     loadData() {
       this.loaded = false;
       const firstNonZero = this.pointsForGroup.slice(1).map(this.findLastNonZeroIndex);
@@ -174,6 +253,14 @@ export default defineComponent({
         });
       }
 
+      const otherDatasets = this.getPlacements(data.datasets);
+
+      const dataPlacements = {
+        labels: data.labels,
+        datasets: otherDatasets,
+      };
+
+      this.chartDataPlacement = dataPlacements;
       this.chartData = data;
       this.loaded = true;
     }
