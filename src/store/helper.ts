@@ -8,7 +8,7 @@ import { store } from "./store";
  * @return {Promise<AxiosResponse<any, any>>} axios request promise
  */
 export async function getCompetitions(
-    path: string,
+  path: string,
 ): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + path, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
@@ -31,7 +31,7 @@ export async function getUserGroups(): Promise<AxiosResponse<any, any>> {
  * @return {Promise<AxiosResponse<any, any>>} axios request promise
  */
 export async function getAllGames(
-    path: string,
+  path: string,
 ): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + path, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
@@ -44,7 +44,7 @@ export async function getAllGames(
  * @return {Promise<AxiosResponse<any, any>>} axios request promise
  */
 export async function getActiveGamedays(
-    path: string,
+  path: string,
 ): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + path, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
@@ -57,7 +57,7 @@ export async function getActiveGamedays(
  * @return {Promise<AxiosResponse<any, any>>} axios request promise
  */
 export async function getRanking(
-    path: string,
+  path: string,
 ): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + path, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
@@ -83,7 +83,7 @@ export async function joinGroup(parameter: {
  * @return {Promise<AxiosResponse<any, any>>} axios request promise
  */
 export async function getCurrentGameday(
-    path: string,
+  path: string,
 ): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + path, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
@@ -96,7 +96,7 @@ export async function getCurrentGameday(
  * @return {Promise<AxiosResponse<any, any>>} axios request promise
  */
 export async function getGroups(
-    path: string,
+  path: string,
 ): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + path, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
@@ -109,7 +109,7 @@ export async function getGroups(
  * @return {Promise<AxiosResponse<any, any>>} axios request promise
  */
 export async function getScores(
-    path: string,
+  path: string,
 ): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + path, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
@@ -122,7 +122,7 @@ export async function getScores(
  * @return {Promise<AxiosResponse<any, any>>} axios request promise
  */
 export async function getSingleGuess(
-    path: string,
+  path: string,
 ): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + path, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
@@ -135,7 +135,7 @@ export async function getSingleGuess(
  * @return {Promise<AxiosResponse<any, any>>} axios request promise
  */
 export async function requestGroupGuesses(
-    path: string,
+  path: string,
 ): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + path, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
@@ -161,7 +161,8 @@ export async function setUserName(parameter: {
  * @return {Promise<AxiosResponse<any, any>>} axios request promise
  */
 export async function changePassword(parameter: {
-  oldPassword: string, newPassword: string;
+  oldPassword: string;
+  newPassword: string;
 }): Promise<AxiosResponse<any, any>> {
   return axios.post(process.env.VUE_APP_HOST + "/auth/updatePass", parameter, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
@@ -200,7 +201,7 @@ export async function deleteAccount(parameter: {
  * @return {Promise<AxiosResponse<any, any>>} axios request promise
  */
 export async function getSeasons(
-    path: string,
+  path: string,
 ): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + path, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
@@ -224,8 +225,8 @@ export async function getCountries(): Promise<AxiosResponse<any, any>> {
  * @return {Promise<AxiosResponse<any, any>>} axios request promise
  */
 export async function sendGroupName(
-    path: string,
-    parameter: { name: string },
+  path: string,
+  parameter: { name: string },
 ): Promise<AxiosResponse<any, any>> {
   return axios.post(process.env.VUE_APP_HOST + path, parameter, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
@@ -238,7 +239,7 @@ export async function sendGroupName(
  * @return {Promise<AxiosResponse<any, any>>} axios request promise
  */
 export async function requestLeaveGroup(
-    path: string,
+  path: string,
 ): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + path, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
@@ -251,7 +252,7 @@ export async function requestLeaveGroup(
  * @return {Promise<AxiosResponse<any, any>>} axios request promise
  */
 export async function requestDeleteGroup(
-    path: string,
+  path: string,
 ): Promise<AxiosResponse<any, any>> {
   return axios.get(process.env.VUE_APP_HOST + path, {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
@@ -272,7 +273,9 @@ export async function requestUserSeasons(): Promise<AxiosResponse<any, any>> {
  * Gets all email subscriptions for the user
  * @return {Promise<AxiosResponse<any, any>>} axios request promise
  */
-export async function requestUserSubscriptions(): Promise<AxiosResponse<any, any>> {
+export async function requestUserSubscriptions(): Promise<
+  AxiosResponse<any, any>
+> {
   return axios.get(process.env.VUE_APP_HOST + "/email/subscribed", {
     headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
   });
@@ -312,24 +315,31 @@ export async function getVersion(): Promise<AxiosResponse<any, any>> {
  * Subscribes a user to email notifications
  * @return {Promise<AxiosResponse<any, any>>} axios request promise
  */
-export async function subscribeEmail(
-  parameter: { seasonID: string, isToday: boolean },
-): Promise<AxiosResponse<any, any>> {
-return axios.post(process.env.VUE_APP_HOST + "/email/subscribe", parameter, {
-  headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
-});
+export async function subscribeEmail(parameter: {
+  seasonID: string;
+  isToday: boolean;
+}): Promise<AxiosResponse<any, any>> {
+  return axios.post(process.env.VUE_APP_HOST + "/email/subscribe", parameter, {
+    headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
+  });
 }
 
 /**
  * Subscribes a user to email notifications
+ * @param {{seasonID: string, isToday: boolean}} parameter ID of the season and whether to subscribe to on the same day
  * @return {Promise<AxiosResponse<any, any>>} axios request promise
  */
-export async function unsubscribeEmail(
-  parameter: { seasonID: string, isToday: boolean },
-): Promise<AxiosResponse<any, any>> {
-return axios.post(process.env.VUE_APP_HOST + "/email/unsubscribe", parameter, {
-  headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
-});
+export async function unsubscribeEmail(parameter: {
+  seasonID: string;
+  isToday: boolean;
+}): Promise<AxiosResponse<any, any>> {
+  return axios.post(
+    process.env.VUE_APP_HOST + "/email/unsubscribe",
+    parameter,
+    {
+      headers: { Authorization: `Bearer ${store.state.user.accessToken}` },
+    },
+  );
 }
 
 /**
@@ -338,13 +348,13 @@ return axios.post(process.env.VUE_APP_HOST + "/email/unsubscribe", parameter, {
  */
 export async function showToast(toastMessage: string) {
   toastController
-      .create({
-        message: toastMessage,
-        duration: 2000,
-      })
-      .then((value) => {
-        value.present();
-      });
+    .create({
+      message: toastMessage,
+      duration: 2000,
+    })
+    .then((value) => {
+      value.present();
+    });
 }
 
 /**
@@ -353,13 +363,12 @@ export async function showToast(toastMessage: string) {
  */
 export async function showDangerToast(toastMessage: string) {
   toastController
-      .create({
-        message: toastMessage,
-        duration: 2000,
-        color: "danger",
-      })
-      .then((value) => {
-        value.present();
-      });
+    .create({
+      message: toastMessage,
+      duration: 2000,
+      color: "danger",
+    })
+    .then((value) => {
+      value.present();
+    });
 }
-

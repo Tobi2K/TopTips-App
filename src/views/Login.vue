@@ -74,7 +74,8 @@
               v-model="show_password"
               :modelValue="show_password"
               @keyup.enter="show_password = !show_password"
-            >Show password</ion-checkbox>
+              >Show password</ion-checkbox
+            >
           </ion-item>
         </ion-row>
         <ion-row class="centered-row bottom-row">
@@ -86,7 +87,8 @@
               v-model="loggedin"
               :modelValue="loggedin"
               @keyup.enter="loggedin = !loggedin"
-            >Stay logged in</ion-checkbox>
+              >Stay logged in</ion-checkbox
+            >
           </ion-item>
           <ion-item lines="none">
             <ion-button
@@ -190,19 +192,19 @@ export default defineComponent({
         showToast("Please fill out everything!");
       } else {
         this.$store
-            .dispatch("login", {
-              name: this.username,
-              password: this.password,
-              loggedin: this.loggedin,
-            })
-            .then((response) => {
-              this.greet(response[0]);
-              this.$router.push("/tabs");
-              this.clearInputs();
-              if (!response[1]) {
-                this.thereWasNoEmail();
-              }
-            });
+          .dispatch("login", {
+            name: this.username,
+            password: this.password,
+            loggedin: this.loggedin,
+          })
+          .then((response) => {
+            this.greet(response[0]);
+            this.$router.push("/tabs");
+            this.clearInputs();
+            if (!response[1]) {
+              this.thereWasNoEmail();
+            }
+          });
       }
     },
     async resetPassword(name: string) {
@@ -219,8 +221,10 @@ export default defineComponent({
       const alert = await alertController.create({
         cssClass: "points-alert",
         header: "Reset Password",
-        message: "Please enter your username. You will receive a new password at the email you set. " +
-          "If you don't have an email address set, please contact me at <a href='mailto:admin@toptips.page'>admin@toptips.pagev</a>",
+        message:
+          "Please enter your username. You will receive a new password at the email you set. " +
+          "If you don't have an email address set, " +
+          "please contact me at <a href='mailto:admin@toptips.page'>admin@toptips.pagev</a>",
         inputs: [
           {
             name: "username",
@@ -250,8 +254,10 @@ export default defineComponent({
       const alert = await alertController.create({
         cssClass: "points-alert",
         header: "Hi there, welcome to TopTips! ",
-        message: "Log in or register to use the app. \n\n" +
-        "If you have any suggestions, questions or complaints, feel free to contact me at <a href='mailto:admin@toptips.page'>admin@toptips.page</a>.",
+        message:
+          "Log in or register to use the app. \n\n" +
+          "If you have any suggestions, questions or complaints, " +
+          "feel free to contact me at <a href='mailto:admin@toptips.page'>admin@toptips.page</a>.",
         buttons: [
           {
             text: "Close",
@@ -268,13 +274,13 @@ export default defineComponent({
     },
     greet(name: string) {
       toastController
-          .create({
-            message: "Welcome back, " + name + "!",
-            duration: 2000,
-            cssClass: "toast",
-            position: "middle",
-          })
-          .then((toast) => toast.present());
+        .create({
+          message: "Welcome back, " + name + "!",
+          duration: 2000,
+          cssClass: "toast",
+          position: "middle",
+        })
+        .then((toast) => toast.present());
     },
     toggleTheme() {
       const x = document.getElementsByTagName("body")[0].classList;
@@ -287,55 +293,56 @@ export default defineComponent({
       x.toggle("dark");
     },
     async thereWasNoEmail() {
-      const alert = await alertController
-          .create({
-            header: "Please enter your email!",
-            message:
-                        "For additional security and the ability to reset your password," +
-                        " you are required to enter your email. Thank you very much.",
-            buttons: [
-              {
-                text: "Save",
-                handler: (val) => {
-                  if (!this.validateEmail(val.email)) {
-                    showToast("Please enter a valid email!");
-                  } else {
-                    this.$store.dispatch("updateEmail", val.email).then((response) => {
-                      if (response) {
-                        showToast(response);
-                      }
-                      this.clearInputs();
-                      alert.dismiss();
-                    }).catch(() => {
-                    });
-                  }
-                  return false;
-                },
-              },
-            ],
-            inputs: [
-              {
-                name: "email",
-                type: "email",
-                placeholder: "test@example.com",
-              },
-            ],
-            backdropDismiss: false,
-          });
+      const alert = await alertController.create({
+        header: "Please enter your email!",
+        message:
+          "For additional security and the ability to reset your password," +
+          " you are required to enter your email. Thank you very much.",
+        buttons: [
+          {
+            text: "Save",
+            handler: (val) => {
+              if (!this.validateEmail(val.email)) {
+                showToast("Please enter a valid email!");
+              } else {
+                this.$store
+                  .dispatch("updateEmail", val.email)
+                  .then((response) => {
+                    if (response) {
+                      showToast(response);
+                    }
+                    this.clearInputs();
+                    alert.dismiss();
+                  })
+                  .catch(() => {});
+              }
+              return false;
+            },
+          },
+        ],
+        inputs: [
+          {
+            name: "email",
+            type: "email",
+            placeholder: "test@example.com",
+          },
+        ],
+        backdropDismiss: false,
+      });
 
       await alert.present();
     },
     validateEmail(email: string) {
       const regexp = new RegExp(
-          // eslint-disable-next-line max-len
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        // eslint-disable-next-line max-len
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       );
       if (regexp.test(email)) {
         return true;
       } else return false;
     },
     checkNetwork(networkPresent: boolean, code: string) {
-      if (networkPresent) {        
+      if (networkPresent) {
         this.$store.dispatch("checkStatus").then((response) => {
           if (response) {
             this.greet(response);
@@ -344,32 +351,44 @@ export default defineComponent({
           this.clearInputs();
         });
       } else {
-        alertController.create({
-          cssClass: "points-alert",
-          header: "No Internet Connection",
-          message: "It seems you are not connected to the internet!\nPlease check your internet connection or try again later. \n\nIf the problem persists, write a message with the error code `" + code + "` to <a href='mailto:admin@toptips.page'>admin@toptips.page</a>.",
-          buttons: [
-            {
-              text: "Retry",
-              role: "confirm",
-              handler: () => {
-                this.$store.dispatch("checkNetwork").then((networkAndCode) => {
-                  this.checkNetwork(networkAndCode.value, networkAndCode.code)
-                })
-              }
-            }
-          ]
-        }).then((alert) => alert.present())
+        alertController
+          .create({
+            cssClass: "points-alert",
+            header: "No Internet Connection",
+            message:
+              "It seems you are not connected to the internet!\n" +
+              "Please check your internet connection or try again later. \n\n" +
+              "If the problem persists, write a message with the error code `" +
+              code +
+              "` to <a href='mailto:admin@toptips.page'>admin@toptips.page</a>.",
+            buttons: [
+              {
+                text: "Retry",
+                role: "confirm",
+                handler: () => {
+                  this.$store
+                    .dispatch("checkNetwork")
+                    .then((networkAndCode) => {
+                      this.checkNetwork(
+                        networkAndCode.value,
+                        networkAndCode.code,
+                      );
+                    });
+                },
+              },
+            ],
+          })
+          .then((alert) => alert.present());
       }
-    }
+    },
   },
   mounted() {
     if (localStorage.getItem("dark") == "t") {
       document.getElementsByTagName("body")[0].classList.add("dark");
     }
     this.$store.dispatch("checkNetwork").then((networkAndCode) => {
-      this.checkNetwork(networkAndCode.value, networkAndCode.code)
-    })
+      this.checkNetwork(networkAndCode.value, networkAndCode.code);
+    });
   },
 });
 </script>

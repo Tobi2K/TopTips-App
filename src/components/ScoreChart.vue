@@ -152,7 +152,9 @@ export default defineComponent({
       return colors;
     },
     hslToRgb(h: number, s: number, l: number): [number, number, number] {
-      let r: number, g: number, b: number;
+      let r: number;
+      let g: number; 
+      let b: number;
 
       if (s === 0) {
         r = g = b = l; // achromatic

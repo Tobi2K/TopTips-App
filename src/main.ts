@@ -2,7 +2,12 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 
-import { alertController, IonicVue, toastController, isPlatform } from "@ionic/vue";
+import {
+  alertController,
+  IonicVue,
+  toastController,
+  isPlatform,
+} from "@ionic/vue";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/vue/css/core.css";
@@ -30,62 +35,72 @@ import { VueClipboard } from "@soerenmartius/vue3-clipboard";
 import "./registerServiceWorker";
 
 const app = createApp(App)
-    .use(IonicVue, {
-      innerHTMLTemplatesEnabled: true,
-      mode: "md",
-    })
-    .use(router)
-    .use(store, key)
-    .use(VueClipboard);
+  .use(IonicVue, {
+    innerHTMLTemplatesEnabled: true,
+    mode: "md",
+  })
+  .use(router)
+  .use(store, key)
+  .use(VueClipboard);
 
 const newMajor = (android: boolean) => {
-  alertController.create({
-    cssClass: "points-alert",
-    header: "Update Required!",
-    message: "There is an important update available.\n" +
+  alertController
+    .create({
+      cssClass: "points-alert",
+      header: "Update Required!",
+      message:
+        "There is an important update available.\n" +
         "Correct functionality cannot be ensured, therefore you must" +
         (android ? " update " : " reload ") +
         "in order to proceed." +
-        (android ? "" : " You might have to full-reload (Ctrl + F5) if you're using a browser. If you have a home screen shortcut on iPhone, remove it and re-add it by going to https://toptips.page."),
-    buttons: [
-      {
-        text: (android ? "Update" : "Reload"),
-        handler: () => {
-          if (android) {
-            window.open("https://play.google.com/store/apps/details?id=app.kalmbach.dev");
-          } else {
-            location.reload();
-          }
-          return false;
+        (android
+          ? ""
+          : " You might have to full-reload (Ctrl + F5) if you're using a browser. " +
+          "If you have a home screen shortcut on iPhone, remove it and re-add it by going to https://toptips.page."),
+      buttons: [
+        {
+          text: android ? "Update" : "Reload",
+          handler: () => {
+            if (android) {
+              window.open(
+                "https://play.google.com/store/apps/details?id=app.kalmbach.dev",
+              );
+            } else {
+              location.reload();
+            }
+            return false;
+          },
         },
-      },
-    ],
-    backdropDismiss: false,
-  }).then((alert) => {
-    alert.present();
-  });
+      ],
+      backdropDismiss: false,
+    })
+    .then((alert) => {
+      alert.present();
+    });
 };
 const updateAvailable = (message: string, android: boolean) => {
   toastController
-      .create({
-        message: message,
-        duration: 4000,
-        buttons: [
-          {
-            text: (android ? "Update" : "Reload"),
-            handler: () => {
-              if (android) {
-                window.open("https://play.google.com/store/apps/details?id=app.kalmbach.dev");
-              } else {
-                location.reload();
-              }
-            },
+    .create({
+      message: message,
+      duration: 4000,
+      buttons: [
+        {
+          text: android ? "Update" : "Reload",
+          handler: () => {
+            if (android) {
+              window.open(
+                "https://play.google.com/store/apps/details?id=app.kalmbach.dev",
+              );
+            } else {
+              location.reload();
+            }
           },
-        ],
-      })
-      .then((value) => {
-        value.present();
-      });
+        },
+      ],
+    })
+    .then((value) => {
+      value.present();
+    });
 };
 
 router.isReady().then(async () => {
@@ -96,7 +111,8 @@ router.isReady().then(async () => {
       const splitNewestVersion = (newestVersion as string).split(".");
       const splitAppVersion = appVersion.split(".");
 
-      const android = isPlatform("android") && !isPlatform("pwa") && !isPlatform("mobileweb");
+      const android =
+        isPlatform("android") && !isPlatform("pwa") && !isPlatform("mobileweb");
 
       const new1 = Number(splitNewestVersion[0]);
       const new2 = Number(splitNewestVersion[1]);
@@ -109,15 +125,9 @@ router.isReady().then(async () => {
         return;
       } else if (new1 == curr1) {
         if (new2 > curr2) {
-          updateAvailable(
-              "Recommended update available :)",
-              android,
-          );
+          updateAvailable("Recommended update available :)", android);
         } else if (new2 == curr2 && new3 > curr3) {
-          updateAvailable(
-              "Optional update available :)",
-              android,
-          );
+          updateAvailable("Optional update available :)", android);
         }
       }
     }

@@ -4,11 +4,7 @@
       <ion-toolbar>
         <ion-title>Settings</ion-title>
         <ion-buttons slot="end">
-          <ion-back-button
-            text="Go back"
-            defaultHref="/tabs/play"
-            class="ion-float-right"
-          >
+          <ion-back-button text="Go back" defaultHref="/tabs/play" class="ion-float-right">
           </ion-back-button>
         </ion-buttons>
       </ion-toolbar>
@@ -18,21 +14,11 @@
         <h3>General Settings</h3>
         <ion-row>
           <ion-col size="12">
-            <ion-button
-              v-if="light"
-              color="medium"
-              @click="toggleTheme()"
-              expand="full"
-            >
+            <ion-button v-if="light" color="medium" @click="toggleTheme()" expand="full">
               <p style="margin-right: 5px">Change Theme</p>
               <ion-icon :icon="moon" />
             </ion-button>
-            <ion-button
-              v-else
-              color="medium"
-              @click="toggleTheme()"
-              expand="full"
-            >
+            <ion-button v-else color="medium" @click="toggleTheme()" expand="full">
               <p style="margin-right: 5px">Change Theme</p>
               <ion-icon :icon="sunny" />
             </ion-button>
@@ -56,11 +42,7 @@
             </ion-button>
           </ion-col>
           <ion-col size="12">
-            <ion-button
-              v-if="!showDeleteButton"
-              fill="clear"
-              color="danger"
-              size="small"
+            <ion-button v-if="!showDeleteButton" fill="clear" color="danger" size="small"
               @click="showDeleteButton = true">
               <p style="margin-right: 5px">Show Delete Account Button</p>
             </ion-button>
@@ -75,45 +57,29 @@
         <h3>Device Notification Settings</h3>
         <p>
           These settings are device-wide. Even when logging out, notifications
-          are still received. 
+          are still received.
         </p>
         <ion-row>
           <ion-col>
             <h6>Group Notifications</h6>
           </ion-col>
           <ion-col>
-            <ion-button
-              class="ion-float-right"
-              v-if="groupNoti"
-              fill="clear"
-              @click="groupNoti = !groupNoti"
-            >
+            <ion-button class="ion-float-right" v-if="groupNoti" fill="clear" @click="groupNoti = !groupNoti">
               Hide
             </ion-button>
-            <ion-button
-              class="ion-float-right"
-              v-else
-              fill="clear"
-              @click="groupNoti = !groupNoti"
-            >
+            <ion-button class="ion-float-right" v-else fill="clear" @click="groupNoti = !groupNoti">
               Show
             </ion-button>
           </ion-col>
         </ion-row>
-        <ion-list-header
-          >Notifications for group information (e.g. point
-          distribution or perfect games).</ion-list-header
-        >
+        <ion-list-header>Notifications for group information (e.g. point
+          distribution or perfect games).</ion-list-header>
         <div v-if="groupNoti">
           <ion-item v-for="group in userGroups" :key="group">
-            <ion-toggle
-              @ionChange="
-                toggleStatus('group' + group.group.id, group.group.name)
-              "
-              :value="group.group.id"
-              :checked="getStatus('group' + group.group.id)"
-            >
-            {{ group.group.name }}
+            <ion-toggle @ionChange="
+              toggleStatus('group' + group.group.id, group.group.name)
+              " :value="group.group.id" :checked="getStatus('group' + group.group.id)">
+              {{ group.group.name }}
             </ion-toggle>
           </ion-item>
         </div>
@@ -123,20 +89,10 @@
             <h6>Game Notifications</h6>
           </ion-col>
           <ion-col>
-            <ion-button
-              class="ion-float-right"
-              v-if="gameNoti"
-              fill="clear"
-              @click="gameNoti = !gameNoti"
-            >
+            <ion-button class="ion-float-right" v-if="gameNoti" fill="clear" @click="gameNoti = !gameNoti">
               Hide
             </ion-button>
-            <ion-button
-              class="ion-float-right"
-              v-else
-              fill="clear"
-              @click="gameNoti = !gameNoti"
-            >
+            <ion-button class="ion-float-right" v-else fill="clear" @click="gameNoti = !gameNoti">
               Show
             </ion-button>
           </ion-col>
@@ -144,11 +100,8 @@
         <ion-list-header>Notifications for pending games (at 12 PM, Berlin Time).</ion-list-header>
         <div v-if="gameNoti">
           <ion-item v-for="season in userSeasons" :key="season">
-            <ion-toggle
-              @ionChange="toggleStatus('season' + season.id, season.name)"
-              :value="season.id"
-              :checked="getStatus('season' + season.id)"
-            >
+            <ion-toggle @ionChange="toggleStatus('season' + season.id, season.name)" :value="season.id"
+              :checked="getStatus('season' + season.id)">
               {{ season.name }} <small>({{ season.competition.country }})</small>
             </ion-toggle>
           </ion-item>
@@ -158,27 +111,18 @@
       <ion-list>
         <h3>Email Notification Settings</h3>
         <p>
-          You will receive a notification (at 12:15 PM, Berlin Time) via the email used to register. Please add <a href="mailto:admin@toptips.page">admin@toptips.page</a> to your email contacts for optimal delivery.
+          You will receive a notification (at 12:15 PM, Berlin Time) via the email used to register. Please add <a
+            href="mailto:admin@toptips.page">admin@toptips.page</a> to your email contacts for optimal delivery.
         </p>
         <ion-row>
           <ion-col>
             <h6>Game Notifications</h6>
           </ion-col>
           <ion-col>
-            <ion-button
-              class="ion-float-right"
-              v-if="emailNoti"
-              fill="clear"
-              @click="emailNoti = !emailNoti"
-            >
+            <ion-button class="ion-float-right" v-if="emailNoti" fill="clear" @click="emailNoti = !emailNoti">
               Hide
             </ion-button>
-            <ion-button
-              class="ion-float-right"
-              v-else
-              fill="clear"
-              @click="emailNoti = !emailNoti"
-            >
+            <ion-button class="ion-float-right" v-else fill="clear" @click="emailNoti = !emailNoti">
               Show
             </ion-button>
           </ion-col>
@@ -187,30 +131,25 @@
           <ion-list-header lines="full">Notifications on the day of the game.</ion-list-header>
           <div v-for="subscription in userSubscriptions" :key="subscription">
             <ion-item>
-              <ion-toggle
-                @ionChange="subscribeEmail(subscription, true)"
-                :value="subscription.day_of"
-                :checked="subscription.day_of"
-              >
+              <ion-toggle @ionChange="subscribeEmail(subscription, true)" :value="subscription.day_of"
+                :checked="subscription.day_of">
                 {{ subscription.season.name }} <small>({{ subscription.season.competition.country }})</small>
               </ion-toggle>
-              </ion-item>
+            </ion-item>
           </div>
-          <ion-list-header lines="full" style="margin-top: 20px;">Notifications on the day before the game.</ion-list-header>
+          <ion-list-header lines="full" style="margin-top: 20px;">Notifications on the day before the
+            game.</ion-list-header>
           <div v-for="subscription in userSubscriptions" :key="subscription">
-              <ion-item>
-              <ion-toggle
-                @ionChange="subscribeEmail(subscription, false)"
-                :value="subscription.day_before"
-                :checked="subscription.day_before"
-              >
-                {{ subscription.season.name }} <small>({{ subscription.season.competition.country }})</small> 
+            <ion-item>
+              <ion-toggle @ionChange="subscribeEmail(subscription, false)" :value="subscription.day_before"
+                :checked="subscription.day_before">
+                {{ subscription.season.name }} <small>({{ subscription.season.competition.country }})</small>
               </ion-toggle>
             </ion-item>
           </div>
         </div>
       </ion-list>
-      
+
       <p style="text-align: center; margin-top: 100px;">
         <small>
           If you have any suggestions, questions or complaints, feel free to contact me at
@@ -538,19 +477,19 @@ export default defineComponent({
       if (localStorage.getItem(escapedID) == "true") {
         // unsubscribe
         FCM.unsubscribeFrom({ topic: escapedID })
-            .then(() => {
-              localStorage.setItem(escapedID, "false");
-              this.generateAlert("Unsubscribed from notifications for " + name);
-            })
-            .catch(() => this.generateAlert("Operation failed. Sorry!"));
+          .then(() => {
+            localStorage.setItem(escapedID, "false");
+            this.generateAlert("Unsubscribed from notifications for " + name);
+          })
+          .catch(() => this.generateAlert("Operation failed. Sorry!"));
       } else {
         // subscribe
         FCM.subscribeTo({ topic: escapedID })
-            .then(() => {
-              localStorage.setItem(escapedID, "true");
-              this.generateAlert("Subscribed to notifications for " + name);
-            })
-            .catch(() => this.generateAlert("Operation failed. Sorry!"));
+          .then(() => {
+            localStorage.setItem(escapedID, "true");
+            this.generateAlert("Subscribed to notifications for " + name);
+          })
+          .catch(() => this.generateAlert("Operation failed. Sorry!"));
       }
     },
     getStatus(id: string) {
@@ -561,16 +500,16 @@ export default defineComponent({
       if (dayOf) {
         subscription.day_of = !subscription.day_of
         if (subscription.day_of) {
-          this.$store.dispatch("subscribeEmail", {"seasonID": subscription.season.id, "isToday": dayOf});
+          this.$store.dispatch("subscribeEmail", { "seasonID": subscription.season.id, "isToday": dayOf });
         } else {
-          this.$store.dispatch("unsubscribeEmail", {"seasonID": subscription.season.id, "isToday": dayOf});
+          this.$store.dispatch("unsubscribeEmail", { "seasonID": subscription.season.id, "isToday": dayOf });
         }
       } else {
         subscription.day_before = !subscription.day_before
         if (subscription.day_before) {
-          this.$store.dispatch("subscribeEmail", {"seasonID": subscription.season.id, "isToday": dayOf});
+          this.$store.dispatch("subscribeEmail", { "seasonID": subscription.season.id, "isToday": dayOf });
         } else {
-          this.$store.dispatch("unsubscribeEmail", {"seasonID": subscription.season.id, "isToday": dayOf});
+          this.$store.dispatch("unsubscribeEmail", { "seasonID": subscription.season.id, "isToday": dayOf });
         }
       }
     },
