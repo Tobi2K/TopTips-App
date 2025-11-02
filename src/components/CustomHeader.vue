@@ -66,7 +66,6 @@ import {
 
 import { defineComponent } from "vue";
 import { refresh, settingsOutline, calendar, apps } from "ionicons/icons";
-import { useStore } from "@/store/store";
 import { mapState } from "vuex";
 
 export default defineComponent({
@@ -98,7 +97,7 @@ export default defineComponent({
       refresh,
       settingsOutline,
       calendar,
-      apps
+      apps,
     };
   },
   methods: {

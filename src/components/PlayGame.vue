@@ -2,27 +2,21 @@
   <div :key="games" style="height: 100%">
     <ion-grid>
       <ion-row>
-        <ion-col
-          size-xs="24"
-          size-lg="12"
-          size-xl="8"
-          v-for="(item, index) in games.games"
-          :key="index"
-          style="padding: 0"
-        >
+        <ion-col size-xs="24" size-lg="12" size-xl="8" v-for="(item, index) in games.games" :key="index"
+          style="padding: 0">
           <ion-grid>
-            <ion-card style="background: transparent; margin-top: 4px; margin-bottom: 8px; margin-left: 0px; margin-right: 0px;" class="pointer">
-              <ion-card-content
-                class="ion-no-padding text-light"
-                @click="openModal(index, this.games.games)"
-                :do="
-                  generateGradient(
-                    item.team1_background,
-                    item.team2_background,
-                    item.id
-                  )
-                "
-                :id="'game' + item.id"
+            <ion-card
+              style="background: transparent; margin-top: 4px; margin-bottom: 8px; margin-left: 0px; margin-right: 0px;"
+              class="pointer">
+              <ion-card-content 
+                class="ion-no-padding text-light" 
+                @click="openModal(index, this.games.games)" 
+                :do="generateGradient(
+                  item.team1_background,
+                  item.team2_background,
+                  item.id
+                )
+                " :id="'game' + item.id"
               >
                 <ion-card-header v-if="item.game_desc">
                   <ion-card-title :style="'color:' + item.team1_text">
@@ -30,81 +24,49 @@
                   </ion-card-title>
                 </ion-card-header>
                 <ion-row>
-                  <ion-col class="ion-no-padding" :style="
-                      'color:' +
-                      (item.team1_text == item.team2_text
-                        ? item.team1_text
-                        : '#FFFFFF')
-                    "><span class="date-heading line-left line-right"><span>{{ item.date_string }}</span></span></ion-col>
+                  <ion-col class="ion-no-padding" :style="'color:' +
+                    (item.team1_text == item.team2_text
+                      ? item.team1_text
+                      : '#FFFFFF')
+                    "><span class="date-heading line-left line-right"><span>{{ item.date_string
+                        }}</span></span></ion-col>
                 </ion-row>
                 <ion-row class="align-middle border-bottom">
-                  <ion-col
-                    size="6"
-                    class="ion-text-end medium-text"
-                    style="font-size: 75%"
-                  >
+                  <ion-col size="6" class="ion-text-end medium-text" style="font-size: 75%">
                     <span :style="'color:' + item.team1_text">{{
                       item.team1_short_name
-                    }}</span>
+                      }}</span>
                   </ion-col>
                   <ion-col size="4" class="align-middle">
-                    <svg
-                      width='100%'
-                      height='100%'
-                      viewBox="0 0 100 70"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <text
-                        font-size="2.5em"
-                        x="50"
-                        y="38"
-                        :fill="item.team1_text"
-                        textLength="75"
-                        dominant-baseline="middle"
-                      >
+                    <svg width='100%' height='100%' viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg">
+                      <text font-size="2.5em" x="50" y="38" :fill="item.team1_text" textLength="75"
+                        dominant-baseline="middle">
                         {{ item.team1_abbr }}
                       </text>
                     </svg>
                   </ion-col>
-                  <ion-col
-                    class="ion-text-center small-text-on-mobile"
-                    size="4"
-                    :style="
-                      'color:' +
-                      (item.team1_text == item.team2_text
-                        ? item.team1_text
-                        : '#FFFFFF')
-                    "
-                    >
+                  <ion-col class="ion-text-center small-text-on-mobile" size="4" :style="'color:' +
+                    (item.team1_text == item.team2_text
+                      ? item.team1_text
+                      : '#FFFFFF')
+                    ">
                     <span v-if="item.game_string == '-' && item.guessed"><ion-icon :icon="checkmarkOutline" /></span>
-                    <span v-else-if="item.game_string == '-' && moment(item.date).isSame(moment().endOf('day'), 'day')">!</span>
+                    <span
+                      v-else-if="item.game_string == '-' && moment(item.date).isSame(moment().endOf('day'), 'day')">!</span>
                     <span v-else>{{ item.game_string }}</span>
-                    </ion-col
-                  >
+                  </ion-col>
                   <ion-col size="4" class="align-middle">
-                    <svg
-                      width='100%'
-                      height='50%'
-                      viewBox="0 0 100 70"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <text
-                        font-size="2.5em"
-                        x="50"
-                        y="38"
-                        :fill="item.team2_text"
-                        textLength="75"
-                        dominant-baseline="middle"
-                      >
+                    <svg width='100%' height='50%' viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg">
+                      <text font-size="2.5em" x="50" y="38" :fill="item.team2_text" textLength="75"
+                        dominant-baseline="middle">
                         {{ item.team2_abbr }}
                       </text>
                     </svg>
                   </ion-col>
-                  <ion-col size="6" class="ion-text-start medium-text"
-                    style="font-size: 75%">
+                  <ion-col size="6" class="ion-text-start medium-text" style="font-size: 75%">
                     <span :style="'color:' + item.team2_text">{{
                       item.team2_short_name
-                    }}</span>
+                      }}</span>
                   </ion-col>
                 </ion-row>
                 <ion-row>
@@ -237,9 +199,11 @@ text {
   justify-content: center;
   font-size: 70%;
 }
+
 .date-heading span {
   margin: 0 15px;
 }
+
 .date-heading:before,
 .date-heading:after {
   background: #717171;
@@ -247,27 +211,28 @@ text {
   flex: 1;
   content: '';
 }
+
 .date-heading.left:after {
   background: none;
 }
+
 .date-heading.right:before {
   background: none;
 }
-
 </style>
 
 <style>
 @media (min-height: 900px) and (min-width: 900px) {
-.bigmodal {
-  --width: 850px !important;
-  --height: 850px !important;
-}
+  .bigmodal {
+    --width: 850px !important;
+    --height: 850px !important;
+  }
 }
 
 @media (max-width: 400px) {
-.small-text-on-mobile {
-  font-size: small;
-}
+  .small-text-on-mobile {
+    font-size: small;
+  }
 
 }
 </style>

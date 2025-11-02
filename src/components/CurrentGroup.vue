@@ -1,6 +1,8 @@
 <template>
   <ion-list v-if="groupData != null">
-    <ion-list-header style="font-size: 150%; text-decoration: underline;">Current Group</ion-list-header>
+    <ion-list-header style="font-size: 150%; text-decoration: underline">
+      Current Group
+    </ion-list-header>
     <ion-item>
       <ion-label>
         <ion-row>
@@ -16,7 +18,9 @@
         <ion-row v-if="groupData.passphrase">
           <ion-col style="padding-left: 0">
             <strong>Passphrase: </strong>
-            <span class="passphrase" @click="copyPassphrase(groupData.passphrase)">{{ groupData.passphrase }}</span>
+            <span class="passphrase" @click="copyPassphrase(groupData.passphrase)">
+              {{ groupData.passphrase }}
+            </span>
           </ion-col>
           <ion-col>
             <ion-text @click="copyPassphrase(groupData.passphrase)" class="ion-float-right pointer">
@@ -25,7 +29,9 @@
           </ion-col>
         </ion-row>
         <p v-else>
-          <strong>Passphrase:</strong> Ask the owner ({{ groupData.owner.name }}) for the passphrase
+          <strong>Passphrase:</strong> Ask the owner ({{
+            groupData.owner.name
+          }}) for the passphrase
         </p>
       </ion-label>
     </ion-item>
@@ -38,9 +44,11 @@
           -
           {{ this.moment(groupData.season.end_date).format("DD MMM, YYYY") }}
         </p>
-        <p style="color: red;" v-if="groupData.season.important == 0">
-          {{ groupData.season.name }} is not actively synced as there is not enough interest! Let me know at <a
-            href="mailto:admin@toptips.page">admin@toptips.page</a> if you want to play this season.
+        <p style="color: red" v-if="groupData.season.important == 0">
+          {{ groupData.season.name }} is not actively synced as there is not
+          enough interest! Let me know at
+          <a href="mailto:admin@toptips.page">admin@toptips.page</a> if you want
+          to play this season.
         </p>
       </ion-label>
     </ion-item>
@@ -52,23 +60,28 @@
         </p>
       </ion-label>
     </ion-item>
-    <ion-list-header v-if="android"><b>Notifications for {{ groupData.name }}.</b></ion-list-header>
+    <ion-list-header v-if="android">
+      <b>Notifications for {{ groupData.name }}.</b>
+    </ion-list-header>
     <ion-item v-if="android">
-      <ion-toggle @ionChange="
-        toggleStatus('group' + groupData.id, groupData.name)
-        " :value="groupData.id" :checked="getStatus('group' + groupData.id)">
+      <ion-toggle @ionChange="toggleStatus('group' + groupData.id, groupData.name)" :value="groupData.id"
+        :checked="getStatus('group' + groupData.id)">
         <small>Group information (e.g. perfect games).</small>
       </ion-toggle>
     </ion-item>
     <ion-item v-if="android">
-      <ion-toggle @ionChange="toggleStatus('season' + groupData.season.id, groupData.season.name)"
-        :value="groupData.season.id" :checked="getStatus('season' + groupData.season.id)">
+      <ion-toggle @ionChange="
+        toggleStatus('season' + groupData.season.id, groupData.season.name)
+        " :value="groupData.season.id" :checked="getStatus('season' + groupData.season.id)">
         <small>Pending games (at 12 PM, Berlin Time).</small>
       </ion-toggle>
     </ion-item>
     <ion-item lines="none">
       <ion-label>
-        <p><i>You can configure email notifications for this group in the app settings.</i></p>
+        <p>
+          <i>You can configure email notifications for this group in the app
+            settings.</i>
+        </p>
       </ion-label>
       <small></small>
     </ion-item>
@@ -87,7 +100,7 @@ import {
   IonText,
   modalController,
   IonToggle,
-  isPlatform
+  isPlatform,
 } from "@ionic/vue";
 import { defineComponent } from "vue";
 
@@ -104,7 +117,8 @@ import { showToast } from "@/store/helper";
 export default defineComponent({
   name: "CurrentGroup",
   setup() {
-    const android = isPlatform("android") && !isPlatform("pwa") && !isPlatform("mobileweb");
+    const android =
+      isPlatform("android") && !isPlatform("pwa") && !isPlatform("mobileweb");
     return {
       moment,
       copyOutline,
@@ -173,7 +187,6 @@ export default defineComponent({
   computed: mapState(["groupData"]),
 });
 </script>
-
 
 <style scoped>
 @font-face {

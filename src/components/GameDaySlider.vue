@@ -1,62 +1,32 @@
 <template>
   <ion-segment scrollable v-model="this.gameDay" style="height: 48px" class="horizontal-scroll">
-    <ion-segment-button
-      v-for="section in games.length"
-      :key="section"
-      :value="section"
-      :id="'segment-' + section"
-    >
+    <ion-segment-button v-for="section in games.length" :key="section" :value="section" :id="'segment-' + section">
       <small v-if="games[section - 1]">{{ games[section - 1].sectionTitle }}</small>
       <small v-else>Gameday</small>
     </ion-segment-button>
   </ion-segment>
   <div style="height: calc(100% - 48px); overflow-y: scroll">
-    <swiper
-      :modules="modules"
-      style="height: 100%; overflow-y: hidden"
-      @swiper="setSwiperRef"
-      @activeIndexChange="onSlideChanged"
-      :slidesPerView="1"
-      :centeredSlides="true"
-      :virtual="true"
-    >
-      <swiper-slide
-        v-for="(gameday, index) in games"
-        :key="index"
-        :virtualIndex="index"
-      >
-        <play-game
-          :sectionID="Number(index)"
-          :games="gameday"
-          @loaded.once="sectionLoaded()"
-        />
+    <swiper :modules="modules" style="height: 100%; overflow-y: hidden" @swiper="setSwiperRef"
+      @activeIndexChange="onSlideChanged" :slidesPerView="1" :centeredSlides="true" :virtual="true">
+      <swiper-slide v-for="(gameday, index) in games" :key="index" :virtualIndex="index">
+        <play-game :sectionID="Number(index)" :games="gameday" @loaded.once="sectionLoaded()" />
       </swiper-slide>
     </swiper>
   </div>
-  <ion-fab
-    vertical="bottom"
-    horizontal="start"
-    slot="fixed"
-    v-if="this.ranking.length > 0 || this.activeGamedays.length > 0"
-  >
-    <ion-badge v-if="this.activeGamedays.length > 0 && showBadge" style="left: -5px; z-index: 3; position: absolute; padding: 0;"><ion-icon style="font-size: 170%" :icon="alertCircleOutline"/></ion-badge>
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed"
+    v-if="this.ranking.length > 0 || this.activeGamedays.length > 0">
+    <ion-badge v-if="this.activeGamedays.length > 0 && showBadge"
+      style="left: -5px; z-index: 3; position: absolute; padding: 0;"><ion-icon style="font-size: 170%"
+        :icon="alertCircleOutline" /></ion-badge>
     <ion-fab-button size="small" color="medium" @click="showBadge = false">
-      <ion-icon :icon="caretUpOutline"/>
+      <ion-icon :icon="caretUpOutline" />
     </ion-fab-button>
 
     <ion-fab-list side="top">
-      <ion-fab-button
-        color="light"
-        @click="openRankingModal()"
-        v-if="this.ranking.length > 0"
-      >
+      <ion-fab-button color="light" @click="openRankingModal()" v-if="this.ranking.length > 0">
         <ion-icon :icon="podiumOutline" />
       </ion-fab-button>
-      <ion-fab-button
-        color="danger"
-        @click="getGameday()"
-        v-if="this.activeGamedays.length > 0"
-      >
+      <ion-fab-button color="danger" @click="getGameday()" v-if="this.activeGamedays.length > 0">
         <ion-icon :icon="todayOutline" />
       </ion-fab-button>
     </ion-fab-list>
@@ -162,13 +132,13 @@ export default defineComponent({
     },
     getGameday() {
       alertController
-          .create({
-            header: "There are games today!",
-            message:
+        .create({
+          header: "There are games today!",
+          message:
             "Gamedays: " + (this.activeGamedays + "").replaceAll(",", ", "),
-            buttons: ["Dismiss"],
-          })
-          .then((alert) => alert.present());
+          buttons: ["Dismiss"],
+        })
+        .then((alert) => alert.present());
     },
     async openRankingModal() {
       const rankingModal = await modalController.create({
@@ -218,6 +188,7 @@ export default defineComponent({
   border-radius: 10px;
   color: rgb(231, 229, 229);
 }
+
 .swiper-button-disabled {
   display: none;
 }

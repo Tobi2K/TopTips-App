@@ -159,7 +159,7 @@ export const store = createStore({
     },
     login(
       { commit, dispatch },
-      user: { name: string; password: string; loggedin: boolean }
+      user: { name: string; password: string; loggedin: boolean },
     ) {
       commit("UPDATE_LOADING", true);
       return new Promise((resolve) => {
@@ -211,7 +211,7 @@ export const store = createStore({
         email: string;
         password: string;
         loggedin: boolean;
-      }
+      },
     ) {
       commit("UPDATE_LOADING", true);
       return new Promise((resolve, reject) => {
@@ -262,7 +262,7 @@ export const store = createStore({
           },
           {
             headers: { Authorization: `Bearer ${state.user.accessToken}` },
-          }
+          },
         )
         .then((response) => {
           if (response.data && response.data.length > 0) {
@@ -311,7 +311,7 @@ export const store = createStore({
             },
             {
               headers: { Authorization: `Bearer ${state.user.accessToken}` },
-            }
+            },
           )
           .then(() => {
             resolve("Thanks");
@@ -381,7 +381,7 @@ export const store = createStore({
               message: "Failed to update games.",
             });
           });
-        dispatch("refreshCurrentGameday")
+        dispatch("refreshCurrentGameday");
       }
     },
     UPDATE_CURRENT_GROUP_ID({ commit, dispatch }, groupID: string) {
@@ -501,7 +501,7 @@ export const store = createStore({
             },
             {
               headers: { Authorization: `Bearer ${state.user.accessToken}` },
-            }
+            },
           )
           .then((response) => {
             commit("UPDATE_CURRENT_GROUP_ID", response.data.id);
@@ -600,7 +600,7 @@ export const store = createStore({
       commit("UPDATE_LOADING", true);
       helper
         .requestGroupGuesses(
-          "/guess/all/" + gameID + "/" + state.currentGroupID
+          "/guess/all/" + gameID + "/" + state.currentGroupID,
         )
         .then((response) => {
           commit("UPDATE_GUESSES_FOR_OPEN_GAME", response.data);
@@ -630,7 +630,7 @@ export const store = createStore({
             },
             {
               headers: { Authorization: `Bearer ${state.user.accessToken}` },
-            }
+            },
           )
           .then(() => {
             const section = details.sectionID;
@@ -685,7 +685,7 @@ export const store = createStore({
     },
     changePassword(
       { commit, dispatch },
-      passwords: { oldPass: string; newPass: string }
+      passwords: { oldPass: string; newPass: string },
     ) {
       commit("UPDATE_LOADING", true);
       return new Promise((resolve) => {
@@ -955,7 +955,7 @@ export const store = createStore({
     },
     subscribeEmail(
       { commit, dispatch },
-      parameter: { seasonID: string; isToday: boolean }
+      parameter: { seasonID: string; isToday: boolean },
     ) {
       commit("UPDATE_LOADING", true);
       helper
@@ -975,7 +975,7 @@ export const store = createStore({
     },
     unsubscribeEmail(
       { commit, dispatch },
-      parameter: { seasonID: string; isToday: boolean }
+      parameter: { seasonID: string; isToday: boolean },
     ) {
       commit("UPDATE_LOADING", true);
       helper

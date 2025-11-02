@@ -1,16 +1,39 @@
 <template>
   <div class="ion-text-center">
-    <ion-button fill="outline" @click="flipPlacements()" size="small" color="medium">
-      <ion-icon v-if="!showPlacements" slot="start" :icon="trophyOutline"></ion-icon>
+    <ion-button
+      fill="outline"
+      @click="flipPlacements()"
+      size="small"
+      color="medium"
+    >
+      <ion-icon
+        v-if="!showPlacements"
+        slot="start"
+        :icon="trophyOutline"
+      ></ion-icon>
       <div v-if="!showPlacements">Show Placements</div>
-      <ion-icon v-if="showPlacements" slot="start" :icon="statsChartOutline"></ion-icon>
+      <ion-icon
+        v-if="showPlacements"
+        slot="start"
+        :icon="statsChartOutline"
+      ></ion-icon>
       <div v-if="showPlacements">Show Score</div>
     </ion-button>
   </div>
   <div style="overflow: scroll">
-    <div style="min-width: 1000px;" v-if="loaded">
-      <Line v-if="!showPlacements" id="my-chart-id" :options="chartOptions" :data="chartData" />
-      <Line v-else id="my-chart-id" :options="chartOptionsPlacement" :data="chartDataPlacement" />
+    <div style="min-width: 1000px" v-if="loaded">
+      <Line
+        v-if="!showPlacements"
+        id="my-chart-id"
+        :options="chartOptions"
+        :data="chartData"
+      />
+      <Line
+        v-else
+        id="my-chart-id"
+        :options="chartOptionsPlacement"
+        :data="chartDataPlacement"
+      />
     </div>
   </div>
 </template>
@@ -18,7 +41,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import { IonButton, IonRow, IonCol, IonIcon } from "@ionic/vue";
+import { IonButton, IonIcon } from "@ionic/vue";
 
 import { statsChartOutline, trophyOutline } from "ionicons/icons";
 
@@ -42,15 +65,13 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
 
 export default defineComponent({
   name: "ScoreChart",
   components: {
     IonButton,
-    IonRow,
-    IonCol,
     IonIcon,
     Line,
   },
@@ -68,7 +89,7 @@ export default defineComponent({
       chartDataPlacement: {},
       chartOptions: {
         responsive: true,
-        maintainAspectRatio: true
+        maintainAspectRatio: true,
       },
       chartOptionsPlacement: {
         responsive: true,
@@ -77,10 +98,10 @@ export default defineComponent({
           y: {
             reverse: true,
             ticks: {
-              stepSize: 1
-            }
-          }
-        }
+              stepSize: 1,
+            },
+          },
+        },
       },
     };
   },
@@ -155,7 +176,7 @@ export default defineComponent({
       return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
     },
     findLastNonZeroIndex(list: any[]): number {
-      list = list.slice(2)
+      list = list.slice(2);
       for (let i = list.length - 1; i >= 0; i--) {
         if (list[i] !== 0) {
           return i;
@@ -175,7 +196,7 @@ export default defineComponent({
         // Get all scores for this column with their row indices
         const columnScores = scores.map((row, idx) => ({
           score: row[col],
-          rowIndex: idx
+          rowIndex: idx,
         }));
 
         // Sort by score descending (highest score = 1st place)
@@ -189,7 +210,8 @@ export default defineComponent({
           // Check if this score ties with the previous one
           if (i > 0 && columnScores[i - 1].score === item.score) {
             // Same placement as previous
-            placements[item.rowIndex][col] = placements[columnScores[i - 1].rowIndex][col];
+            placements[item.rowIndex][col] =
+              placements[columnScores[i - 1].rowIndex][col];
           } else {
             // New placement
             placements[item.rowIndex][col] = currentPlacement;
@@ -202,10 +224,12 @@ export default defineComponent({
       return placements;
     },
     getPlacements(datasets: any[]) {
-      const labels = datasets.map(dataset => dataset.label);
-      const borderColors = datasets.map(dataset => dataset.borderColor);
-      const backgroundColors = datasets.map(dataset => dataset.backgroundColor);
-      const scoreData = datasets.map(dataset => dataset.data);
+      const labels = datasets.map((dataset) => dataset.label);
+      const borderColors = datasets.map((dataset) => dataset.borderColor);
+      const backgroundColors = datasets.map(
+        (dataset) => dataset.backgroundColor,
+      );
+      const scoreData = datasets.map((dataset) => dataset.data);
 
       const placementData = this.convertScoresToPlacements(scoreData);
 
@@ -220,8 +244,10 @@ export default defineComponent({
     },
     loadData() {
       this.loaded = false;
-      const firstNonZero = this.pointsForGroup.slice(1).map(this.findLastNonZeroIndex);
-      let end = this.pointsForGroup[0].length
+      const firstNonZero = this.pointsForGroup
+        .slice(1)
+        .map(this.findLastNonZeroIndex);
+      let end = this.pointsForGroup[0].length;
 
       if (!firstNonZero.includes(-1)) {
         end = Math.max(...firstNonZero) + 3; // +3 to account for slicing and zero-based index
@@ -230,7 +256,9 @@ export default defineComponent({
         labels: this.pointsForGroup[0].slice(2, end),
         datasets: [] as any[],
       };
-      const colors = this.generateDistinctColors(this.pointsForGroup.length - 1);
+      const colors = this.generateDistinctColors(
+        this.pointsForGroup.length - 1,
+      );
       for (let i = 0; i < this.pointsForGroup.length; i++) {
         const element = this.pointsForGroup[i];
         if (i == 0) {
@@ -263,7 +291,7 @@ export default defineComponent({
       this.chartDataPlacement = dataPlacements;
       this.chartData = data;
       this.loaded = true;
-    }
+    },
   },
   mounted() {
     this.loadData();

@@ -56,7 +56,9 @@
         >
           <h2>{{ gameInfo.team1_name }}</h2>
         </ion-col>
-        <ion-col class="ion-text-center" size="2"><h2>vs.</h2></ion-col>
+        <ion-col class="ion-text-center" size="2">
+          <h2>vs.</h2>
+        </ion-col>
         <ion-col
           class="ion-text-center"
           style="text-decoration: underline"
@@ -88,7 +90,9 @@
             </text>
           </svg>
         </ion-col>
-        <ion-col class="ion-text-center" size="2"><h2>vs.</h2></ion-col>
+        <ion-col class="ion-text-center" size="2">
+          <h2>vs.</h2>
+        </ion-col>
         <ion-col class="ion-text-start" size="5">
           <svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
             <rect
@@ -164,11 +168,7 @@
         </ion-item>
         <ion-row>
           <ion-col class="ion-align-items-start">
-            <ion-button
-              color="medium"
-              size="small"
-              @click="generateGuess()"
-              >
+            <ion-button color="medium" size="small" @click="generateGuess()">
               <ion-icon :icon="dice"
             /></ion-button>
             <ion-button
@@ -176,7 +176,7 @@
               size="small"
               id="show-generate"
               fill="clear"
-              >
+            >
               <ion-icon :icon="helpCircleOutline"
             /></ion-button>
             <ion-popover
@@ -188,12 +188,13 @@
             >
               <ion-content class="ion-padding">
                 <small>
-                  This generates a random score in the range
-                  between <b>MIN - 5</b> and <b>MAX + 5</b>,
-                  where MIN and MAX are the lowest and highest score by the team, respectively.
+                  This generates a random score in the range between
+                  <b>MIN - 5</b> and <b>MAX + 5</b>, where MIN and MAX are the
+                  lowest and highest score by the team, respectively.
 
-                  <br /><br />NOTE: All numbers in the given range are equally likely and the lower bound is at least 20
-                  and the upper bound is at most 40.
+                  <br /><br />NOTE: All numbers in the given range are equally
+                  likely and the lower bound is at least 20 and the upper bound
+                  is at most 40.
                 </small>
               </ion-content>
             </ion-popover>
@@ -203,9 +204,10 @@
               color="success"
               class="ion-float-right"
               @click="sendData()"
-              ><p style="margin-right: 5px">Save</p>
-              <ion-icon :icon="send"
-            /></ion-button>
+            >
+              <p style="margin-right: 5px">Save</p>
+              <ion-icon :icon="send" />
+            </ion-button>
           </ion-col>
         </ion-row>
       </div>
@@ -284,7 +286,8 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-    sectionID: { // 0-indexed
+    sectionID: {
+      // 0-indexed
       type: Number,
       required: true,
     },
@@ -324,7 +327,7 @@ export default defineComponent({
 
     if (gameInfo.team1_stats) {
       const stats = gameInfo.team1_stats;
-      if ((stats.win + stats.draw + stats.lose) > 5) {
+      if (stats.win + stats.draw + stats.lose > 5) {
         minTeam1 = Math.max(stats.goals_min - 5, minTeam1);
         maxTeam1 = Math.min(stats.goals_max + 5, 40);
       }
@@ -332,7 +335,7 @@ export default defineComponent({
 
     if (gameInfo.team2_stats) {
       const stats = gameInfo.team2_stats;
-      if ((stats.win + stats.draw + stats.lose) > 5) {
+      if (stats.win + stats.draw + stats.lose > 5) {
         minTeam2 = Math.max(stats.goals_min - 5, minTeam2);
         maxTeam2 = Math.min(stats.goals_max + 5, 40);
       }
@@ -386,24 +389,30 @@ export default defineComponent({
         showDangerToast("Please fill out everything (≥0).");
       } else if (new Date(this.gameInfo.date) < new Date()) {
         showDangerToast("You are too late :(");
-      } else if (!/^[0-9]+$/.test(this.pointsTeam1) || !/^[0-9]+$/.test(this.pointsTeam2)) {
+      } else if (
+        !/^[0-9]+$/.test(this.pointsTeam1) ||
+        !/^[0-9]+$/.test(this.pointsTeam2)
+      ) {
         showDangerToast("Only use numbers!");
-      } else if (this.pointsTeam1 > 2147483647 || this.pointsTeam2 > 2147483647) {
-        showDangerToast("That number is too large! Use something smaller.")
+      } else if (
+        this.pointsTeam1 > 2147483647 ||
+        this.pointsTeam2 > 2147483647
+      ) {
+        showDangerToast("That number is too large! Use something smaller.");
       } else {
         this.$store
-            .dispatch("addGuess", {
-              game: this.gameInfo.id,
-              team1: this.pointsTeam1,
-              team2: this.pointsTeam2,
-              sectionID: this.sectionID, // 0-indexed
-            })
-            .then(() => {
-              showToast("Saved guess successfully");
-              this.savedPointsTeam1 = this.pointsTeam1;
-              this.savedPointsTeam2 = this.pointsTeam2;
-            })
-            .catch();
+          .dispatch("addGuess", {
+            game: this.gameInfo.id,
+            team1: this.pointsTeam1,
+            team2: this.pointsTeam2,
+            sectionID: this.sectionID, // 0-indexed
+          })
+          .then(() => {
+            showToast("Saved guess successfully");
+            this.savedPointsTeam1 = this.pointsTeam1;
+            this.savedPointsTeam2 = this.pointsTeam2;
+          })
+          .catch();
       }
     },
     isUpcoming() {
@@ -425,7 +434,7 @@ export default defineComponent({
 
         this.index = tempIndex;
 
-        this.getUserGuess()
+        this.getUserGuess();
       }
     },
     slideLeft() {
@@ -441,25 +450,33 @@ export default defineComponent({
 
         this.index = tempIndex;
 
-        this.getUserGuess()
+        this.getUserGuess();
       }
     },
     generateGuess() {
-      this.pointsTeam1 = Math.floor(Math.random() * (this.maxTeam1 - this.minTeam1 + 1)) + this.minTeam1;
-      this.pointsTeam2 = Math.floor(Math.random() * (this.maxTeam2 - this.minTeam2 + 1)) + this.minTeam2;
+      this.pointsTeam1 =
+        Math.floor(Math.random() * (this.maxTeam1 - this.minTeam1 + 1)) +
+        this.minTeam1;
+      this.pointsTeam2 =
+        Math.floor(Math.random() * (this.maxTeam2 - this.minTeam2 + 1)) +
+        this.minTeam2;
 
       showToast("Generated random guess. Remember to save!");
     },
     checkUnsaved(doThis) {
-      if (this.pointsTeam1 == this.savedPointsTeam1 && this.pointsTeam2 == this.savedPointsTeam2) {
-        doThis()
+      if (
+        this.pointsTeam1 == this.savedPointsTeam1 &&
+        this.pointsTeam2 == this.savedPointsTeam2
+      ) {
+        doThis();
       } else {
         alertController
           .create({
             cssClass: "points-alert",
             header: "Unsaved changes!",
             message:
-          "It seems you have unsaved guesses. Make sure to save them! \n<small><small>If this is false and the notice persists, contact <a href='mailto:admin@toptips.page'>admin@toptips.page</a></small></small>",
+              "It seems you have unsaved guesses. Make sure to save them! \n<small><small>If this is false and the notice persists, "
+               + "contact <a href='mailto:admin@toptips.page'>admin@toptips.page</a></small></small>",
             buttons: [
               {
                 text: "Take me back",
@@ -478,40 +495,40 @@ export default defineComponent({
     },
     getUserGuess() {
       this.$store
-            .dispatch("getUserGuess", this.gameInfo.id)
-            .then((val) => {
-              if (val != "") {
-                this.pointsTeam1 = val.score_team1;
-                this.savedPointsTeam1 = val.score_team1;
-                this.pointsTeam2 = val.score_team2;
-                this.savedPointsTeam2 = val.score_team2;
-                this.points = val.points;
-              } else if (this.isUpcoming()) {
-                this.pointsTeam1 = "-";
-                this.savedPointsTeam1 = "-";
-                this.pointsTeam2 = "-";
-                this.savedPointsTeam2 = "-";
-                this.points = undefined;
-              } else {
-                this.pointsTeam1 = "-";
-                this.savedPointsTeam1 = "-";
-                this.pointsTeam2 = "-";
-                this.savedPointsTeam2 = "-";
-                this.points = undefined;
-              }
-            })
-            .catch();
-    }
+        .dispatch("getUserGuess", this.gameInfo.id)
+        .then((val) => {
+          if (val != "") {
+            this.pointsTeam1 = val.score_team1;
+            this.savedPointsTeam1 = val.score_team1;
+            this.pointsTeam2 = val.score_team2;
+            this.savedPointsTeam2 = val.score_team2;
+            this.points = val.points;
+          } else if (this.isUpcoming()) {
+            this.pointsTeam1 = "-";
+            this.savedPointsTeam1 = "-";
+            this.pointsTeam2 = "-";
+            this.savedPointsTeam2 = "-";
+            this.points = undefined;
+          } else {
+            this.pointsTeam1 = "-";
+            this.savedPointsTeam1 = "-";
+            this.pointsTeam2 = "-";
+            this.savedPointsTeam2 = "-";
+            this.points = undefined;
+          }
+        })
+        .catch();
+    },
   },
   mounted() {
-    this.getUserGuess()
+    this.getUserGuess();
   },
   watch: {
     pointsTeam1() {
-      this.saved = false
+      this.saved = false;
     },
     pointsTeam2() {
-      this.saved = false
+      this.saved = false;
     },
   },
   computed: mapState(["groupData"]),
