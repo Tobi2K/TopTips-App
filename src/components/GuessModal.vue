@@ -25,22 +25,12 @@
     <ion-grid>
       <ion-row>
         <ion-col class="ion-text-start">
-          <ion-button
-            fill="clear"
-            color="dark"
-            @click="checkUnsaved(slideLeft)"
-            v-if="index > 0"
-          >
+          <ion-button fill="clear" color="dark" @click="checkUnsaved(slideLeft)" v-if="index > 0">
             <ion-icon slot="icon-only" :icon="caretBack"></ion-icon>
           </ion-button>
         </ion-col>
         <ion-col class="ion-text-end">
-          <ion-button
-            fill="clear"
-            color="dark"
-            @click="checkUnsaved(slideRight)"
-            v-if="index < games.length - 1"
-          >
+          <ion-button fill="clear" color="dark" @click="checkUnsaved(slideRight)" v-if="index < games.length - 1">
             <ion-icon slot="icon-only" :icon="caretForward"></ion-icon>
           </ion-button>
         </ion-col>
@@ -49,43 +39,22 @@
         {{ timeString }}
       </ion-row>
       <ion-row class="align-middle" v-if="showNames">
-        <ion-col
-          class="ion-text-center"
-          style="text-decoration: underline"
-          size="5"
-        >
+        <ion-col class="ion-text-center" style="text-decoration: underline" size="5">
           <h2>{{ gameInfo.team1_name }}</h2>
         </ion-col>
         <ion-col class="ion-text-center" size="2">
           <h2>vs.</h2>
         </ion-col>
-        <ion-col
-          class="ion-text-center"
-          style="text-decoration: underline"
-          size="5"
-        >
+        <ion-col class="ion-text-center" style="text-decoration: underline" size="5">
           <h2>{{ gameInfo.team2_name }}</h2>
         </ion-col>
       </ion-row>
       <ion-row class="align-middle" v-else>
         <ion-col class="ion-text-end" size="5">
           <svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
-            <rect
-              x="1"
-              y="0"
-              width="97"
-              height="50"
-              rx="10"
-              :fill="gameInfo.team1_background"
-            />
-            <text
-              font-size="2.5em"
-              x="50"
-              y="28"
-              :fill="gameInfo.team1_text"
-              textLength="75"
-              dominant-baseline="middle"
-            >
+            <rect x="1" y="0" width="97" height="50" rx="10" :fill="gameInfo.team1_background" />
+            <text font-size="2.5em" x="50" y="28" :fill="gameInfo.team1_text" textLength="75"
+              dominant-baseline="middle">
               {{ gameInfo.team1_abbr }}
             </text>
           </svg>
@@ -95,37 +64,19 @@
         </ion-col>
         <ion-col class="ion-text-start" size="5">
           <svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
-            <rect
-              x="1"
-              y="0"
-              width="97"
-              height="50"
-              rx="10"
-              :fill="gameInfo.team2_background"
-            />
-            <text
-              font-size="2.5em"
-              x="50"
-              y="28"
-              :fill="gameInfo.team2_text"
-              textLength="75"
-              dominant-baseline="middle"
-            >
+            <rect x="1" y="0" width="97" height="50" rx="10" :fill="gameInfo.team2_background" />
+            <text font-size="2.5em" x="50" y="28" :fill="gameInfo.team2_text" textLength="75"
+              dominant-baseline="middle">
               {{ gameInfo.team2_abbr }}
             </text>
           </svg>
         </ion-col>
       </ion-row>
-      <team-stats
-        v-if="gameInfo.team1_stats && gameInfo.team2_stats"
-        :gameInfo="gameInfo"
-      />
+      <team-stats v-if="gameInfo.team1_stats && gameInfo.team2_stats" :gameInfo="gameInfo" />
       <div v-if="!isUpcoming()" class="ion-margin-top">
         <ion-row>
           <ion-col class="ion-text-center" style="padding-bottom: 0">
-            <span style="font-size: 0.9em; text-decoration: underline"
-              >Result:</span
-            >
+            <span style="font-size: 0.9em; text-decoration: underline">Result:</span>
           </ion-col>
         </ion-row>
         <ion-row>
@@ -145,47 +96,21 @@
         </ion-row>
 
         <ion-item>
-          <ion-input
-            :label="'Goals by ' + gameInfo.team1_name"
-            label-placement="floating"
-            v-model="pointsTeam1"
-            type="number"
-            inputmode="numeric"
-            placeholder="Your guess..."
-            min="0"
-          ></ion-input>
+          <ion-input :label="'Goals by ' + gameInfo.team1_name" label-placement="floating" v-model="pointsTeam1"
+            type="number" inputmode="numeric" placeholder="Your guess..." min="0"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-input
-            :label="'Goals by ' + gameInfo.team2_name"
-            label-placement="floating"
-            v-model="pointsTeam2"
-            type="number"
-            inputmode="numeric"
-            placeholder="Your guess..."
-            min="0"
-          ></ion-input>
+          <ion-input :label="'Goals by ' + gameInfo.team2_name" label-placement="floating" v-model="pointsTeam2"
+            type="number" inputmode="numeric" placeholder="Your guess..." min="0"></ion-input>
         </ion-item>
         <ion-row>
           <ion-col class="ion-align-items-start">
             <ion-button color="medium" size="small" @click="generateGuess()">
-              <ion-icon :icon="dice"
-            /></ion-button>
-            <ion-button
-              color="dark"
-              size="small"
-              id="show-generate"
-              fill="clear"
-            >
-              <ion-icon :icon="helpCircleOutline"
-            /></ion-button>
-            <ion-popover
-              trigger="show-generate"
-              trigger-action="click"
-              size="auto"
-              alignment="center"
-              show-backdrop="false"
-            >
+              <ion-icon :icon="dice" /></ion-button>
+            <ion-button color="dark" size="small" id="show-generate" fill="clear">
+              <ion-icon :icon="helpCircleOutline" /></ion-button>
+            <ion-popover trigger="show-generate" trigger-action="click" size="auto" alignment="center"
+              show-backdrop="false">
               <ion-content class="ion-padding">
                 <small>
                   This generates a random score in the range between
@@ -200,11 +125,7 @@
             </ion-popover>
           </ion-col>
           <ion-col class="ion-align-items-end">
-            <ion-button
-              color="success"
-              class="ion-float-right"
-              @click="sendData()"
-            >
+            <ion-button color="success" class="ion-float-right" @click="sendData()">
               <p style="margin-right: 5px">Save</p>
               <ion-icon :icon="send" />
             </ion-button>
@@ -215,12 +136,10 @@
         <ion-row style="font-size: 1.2em">
           <ion-col class="ion-text-start"><strong>Your Guess:</strong></ion-col>
         </ion-row>
-        <ion-row
-          style="
+        <ion-row style="
             border-bottom: 1px solid rgba(211, 211, 211, 0.8);
             font-size: 1.3em;
-          "
-        >
+          ">
           <ion-col class="ion-text-center" v-if="pointsTeam1 != '-'">
             {{ pointsTeam1 }} : {{ pointsTeam2 }}
           </ion-col>
@@ -475,8 +394,8 @@ export default defineComponent({
             cssClass: "points-alert",
             header: "Unsaved changes!",
             message:
-              "It seems you have unsaved guesses. Make sure to save them! \n<small><small>If this is false and the notice persists, "
-               + "contact <a href='mailto:admin@toptips.page'>admin@toptips.page</a></small></small>",
+              "It seems you have unsaved guesses. Make sure to save them! \n<small><small>If this is false and the" +
+              " notice persists, contact <a href='mailto:admin@toptips.page'>admin@toptips.page</a></small></small>",
             buttons: [
               {
                 text: "Take me back",
