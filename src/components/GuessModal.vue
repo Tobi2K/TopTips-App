@@ -8,10 +8,6 @@
           </ion-col>
           <ion-col>
             <ion-buttons class="ion-float-right">
-              <ion-button @click="toggleName()">
-                <ion-icon v-if="showNames" :icon="imageOutline" />
-                <ion-icon v-else :icon="textOutline" />
-              </ion-button>
               <ion-button @click="checkUnsaved(closeModal)">
                 <ion-icon :icon="close" />
               </ion-button>
@@ -38,18 +34,7 @@
       <ion-row class="align-middle">
         {{ timeString }}
       </ion-row>
-      <ion-row class="align-middle" v-if="showNames">
-        <ion-col class="ion-text-center" style="text-decoration: underline" size="5">
-          <h2>{{ gameInfo.team1_name }}</h2>
-        </ion-col>
-        <ion-col class="ion-text-center" size="2">
-          <h2>vs.</h2>
-        </ion-col>
-        <ion-col class="ion-text-center" style="text-decoration: underline" size="5">
-          <h2>{{ gameInfo.team2_name }}</h2>
-        </ion-col>
-      </ion-row>
-      <ion-row class="align-middle" v-else>
+      <ion-row class="align-middle">
         <ion-col class="ion-text-end" size="5">
           <svg viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
             <rect x="1" y="0" width="97" height="50" rx="10" :fill="gameInfo.team1_background" />
@@ -70,6 +55,16 @@
               {{ gameInfo.team2_abbr }}
             </text>
           </svg>
+        </ion-col>
+      </ion-row>
+      <ion-row class="align-middle">
+        <ion-col class="ion-text-center" style="text-decoration: underline; font-size: 75%;" size="5">
+          <span>{{ gameInfo.team1_name }}</span>
+        </ion-col>
+        <ion-col class="ion-text-center" size="2">
+        </ion-col>
+        <ion-col class="ion-text-center" style="text-decoration: underline; font-size: 75%;" size="5">
+          <span>{{ gameInfo.team2_name }}</span>
         </ion-col>
       </ion-row>
       <team-stats v-if="gameInfo.team1_stats && gameInfo.team2_stats" :gameInfo="gameInfo" />
@@ -270,7 +265,6 @@ export default defineComponent({
       points,
       index,
       gameInfo,
-      showNames: false,
       minTeam1,
       maxTeam1,
       minTeam2,
@@ -336,9 +330,6 @@ export default defineComponent({
     },
     isUpcoming() {
       return new Date(this.gameInfo.date) > new Date();
-    },
-    toggleName() {
-      this.showNames = !this.showNames;
     },
     slideRight() {
       if (this.index < this.games.length - 1) {
