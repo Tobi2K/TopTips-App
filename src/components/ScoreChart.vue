@@ -1,5 +1,5 @@
 <template>
-  <div class="ion-text-center">
+  <div class="ion-text-center" v-if="pointsForGroup">
     <ion-button
       fill="outline"
       @click="flipPlacements()"
@@ -20,7 +20,7 @@
       <div v-if="showPlacements">Show Score</div>
     </ion-button>
   </div>
-  <div style="overflow: scroll">
+  <div style="overflow: scroll" v-if="pointsForGroup">
     <div style="min-width: 1000px" v-if="loaded">
       <Line
         v-if="!showPlacements"
@@ -178,6 +178,9 @@ export default defineComponent({
       return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
     },
     findLastNonZeroIndex(list: any[]): number {
+      if (!list) {
+        return 0;
+      }
       list = list.slice(2);
       for (let i = list.length - 1; i >= 0; i--) {
         if (list[i] !== 0) {
@@ -245,6 +248,9 @@ export default defineComponent({
       return datasetsConverted;
     },
     loadData() {
+      if (!this.pointsForGroup) {
+        return;
+      }
       this.loaded = false;
       const firstNonZero = this.pointsForGroup
         .slice(1)
