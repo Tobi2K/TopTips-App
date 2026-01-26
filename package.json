@@ -25,9 +25,9 @@
     "@capacitor/status-bar": "^7.0.2",
     "@capawesome/capacitor-android-edge-to-edge-support": "^7.2.3",
     "@ionic/cli": "^7.2.1",
-    "@ionic/core": "^8.7.15",
-    "@ionic/vue": "^8.7.15",
-    "@ionic/vue-router": "^8.7.15",
+    "@ionic/core": "^8.7.17",
+    "@ionic/vue": "^8.7.17",
+    "@ionic/vue-router": "^8.7.17",
     "@soerenmartius/vue3-clipboard": "^0.1.2",
     "axios": "^1.13.2",
     "chart.js": "^4.5.1",
@@ -53,7 +53,7 @@
   },
   "devDependencies": {
     "@capacitor/cli": "^7.4.3",
-    "@types/node": "^25.0.3",
+    "@types/node": "^25.0.9",
     "@typescript-eslint/eslint-plugin": "^8.51.0",
     "@typescript-eslint/parser": "^8.51.0",
     "@vue/cli-plugin-babel": "~5.0.8",
@@ -67,9 +67,9 @@
     "eslint": "^9.39.2",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-prettier": "^5.5.5",
     "eslint-webpack-plugin": "^5.0.2",
-    "eslint-plugin-vue": "^10.6.2",
+    "eslint-plugin-vue": "^10.7.0",
     "typescript": "^5.9.3",
     "vue-loader-v16": "npm:vue-loader@^17.4.2"
   }
